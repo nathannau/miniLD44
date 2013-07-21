@@ -62,6 +62,15 @@ package
 			townmine.y = 300;
 			townmine.pivotX = 128;
 			townmine.pivotY = 228;
+			
+			var melee:MovieClip = new MovieClip(Ressource.atlas.getTextures("melee"));
+			addChild(melee);
+			
+			melee.x = 400;
+			melee.y = 450;
+			
+			melee.pivotX = 128;
+			melee.pivotY = 228;
 		}
 		
 	}
