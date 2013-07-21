@@ -2,6 +2,7 @@ package screens
 {
 	import feathers.controls.Screen;
 	import feathers.controls.Button;
+	import starling.display.Image;
 	
 	import feathers.events.FeathersEventType;
 	
@@ -22,10 +23,13 @@ package screens
 			super.onInitialize(event);
 			
 			//PAUSE
+			//var pauseButton:Image = new Image(Ressource.atlas.getTexture("pause"));
 			var pauseButton:Button = new Button();
+			pauseButton.defaultSkin = new Image(Ressource.atlas.getTexture("pause"));
 			pauseButton.width = 50;
 			pauseButton.height = 50;
-			pauseButton.label = "<";
+			//pauseButton.label = "<";
+			pauseButton.x = stage.stageWidth - pauseButton.width;
 			
 			pauseButton.addEventListener(Event.TRIGGERED, pauseTriggered);
 			

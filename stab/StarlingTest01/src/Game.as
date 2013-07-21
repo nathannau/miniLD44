@@ -15,8 +15,24 @@ package
 		
 		public function Game() 
 		{
-			var quad:Quad = new Quad(1024, 1024, 0x889B3C);
-			addChild(quad);
+			//var quad:Quad = new Quad(1024, 1024, 0x889B3C);
+			//addChild(quad);
+			
+			var img:Image = new Image(Ressource.atlas.getTexture("sizeTest"));
+			addChild(img);
+			
+			/*
+			for (var tx:int = 0; tx < 100; tx++)
+			{
+				for (var ty:int = 0; ty < 100; ty++)
+				{
+					var back:Image = new Image(Ressource.atlas.getTexture("tile"));	
+					back.x = tx * back.width;
+					back.y = ty * back.height;
+					addChild(back);
+				}
+			}
+			
 			
 			
 			var mecano:MovieClip = new MovieClip(Ressource.atlas.getTextures("mecano"));
@@ -71,6 +87,7 @@ package
 			
 			melee.pivotX = 128;
 			melee.pivotY = 228;
+			*/
 		}
 		
 	}

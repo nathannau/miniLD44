@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:dc478f718834f9e7a05c9605ecc57291$ -->
+<!-- $TexturePacker:SmartUpdate:c185214259844084418e41b19d85fa17$ -->
 <TextureAtlas imagePath="atlas.png">
-    <SubTexture name="back" x="2" y="212" width="312" height="215"/>
-    <SubTexture name="bigCog" x="2" y="429" width="238" height="243"/>
-    <SubTexture name="button" x="247" y="864" width="243" height="126"/>
-    <SubTexture name="buttonDown" x="2" y="864" width="243" height="126"/>
-    <SubTexture name="gunman0000" x="316" y="212" width="116" height="108" frameX="-92" frameY="-85" frameWidth="256" frameHeight="256"/>
-    <SubTexture name="mecano0000" x="410" y="322" width="80" height="108" frameX="-87" frameY="-85" frameWidth="256" frameHeight="256"/>
-    <SubTexture name="melee0000" x="242" y="662" width="224" height="200" frameX="-1" frameY="-27" frameWidth="256" frameHeight="256"/>
-    <SubTexture name="rider0000" x="2" y="674" width="196" height="174" frameX="-41" frameY="-19" frameWidth="256" frameHeight="256"/>
-    <SubTexture name="soldier0000" x="316" y="322" width="92" height="112" frameX="-88" frameY="-82" frameWidth="256" frameHeight="256"/>
-    <SubTexture name="title" x="2" y="2" width="478" height="208"/>
-    <SubTexture name="townmine0000" x="242" y="436" width="256" height="224" frameX="0" frameY="-3" frameWidth="256" frameHeight="256"/>
+    <SubTexture name="back" x="242" y="484" width="312" height="215"/>
+    <SubTexture name="bigCog" x="2" y="484" width="238" height="243"/>
+    <SubTexture name="button" x="740" y="814" width="243" height="126"/>
+    <SubTexture name="buttonDown" x="740" y="686" width="243" height="126"/>
+    <SubTexture name="gunman0000" x="804" y="178" width="116" height="108" frameX="-92" frameY="-85" frameWidth="256" frameHeight="256"/>
+    <SubTexture name="mecano0000" x="804" y="288" width="80" height="108" frameX="-87" frameY="-85" frameWidth="256" frameHeight="256"/>
+    <SubTexture name="melee0000" x="556" y="484" width="224" height="200" frameX="-1" frameY="-27" frameWidth="256" frameHeight="256"/>
+    <SubTexture name="pause" x="952" y="292" width="56" height="62" frameX="-6" frameY="-2" frameWidth="66" frameHeight="64"/>
+    <SubTexture name="rider0000" x="804" y="2" width="196" height="174" frameX="-41" frameY="-19" frameWidth="256" frameHeight="256"/>
+    <SubTexture name="sizeTest" x="2" y="2" width="800" height="480"/>
+    <SubTexture name="soldier0000" x="922" y="178" width="92" height="112" frameX="-88" frameY="-82" frameWidth="256" frameHeight="256"/>
+    <SubTexture name="tile" x="886" y="292" width="64" height="64"/>
+    <SubTexture name="title" x="260" y="701" width="478" height="208"/>
+    <SubTexture name="townmine0000" x="2" y="729" width="256" height="224" frameX="0" frameY="-3" frameWidth="256" frameHeight="256"/>
 </TextureAtlas>

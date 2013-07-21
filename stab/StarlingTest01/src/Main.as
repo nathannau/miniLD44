@@ -43,7 +43,7 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 			//THEME
-			theme = new MetalWorksMobileTheme(null, false);
+			//theme = new MetalWorksMobileTheme(null, false);
 			
 			//SCREEN NAVIGATOR
 			this._navigator = new ScreenNavigator();
@@ -64,7 +64,10 @@ package
 			addScreen(gameScreen);
 			
 			//SET DEFAULT SCREEN: MAIN MENU
-			showScreen(mainMenuScreen);
+			//showScreen(mainMenuScreen);
+			
+			gameScreen.newGame();
+			showScreen(gameScreen);
 			
 			
 		}		

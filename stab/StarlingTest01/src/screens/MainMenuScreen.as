@@ -42,7 +42,7 @@ package screens
 			trace("onInitialize", this);
 			super.onInitialize(event);
 			
-			Main.instance.theme.setInitializerForClass( Button, mainMenuButtonInitializer, "mainMenuButton" );
+			//Main.instance.theme.setInitializerForClass( Button, mainMenuButtonInitializer, "mainMenuButton" );
 			
 			_back = new Image(Ressource.atlas.getTexture("back"));
 			addChild(_back);
