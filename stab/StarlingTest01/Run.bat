@@ -4,9 +4,9 @@ call bat\SetupSDK.bat
 call bat\SetupApplication.bat
 
 :target
-goto desktop
-goto android-debug
-::goto android-test
+::goto desktop
+::goto android-debug
+goto android-test
 set INTERPRETER=-interpreter
 ::goto ios-debug
 ::goto ios-test

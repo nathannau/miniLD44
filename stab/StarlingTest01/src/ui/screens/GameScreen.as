@@ -60,7 +60,7 @@ package ui.screens
 		
 		override protected function onEnterFrame(e:EnterFrameEvent):void
 		{
-			
+			gameUI.update(e.passedTime);
 		}
 		
 		protected function onTouch(e:TouchEvent):void
