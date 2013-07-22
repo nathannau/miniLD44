@@ -1,5 +1,6 @@
 package  
 {
+	import controller.Game;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
@@ -9,6 +10,8 @@ package
 	{
 		/** Instance de Main */
 		public static var instance: Main;
+		
+		public var game:Game;
 		
 		private var _screenManager:ScreenManager;
 		

@@ -1,10 +1,10 @@
-package  
+package ui
 {
 	import flash.media.Sound;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	
-	public class Ressource 
+	public class Assets 
 	{		
 		[Embed(source="/../assets/images/atlas.png")]
 		protected static const ATLAS_IMAGE:Class;

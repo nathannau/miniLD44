@@ -7,6 +7,14 @@ set AUTO_INSTALL_IOS=yes
 :: Path to Android SDK
 set ANDROID_SDK=C:\Program Files (x86)\FlashDevelop\Tools\android
 
+::Stab
+echo %USERNAME%
+if "%USERNAME%" == "Stab" (
+	echo STAB !!!
+	set FLEX_SDK=E:\LIB\AirSDK
+	set ANDROID_SDK=E:\SOFTS\FlashDevelop\Tools\android
+)
+
 
 :validation
 if not exist "%FLEX_SDK%\bin" goto flexsdk

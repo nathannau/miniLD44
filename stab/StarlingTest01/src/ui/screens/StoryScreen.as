@@ -51,7 +51,7 @@ package ui.screens
 		
 		private function beginTriggered(event:Event):void
 		{
-			Main.instance.showScreen(Main.instance.gameScreen);
+			ScreenManager.showScreen(ScreenManager.gameScreen);
 		}
 		
 	}

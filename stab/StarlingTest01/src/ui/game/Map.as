@@ -1,4 +1,4 @@
-package ui.game.map 
+package ui.game 
 {
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -17,6 +17,13 @@ package ui.game.map
 					var color:int = 0x505050;
 					if ((tx + ty) % 2 == 0)
 						color = 0x707070;
+						
+					if (tx == 0 || tx == 59 || ty == 0 || ty == 59)
+					{
+						color = 0x905050;
+						if ((tx + ty) % 2 == 0)
+							color = 0xD07070;
+					}
 					
 					var tile:Quad = new Quad(BASE_SIZE, BASE_SIZE, color);
 					addChild(tile);
@@ -25,6 +32,8 @@ package ui.game.map
 					
 				}
 			}
+			
+			this.flatten();
 		}
 		
 	}

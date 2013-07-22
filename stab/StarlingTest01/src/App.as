@@ -8,15 +8,22 @@ package {
 	import starling.core.*;
 	import starling.events.ResizeEvent;
  
+	[SWF(backgroundColor = "#000000")] 
 	public class App extends Sprite {
 		private var _starling:Starling;
  
 		public function App() {
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
+			
+			Starling.multitouchEnabled = true;
+			
+			
 			_starling = new Starling(Main,stage);
 			_starling.enableErrorChecking = false;
 			_starling.start();
+			_starling.simulateMultitouch = true;
+			
 			stage.addEventListener(ResizeEvent.RESIZE, resizeStage);
 			stage.addEventListener(Event.DEACTIVATE, deactivateHandler);
 			
