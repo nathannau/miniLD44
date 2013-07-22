@@ -71,10 +71,9 @@ package utils
 		}
 		
 		
-		
 		public function update()
 		{
-			
+			_nbUpdate ++;
 			
 		}
 		
