@@ -2,13 +2,13 @@
 
 :: Path to Flex SDK
 set FLEX_SDK=D:\JULIEN\LIB\AirSDK
-::set FLEX_SDK=E:\LIB\AirSDK
+if not exist "%FLEX_SDK%\" set FLEX_SDK="E:\LIB\AirSDK"
 
 set AUTO_INSTALL_IOS=yes
 
 :: Path to Android SDK
 set ANDROID_SDK=D:\JULIEN\OTHER\FlashDev4.2.3\Tools\android
-::set ANDROID_SDK=E:\SOFTS\FlashDevelop\Tools\android
+if not exist "%ANDROID_SDK%\" set ANDROID_SDK="E:\SOFTS\FlashDevelop\Tools\android"
 
 :validation
 if not exist "%FLEX_SDK%\bin" goto flexsdk
