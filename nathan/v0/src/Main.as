@@ -7,6 +7,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
+	import utils.RessourcesSet;
 	
 	/**
 	 * ...
@@ -27,6 +28,8 @@ package
 			// entry point
 			
 			// new to AIR? please read *carefully* the readme.txt files!
+			
+			var toto:RessourcesSet = new RessourcesSet();
 		}
 		
 		private function deactivate(e:Event):void 
