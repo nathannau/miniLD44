@@ -1,4 +1,4 @@
-package screens 
+package ui.screens 
 {
 	import feathers.controls.Button;
 	import feathers.controls.Label;
