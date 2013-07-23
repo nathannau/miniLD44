@@ -5,6 +5,9 @@ package controller
 	import flash.utils.clearInterval;
 	import flash.utils.setInterval;
 	import utils.Map;
+	import utils.Mine;
+	import utils.RessourcesSet;
+	import utils.Upgrades;
 	import vues.IPlayer;
 	/**
 	 * Noyau du jeu
@@ -12,6 +15,7 @@ package controller
 	 */
 	public class Game //extends EventDispatcher
 	{
+		public static var current:Game = null;
 		/**
 		 * Indique si la partie est démarée
 		 */
@@ -32,8 +36,7 @@ package controller
 		 * Carte de jeu
 		 * Writable avant le démarage de la partie
 		 */
-		public function get map():Map
-		{ return _map; }
+		public function get map():Map { return _map; }
 		public function set map(value:Map):void 
 		{
 			if (_isStarted) throw new Error("La map ne peut etre modifié quand la partie est démarée");
@@ -55,12 +58,27 @@ package controller
 			_players = values;
 		}
 		private var _players:Array = null;
+		private var _playersInfos:Array;
 		
-		private var idTick:uint;
+		public function getUpgrades(player: IPlayer):Upgrades 
+		{ return _playersInfos[player.index].upgrades as Upgrades; }
+		public function getRessources(player: IPlayer):RessourcesSet
+		{ return _playersInfos[player.index].ressources as RessourcesSet; }
+
+				
+		private var idTimer:uint;
 		
-		public function Game() 
+		public function Game(forceStopLast:Boolean=false) 
 		{ 
-			this.idTick = setInterval(this.update, 1000 / Configuration.FRAMERATE);
+			if (Game.current != null) 
+			{
+				if (forceStopLast)
+					Game.current.stop();
+				else
+					throw new Error("La derniere partie n'est pas terminé");
+			}
+			this.idTimer = setInterval(this.update, 1000 / Configuration.FRAMERATE);
+			Game.current = this;
 		}
 		
 		/**
@@ -72,7 +90,20 @@ package controller
 			if (_players == null) throw new UninitializedError("Liste des joueurs non initialisée");
 			if (_players.length<2) throw new UninitializedError("Liste des joueurs incompléte");
 			
-			//addEventListener(Event.ENTER_FRAME, this.onEnterFrame);
+			_playersInfos = new Array(_players.length);
+			for (var i:int = 0; i < _players.length; i++)
+			{
+				var p:IPlayer = _players[i] as IPlayer;
+				p.index = i;
+				_playersInfos[i] = 
+				{ 
+					upgrades:new Upgrades(), 
+					ressources: Configuration.RESSOURCES_AT_START.clone(),
+					mine: new Mine(Configuration.MINE_WIDTH, Configuration.MINE_DEEP, p)
+				};
+			}
+			
+			
 			_isStarted = true;
 		}
 		/**
@@ -83,8 +114,8 @@ package controller
 			if (!_isStarted) throw new Error("La partie n'est pas encore démarrée");
 			_isStoped = true;
 			
-			if (this.idTick != 0)
-				clearInterval(this.idTick);
+			if (this.idTimer != 0)
+				clearInterval(this.idTimer);
 		}
 		/**
 		 * Suspend la partie
@@ -112,6 +143,16 @@ package controller
 		{
 			if (!isStarted || isPaused) return;
 			
+			var i:uint;
+			for (i = 0; i < _playersInfos.length; i++)
+				(_playersInfos[i].mine as Mine).update();
+				
+				
+			for (i = 0; i < _players.length; i++)
+				(_players[i] as IPlayer).update();
+				
+				
+				
 			throw new Error("TODO : niveau haut")
 			// TODO
 		}

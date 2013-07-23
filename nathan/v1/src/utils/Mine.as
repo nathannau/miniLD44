@@ -27,9 +27,13 @@ package utils
 		 * Terrain actuel où est la mine
 		 */
 		public function get currentTerrain():Terrain{ return _currentTerrain; }
-		public function set currentTerrain(value:Terrain):void { _currentTerrain = value; }
+		public function set currentTerrain(value:Terrain):void { _currentTerrain = value; reinit(); }
 		private var _currentTerrain:Terrain;
-
+		/**
+		 * La mine est disponible
+		 */
+		public function get isActif():Boolean { return _currentTerrain != null; }
+		
 		/**
 		 * Propriétaire de la mine
 		 */
@@ -82,35 +86,34 @@ package utils
 		 */
 		public function get casesAccessibles():Array { return _casesAccessibles; }
 		private var _casesAccessibles:Array = new Array();
-		
-		
+				
 		/**
 		 * Ressource disponible à une position donnée
 		 * @param	x Coordonnée horizontal
 		 * @param	d Coordonnée de profondeur
 		 * @return	Type de ressource. Ou Null si la case est vide
 		 */
-		private function getCaseAt(x:uint, d:uint):Ressource
+		public function getCaseAt(x:uint, d:uint):Ressource
 		{
 			return _cases[d * _width + x];
 		}
 		private var _cases:Array;
 		
-		public function Mine(width:uint, deep:uint, currentTerrain:Terrain, player:IPlayer)
+		public function Mine(width:uint, deep:uint, /*currentTerrain:Terrain,*/ player:IPlayer)
 		{
 			_width = width;
 			_deep = deep;
 			_cases = new Array(width*deep);
-			_currentTerrain = currentTerrain;
+			//_currentTerrain = currentTerrain;
 			_player = player;
 			
-			Reinit();
+			//Reinit();
 		}
 		
 		/**
 		 * Reinitialise la mine
 		 */
-		public function Reinit():void
+		public function reinit():void
 		{
 			var probs:Array = Configuration.me.MINE_RESSOURCES_PROB[_currentTerrain.index];
 			
@@ -130,8 +133,12 @@ package utils
 			_casesAccessibles = new Array();
 			for (var i:uint = 0; i < _width; i++)
 				_casesAccessibles.push( { x:i, d:0 } );
+			
+			_tasks = new Array();
+			_nbCycle = 0;
 		}
 		
+		private var _nbCycle:uint = 0;
 		
 		public function update()
 		{
