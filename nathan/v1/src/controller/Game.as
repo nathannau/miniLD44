@@ -2,6 +2,7 @@ package controller
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.geom.Rectangle;
 	import flash.utils.clearInterval;
 	import flash.utils.setInterval;
 	import utils.Map;
@@ -156,6 +157,25 @@ package controller
 			throw new Error("TODO : niveau haut")
 			// TODO
 		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/**
+		 * Fournit la liste des elements présents dans une zone
+		 * @param	rect zone où rechercher les elements (si null, recherche sur toute la map)
+		 * @return Element[]
+		 */
+		public function getElements(rect:Rectangle=null):Array
+		{
+			throw new Error("Fonction non implémenté. Priorité Haute");
+		}
+		
 		
 	}
 

@@ -139,14 +139,16 @@ package utils
 			
 			_tasks = new Array();
 			_nbCycle = 0;
+			_nbUpdate = 0;
 		}
 		
 		private var _nbCycle:uint = 0;
 		
 		public function update():void
 		{
+			if (!isActif) return;
 			_nbUpdate ++;
-			
+			//_nbCycle += ...
 		}
 		
 		
