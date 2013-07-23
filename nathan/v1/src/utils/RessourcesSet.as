@@ -10,7 +10,7 @@ package utils
 	{
 		private var _ressources:Array = new Array(); // :[]int 
 		
-		public function RessourcesSet() 
+		public function RessourcesSet(rest...) 
 		{
 			this.clear();
 		}

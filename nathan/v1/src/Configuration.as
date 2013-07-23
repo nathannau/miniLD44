@@ -9,29 +9,45 @@ package
 	 */
 	public final class Configuration 
 	{
+		/*
 		private static var _me:Configuration = new Configuration();
 		
 		public static function get me():Configuration { return _me; }
+		*/
 		public function Configuration() 
 		{
-			if (me != null) throw new Error("classe Abstraite");
-			
-			initMineRessourcesProb();
+			//if (me != null) throw new Error("classe Abstraite");
+			throw new Error("classe Abstraite");
 		}
 		
 		///// GAME
-		public const FRAMERATE:uint = 60;
+		public static const FRAMERATE:uint = 60;
 		
 		
 		
 		
 		
 		///// MINE
-		public const MINE_WIDTH:uint = 10;
-		public const MINE_DEEP:uint = 20;
+		/**
+		 * Largeur de la mine
+		 */
+		public static const MINE_WIDTH:uint = 10;
+		/**
+		 * Profondeur de la mine
+		 */
+		public static const MINE_DEEP:uint = 20;
 		
-		public const MINE_RESSOURCES_PROB:Array;
-		private function initMineRessourcesProb():void
+		/**
+		 * Probabilité d'obtenir une ressources en fonction de la nature du terrain.
+		 * { 
+		 * 	   start: premiere strate où la ressource apparait, 
+		 *     stop: derniere strate où la ressource apparait, 
+		 *     prob: % de chance de trouver cette ressource, 
+		 *     type: type de ressource trouvable
+		 * } [ressource.index]
+		 */
+		public static const MINE_RESSOURCES_PROB:Array = initMineRessourcesProb();
+		private static function initMineRessourcesProb():Array
 		{
 			var ret:Array = new Array();
 			ret[Terrain.PLAINE.index] = new Array(
@@ -70,8 +86,32 @@ package
 				{ start:12, stop:18, prob:5, type:Ressource.URANIUM }
 			);
 
-			this.MINE_RESSOURCES_PROB = ret;
+			return ret;
+			//this.MINE_RESSOURCES_PROB = ret;
 		}
+		
+		/**
+		 * Détail des propriétés des ressources
+		 * { 
+		 *    cycle : Nombre de cycles pour creuser entierement une case,
+		 *    quantite : Quantité maximum de ressources dans une case
+		 * }[ressource.index]
+		 */
+		public static const MINE_RESSOURCES_DETAIL:Array = initMineRessourcesDetail();
+		private static function initMineRessourcesDetail():Array
+		{
+			var ret:Array = new Array();
+			ret[Ressource.NOURITURE.index] = { cycle:60, quantite:100 };
+			ret[Ressource.TERRE.index] = { cycle:40, quantite:0 };
+			ret[Ressource.PIERRE.index] = { cycle:100, quantite:40 };
+			ret[Ressource.FER.index] = { cycle:80, quantite:40 };
+			ret[Ressource.OR.index] = { cycle:70, quantite:30 };
+			ret[Ressource.PETROLE.index] = { cycle:50, quantite:100 };
+			ret[Ressource.CHARBON.index] = { cycle:50, quantite:50 };
+			ret[Ressource.DIAMANT.index] = { cycle:120, quantite:20 };
+			ret[Ressource.URANIUM.index] = { cycle:100, quantite:20 };
+			return ret;
+		};
 
 		
 	}

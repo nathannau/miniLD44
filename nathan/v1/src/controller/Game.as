@@ -60,7 +60,7 @@ package controller
 		
 		public function Game() 
 		{ 
-			this.idTick = setInterval(this.update, 1000 / Configuration.me.FRAMERATE);
+			this.idTick = setInterval(this.update, 1000 / Configuration.FRAMERATE);
 		}
 		
 		/**
