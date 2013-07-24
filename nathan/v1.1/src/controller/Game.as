@@ -96,6 +96,7 @@ package controller
 			if (_players.length<2) throw new UninitializedError("Liste des joueurs incompléte");
 			
 			_playersInfos = new Array(_players.length);
+			_elements = new Array();
 			
 			var startPositions:Array = _map.startPositions;
 			
@@ -233,7 +234,7 @@ package controller
 					f.types.push(filters[i]);
 			}
 			
-			var callback:Function = function getElementsCallback(e:Element):Boolean
+			var callback:Function = function getElementsCallback(e:Element, index:int, array:Array):Boolean
 			{
 				if (this.rectangle != null && (e.x<this.rectangle.minX || e.x>this.rectangle.maxX || 
 					e.y<this.rectangle.minY || e.y>this.rectangle.maxY)) return false;

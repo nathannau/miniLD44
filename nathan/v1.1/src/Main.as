@@ -16,7 +16,7 @@ package
 		/** Instance de Main */
 		public static var instance: Main;
 		
-		// utilisé pour l'optimisation de culling
+		// utilisÃ© pour l'optimisation de culling
 		public static var stageWidth:uint;
 		public static var stageHeight:uint;
 		
@@ -27,7 +27,7 @@ package
 		public function Main() {
 			var g:Game = new Game();
 			
-			var m:Map = new Map();
+			var m:Map = Map.load();// new Map();
 			g.map = m;
 			
 			var iaPlayer:IPlayer = new vues.ia.Player();
