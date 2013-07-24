@@ -1,5 +1,6 @@
 package utils 
 {
+	import controller.Game;
 	import vues.IPlayer;
 	/**
 	 * Mine d'un joueur
@@ -101,7 +102,7 @@ package utils
 		}
 		private var _cases:Array;
 		
-		public function Mine(width:uint, deep:uint, /*currentTerrain:Terrain,*/ player:IPlayer)
+		public function Mine(width:uint, deep:uint, player:IPlayer)
 		{
 			_width = width;
 			_deep = deep;
@@ -144,11 +145,46 @@ package utils
 		
 		private var _nbCycle:uint = 0;
 		
+		/**
+		 * % de l'avancement de l'extraction de la case en cours.
+		 */
+		public function get avancementForage():uint { return _avancementForage; }
+		private var _avancementForage:uint = 0;
+		
+		
 		public function update():void
 		{
 			if (!isActif) return;
 			_nbUpdate ++;
-			//_nbCycle += ...
+			
+			if (_tasks.length == 0) return;
+			var upgrade:Upgrades = Game.current.getUpgrades(_player);
+			
+			var nbCycleSup:uint = Configuration.MINE_NB_CYCLE_BY_FORAGE_LEVEL[upgrade.forage];
+			_nbCycle += nbCycleSup;
+			var currentRessource:Ressource = _cases[_tasks[0].d * _width + _tasks[0].x] as Ressource;
+			
+			//	cycle : Nombre de cycles pour creuser entierement une case,
+			//	quantite : Quantité maximum de ressources dans une case 
+			var ressourceDetail:Object = Configuration.MINE_RESSOURCES_DETAIL[currentRessource.index];
+			
+			var playerRessources:RessourcesSet = Game.current.getRessources(_player);
+			playerRessources.addRessource(
+				currentRessource, 
+				Configuration.QUALITE_RAFINAGE[upgrade.rafinage] *
+				ressourceDetail.quantite * nbCycleSup / (ressourceDetail.cycle * 100)
+			);
+			if (_nbCycle > ressourceDetail.cycle)
+			{
+				_cases[_tasks[0].d * _width + _tasks[0].x] = null;
+				_tasks.shift();
+				_nbCycle = 0;
+				_avancementForage = 0;
+			}
+			else
+			{
+				_avancementForage = _nbCycle * 100 / ressourceDetail.cycle;
+			}
 		}
 		
 		

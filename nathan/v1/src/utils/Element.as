@@ -58,8 +58,8 @@ package utils
 		
 		public function Element(player:IPlayer, type:TypeElement) 
 		{
-				_player = player;
-				_type = type;
+			_player = player;
+			_type = type;
 		}
 		
 	}
