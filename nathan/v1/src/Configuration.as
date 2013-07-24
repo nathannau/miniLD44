@@ -1,6 +1,7 @@
 package  
 {
 	import utils.Ressource;
+	import utils.RessourcesSet;
 	import utils.Terrain;
 	/**
 	 * Classe static pour la configuration du jeu.
@@ -21,10 +22,43 @@ package
 		}
 		
 		///// GAME
+		/**
+		 * Frequence d'appel de la method "game.update"
+		 */
 		public static const FRAMERATE:uint = 60;
 		
-		
-		
+		/**
+		 * Ressources disponible en début de partie
+		 */
+		public static const RESSOURCES_AT_START:RessourcesSet = new RessourcesSet(
+			Ressource.NOURITURE, 10,
+			Ressource.PIERRE, 5
+		);
+				
+		///// RAFINAGE
+		/**
+		 * Qualité du rafinage en %
+		 */
+		public static const QUALITE_RAFINAGE:Array = [25, 50, 75, 100];
+		/**
+		 * Couts des upgrade "Forage"
+		 */
+		public static const UPGRADES_FORAGES_COST:Array = [
+			new RessourcesSet(
+				Ressource.FER, 10,
+				Ressource.PIERRE, 10
+			),
+			new RessourcesSet(
+				Ressource.FER, 20,
+				Ressource.PIERRE, 40,
+				Ressource.CHARBON, 10
+			),
+			new RessourcesSet(
+				Ressource.FER, 50,
+				Ressource.PIERRE, 80,
+				Ressource.DIAMANT, 5
+			)
+		];
 		
 		
 		///// MINE
@@ -113,6 +147,29 @@ package
 			return ret;
 		};
 
+		/**
+		 * Couts des upgrade "Rafinage"
+		 */
+		public static const UPGRADES_RAFINAGE_COST:Array = [
+			new RessourcesSet(
+				Ressource.FER, 10,
+				Ressource.PIERRE, 10
+			),
+			new RessourcesSet(
+				Ressource.FER, 20,
+				Ressource.PIERRE, 40,
+				Ressource.CHARBON, 10
+			),
+			new RessourcesSet(
+				Ressource.FER, 50,
+				Ressource.PIERRE, 80,
+				Ressource.DIAMANT, 5
+			)
+		];
+		/**
+		 * Nombre de cycle de forage par mise à jour.
+		 */
+		public static const MINE_NB_CYCLE_BY_FORAGE_LEVEL:Array = [1, 2, 4, 8];
 		
 	}
 

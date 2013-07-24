@@ -10,9 +10,20 @@ package utils
 	{
 		private var _ressources:Array = new Array(); // :[]int 
 		
-		public function RessourcesSet(rest...) 
+		/**
+		 * Crée un nouveau ressource set
+		 * @param	... values Pair<Ressource, Quantité>
+		 */
+		public function RessourcesSet(... values) 
 		{
 			this.clear();
+			if (values.length % 2 != 0) throw new ArgumentError("Les arguments vont par pair");
+			for (var i:uint = 0; i < values.length; i += 2)
+				{
+					var r:Ressource = values[i] as Ressource;
+					if (r==null) throw new ArgumentError("Les clés doivent être des ressources");
+					_ressources[r.index] = values[i + 1] as int;
+				}
 		}
 		
 		/**

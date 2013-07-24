@@ -2,10 +2,11 @@ package utils
 {
 	/**
 	 * Map
-	 * @author ???
+	 * @author Nathan
 	 */
 	public class Map 
 	{
+		
 		
 		public function Map() 
 		{

@@ -27,9 +27,13 @@ package utils
 		 * Terrain actuel où est la mine
 		 */
 		public function get currentTerrain():Terrain{ return _currentTerrain; }
-		public function set currentTerrain(value:Terrain):void { _currentTerrain = value; }
+		public function set currentTerrain(value:Terrain):void { _currentTerrain = value; reinit(); }
 		private var _currentTerrain:Terrain;
-
+		/**
+		 * La mine est disponible
+		 */
+		public function get isActif():Boolean { return _currentTerrain != null; }
+		
 		/**
 		 * Propriétaire de la mine
 		 */
@@ -56,7 +60,9 @@ package utils
 			if (x > 0 && 		isNowAccessible(x - 1, d)) _casesAccessibles.push( { x:x - 1, d:d } );
 			if (x < _width-1 && isNowAccessible(x + 1, d)) _casesAccessibles.push( { x:x + 1, d:d } );
 			if (d > 0 && 		isNowAccessible(x, d - 1)) _casesAccessibles.push( { x:x, d:d - 1 } );
-			if (d < _deep-1  && isNowAccessible(x, d + 1)) _casesAccessibles.push( { x:x, d:d + 1 } );
+			if (d < _deep - 1  && isNowAccessible(x, d + 1)) _casesAccessibles.push( { x:x, d:d + 1 } );
+			
+			return true;
 		}
 		/**
 		 * Permet de savoir si un case est a ajouter dans la liste des cases accéssible
@@ -82,61 +88,67 @@ package utils
 		 */
 		public function get casesAccessibles():Array { return _casesAccessibles; }
 		private var _casesAccessibles:Array = new Array();
-		
-		
+				
 		/**
 		 * Ressource disponible à une position donnée
 		 * @param	x Coordonnée horizontal
 		 * @param	d Coordonnée de profondeur
 		 * @return	Type de ressource. Ou Null si la case est vide
 		 */
-		private function getCaseAt(x:uint, d:uint):Ressource
+		public function getCaseAt(x:uint, d:uint):Ressource
 		{
 			return _cases[d * _width + x];
 		}
 		private var _cases:Array;
 		
-		public function Mine(width:uint, deep:uint, currentTerrain:Terrain, player:IPlayer)
+		public function Mine(width:uint, deep:uint, /*currentTerrain:Terrain,*/ player:IPlayer)
 		{
 			_width = width;
 			_deep = deep;
 			_cases = new Array(width*deep);
-			_currentTerrain = currentTerrain;
+			//_currentTerrain = currentTerrain;
 			_player = player;
 			
-			Reinit();
+			//Reinit();
 		}
 		
 		/**
 		 * Reinitialise la mine
 		 */
-		public function Reinit():void
+		public function reinit():void
 		{
-			var probs:Array = Configuration.me.MINE_RESSOURCES_PROB[_currentTerrain.index];
+			var probs:Array = Configuration.MINE_RESSOURCES_PROB[_currentTerrain.index];
+			var i:uint;
 			
 			for (var d:uint = 0; d < _deep; d++)
 				for (var x:uint = 0; x < _width; x++)
 				{
 					var r:Ressource = null;
 					while (r == null)
-						for (var i:uint = 0; i < probs.length; i++)
+						for (i = 0; i < probs.length; i++)
 							if (d >= probs[i].start && 
 								d <= probs[i].stop && 
-								Math.random()*100<prods[i].prob) 
-								r = prods[i].type;
+								Math.random()*100<probs[i].prob) 
+								r = probs[i].type;
 					_cases[d * _width + x] = r;
 				}
 				
 			_casesAccessibles = new Array();
-			for (var i:uint = 0; i < _width; i++)
+			for (i = 0; i < _width; i++)
 				_casesAccessibles.push( { x:i, d:0 } );
+			
+			_tasks = new Array();
+			_nbCycle = 0;
+			_nbUpdate = 0;
 		}
 		
+		private var _nbCycle:uint = 0;
 		
-		public function update()
+		public function update():void
 		{
+			if (!isActif) return;
 			_nbUpdate ++;
-			
+			//_nbCycle += ...
 		}
 		
 		
