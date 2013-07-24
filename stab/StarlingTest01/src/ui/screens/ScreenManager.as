@@ -5,8 +5,6 @@ package ui.screens
 	import feathers.motion.transitions.ScreenFadeTransitionManager;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	import ui.Assets;
-	import ui.feathers.themes.MetalWorksMobileTheme;
 	
 	/**
 	 * ...
@@ -16,13 +14,15 @@ package ui.screens
 	{
 		public static var instance: ScreenManager;
 		
-		public var theme:MetalWorksMobileTheme;
 		private var _navigator:ScreenNavigator;
 		private var _transitionManager:ScreenFadeTransitionManager;
 		
-		public static var mainMenuScreen:MainMenuScreen;
-		public static var storyScreen:StoryScreen;
-		public static var gameScreen:GameScreen;
+		/*public var mainMenuScreen:MainMenuScreen;
+		public var loadSaveScreen:LoadSaveScreen;
+		public var storyScreen:StoryScreen;
+		public var gameScreen:GameScreen;*/
+		
+		public var gameScreen:GameScreen;
 		
 		public function ScreenManager() 
 		{
@@ -34,8 +34,7 @@ package ui.screens
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 			//THEME
-			Assets.init();
-			theme = new MetalWorksMobileTheme(null, false);
+			//theme = new MetalWorksMobileTheme(null, false);
 			
 			//SCREEN NAVIGATOR
 			this._navigator = new ScreenNavigator();
@@ -45,32 +44,25 @@ package ui.screens
 			this._transitionManager.duration = 0.7;
 			
 			//SCREENS
-			mainMenuScreen = new MainMenuScreen();
-			storyScreen = new StoryScreen();
 			gameScreen = new GameScreen();
-			
-			addScreen(mainMenuScreen)
-			addScreen(storyScreen);
 			addScreen(gameScreen);
 			
-			//showScreen(mainMenuScreen);
+			
 			showScreen(gameScreen);
 			
 		}
 		
-		private function addScreen(screen:BaseScreen):void
+		public function addScreen(screen:BaseScreen):void
 		{
 			this._navigator.addScreen(screen.screenName, new ScreenNavigatorItem(screen));
 		}
 		
-		public static function showScreen(screen:BaseScreen):void
+		public function showScreen(screen:BaseScreen):void
 		{			
-			if (ScreenManager.instance == null) return;
+			if (this._navigator.activeScreen != null)
+				(this._navigator.activeScreen as BaseScreen).onExit();
 			
-			if (ScreenManager.instance._navigator.activeScreen != null)
-				(ScreenManager.instance._navigator.activeScreen as BaseScreen).onExit();
-			
-			ScreenManager.instance._navigator.showScreen(screen.screenName);
+			this._navigator.showScreen(screen.screenName);
 			screen.onEnter();
 		}
 		

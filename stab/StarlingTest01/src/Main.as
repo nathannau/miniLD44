@@ -4,6 +4,10 @@ package
 	import fr.kouma.starling.utils.Stats;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import utils.Map;
+	import vues.ia.Player;
+	import vues.humain.Player;
+	import vues.IPlayer;
 	
 	import ui.screens.ScreenManager;
 	
@@ -21,6 +25,20 @@ package
 		private var _screenManager:ScreenManager;
 		
 		public function Main() {
+			var g:Game = new Game();
+			
+			var m:Map = new Map();
+			g.map = m;
+			
+			var iaPlayer:IPlayer = new vues.ia.Player();
+			var humanPlayer:IPlayer = new vues.humain.Player();
+			
+			var array:Array = new Array(iaPlayer, humanPlayer);
+			
+			g.players = array;// [humanPlayer, iaPlayer];
+			
+			
+			
 			instance = this;
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}

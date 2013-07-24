@@ -4,6 +4,7 @@ package vues.ia
 	
 	/**
 	 * Logique de l'IA adverse.
+	 * TODO : vues.ia.Player classe non implémentée
 	 * @author Marco
 	 */
 	public class Player implements IPlayer 
@@ -11,7 +12,21 @@ package vues.ia
 		
 		public function Player() 
 		{
-			throw new Error("Fonction non implementé : Priorité très haute");
+			//throw new Error("Fonction non implementé : Priorité très haute");
+		}
+		
+		public function get index():uint
+		{
+			return 0;
+		}
+		public function set index(value:uint):void
+		{
+			
+		}
+		
+		public function update():void
+		{
+			
 		}
 		
 	}
