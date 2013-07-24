@@ -4,6 +4,7 @@ package vues.ia
 	
 	/**
 	 * Logique de l'IA adverse.
+	 * TODO : vues.ia.Player classe non implémentée
 	 * @author Marco
 	 */
 	public class Player implements IPlayer 

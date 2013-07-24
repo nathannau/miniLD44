@@ -14,6 +14,10 @@ package utils
 		public function set rafinage(value:uint):void { _rafinage = value; }
 		private var _rafinage:uint = 0;
 		
+		public function get relais():uint { return _relais; }
+		public function set relais(value:uint):void { _relais = value; }
+		private var _relais:uint = 0;
+		
 		public function Upgrades() 
 		{
 			
