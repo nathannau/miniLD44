@@ -41,8 +41,6 @@ package ui.screens
 			trace("onInitialize", this);
 			super.onInitialize(event);
 			
-			ScreenManager.instance.theme.setInitializerForClass( Button, mainMenuButtonInitializer, "mainMenuButton" );
-			
 			_back = new Image(Assets.atlas.getTexture("back"));
 			addChild(_back);
 			_back.pivotX = _back.width * 0.5;
@@ -96,21 +94,6 @@ package ui.screens
 			
 		}
 		
-		/**
-		 * Custom theme for main menu buttons
-		 * @param	button
-		 */
-		private function mainMenuButtonInitializer( button:Button ):void
-		{
-			var buttonImage:Image = new Image(Assets.atlas.getTexture("button"));
-			var buttonDownImage:Image = new Image(Assets.atlas.getTexture("buttonDown"));
-			
-			button.height = 60;
-			button.defaultSkin = buttonImage;
-			button.downSkin = buttonDownImage;
-		 
-			button.defaultLabelProperties.textFormat = new TextFormat( "SourceSansProSemibold", 20, 0x433A29 );
-		}
 		
 		/**
 		 * 
@@ -147,7 +130,7 @@ package ui.screens
 			if(Main.instance.game == null)
 				Main.instance.game = new Game();
 				
-			ScreenManager.showScreen(ScreenManager.storyScreen);
+			ScreenManager.instance.showScreen(ScreenManager.instance.storyScreen);
 		}
 		
 		/**

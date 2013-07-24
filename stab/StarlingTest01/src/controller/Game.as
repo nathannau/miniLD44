@@ -261,7 +261,7 @@ package controller
 		 * @return	true si la transaction à réussi.
 		 */
 		public function buyUpgrade(player:IPlayer, upgrade:String):Boolean
-		{ if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("fonction non implémentée : priorité basse"); }
+		{ if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("fonction non implémentée : priorité basse"); return false; }
 		
 		/**
 		 * Achete un element.
@@ -272,7 +272,7 @@ package controller
 		 * @return	true si la transaction à réussi.
 		 */
 		public function buyElement(player:IPlayer, type:TypeElement, from:*):Boolean
-		{ if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("fonction non implémentée : priorité basse"); }
+		{ if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("fonction non implémentée : priorité basse"); return false; }
 		
 	}
 

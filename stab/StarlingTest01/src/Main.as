@@ -25,6 +25,7 @@ package
 		private var _screenManager:ScreenManager;
 		
 		public function Main() {
+			/*
 			var g:Game = new Game();
 			
 			var m:Map = new Map();
@@ -36,6 +37,7 @@ package
 			var array:Array = new Array(iaPlayer, humanPlayer);
 			
 			g.players = array;// [humanPlayer, iaPlayer];
+			*/
 			
 			
 			
@@ -53,7 +55,7 @@ package
 			_screenManager = new ScreenManager();
 			addChild(_screenManager);
 			
-			addChild(new Stats());
+			//addChild(new Stats());
 		}	
 		
 		

@@ -1,7 +1,9 @@
 package ui.game 
 {
+	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
+	import ui.Assets;
 
 	
 	public class Map extends Sprite 
@@ -28,7 +30,10 @@ package ui.game
 							color = 0xD07070;
 					}
 					
-					var tile:Quad = new Quad(BASE_SIZE, BASE_SIZE, color);
+					//var tile:Quad = new Quad(BASE_SIZE, BASE_SIZE, color);
+					var tile:Image = new Image(Assets.atlas.getTexture("tile_plaine"));
+					tile.color = color;
+					
 					//tile.touchable = false;
 					addChild(tile);
 					tile.x = tx * BASE_SIZE;

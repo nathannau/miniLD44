@@ -1,14 +1,18 @@
 package ui.screens 
 {
 	import controller.Game;
+	import feathers.controls.Button;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import starling.core.Starling;
+	import starling.display.Image;
 	import starling.display.Quad;
+	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
+	import ui.Assets;
 	import ui.game.gameObjects.GameObject;
 	import ui.game.GameUI;
 	import ui.game.Map;
@@ -16,8 +20,9 @@ package ui.screens
 
 	public class GameScreen extends BaseScreen 
 	{
-		//public var gameUI:GameUI;
-		public var view:Player;
+		public var container:Sprite;
+		public var gameUI:GameUI;
+		//public var view:Player;
 		
 		public var selection:Vector.<GameObject>;
 		
@@ -54,40 +59,64 @@ package ui.screens
 			
 			//map = new Map();
 			//addChild(map);
+			
+			container = new Sprite();
+			addChild(container);
+			
+			
+			var butPause:Button = new Button();
+			butPause.defaultIcon = new Image(Assets.atlas.getTexture("pause"));
+			butPause.nameList.add("smallButton");
+			addChild(butPause);
+			butPause.x = Main.stageWidth - butPause.width - 5;
+			butPause.y = 5;
+			butPause.addEventListener(Event.TRIGGERED, function(e:Event):void { ScreenManager.instance.showScreen(ScreenManager.instance.mainMenuScreen); } );
+			
+			
+			/*
+			var butPause: Image = new Image(Assets.atlas.getTexture("pause"));
+			butPause.x = Main.stageWidth - butPause.width - 5;
+			butPause.y = 5;
+			butPause.addEventListener(Event.TRIGGERED, function(e:Event):void { ScreenManager.instance.showScreen(ScreenManager.instance.mainMenuScreen); } );
+			addChild(butPause);*/
 		}
 		
 		private function initUI():void
 		{
-			//gameUI = new GameUI(Main.instance.game);
-			//addChild(gameUI);
+			gameUI = new GameUI(Main.instance.game);
+			container.addChild(gameUI);
 			//view = new
 			
 			/*var quad:Quad = new Quad(stage.stageWidth, stage.stageHeight, 0x202020);
 			quad.alpha = 0;
 			addChild(quad);*/
 			
-			addEventListener(TouchEvent.TOUCH, onTouch);
+			container.addEventListener(TouchEvent.TOUCH, onTouch);
 			
 		}
 		
 		override public function onEnter():void
 		{
-			/*if (gameUI == null)
-				initUI();*/
+			
+			if (gameUI == null)
+				initUI();
+				
+			/*
 			if (!Game.current.isStarted)
 				Game.current.start();
 			else
 				Game.current.resume();
+			*/
 		}
 		
 		override public function onExit():void
 		{
-			Game.current.pause();
+			//Game.current.pause();
 		}
 		
 		override protected function onEnterFrame(e:EnterFrameEvent):void
 		{
-			//gameUI.update(e.passedTime);
+			gameUI.update(e.passedTime);
 			
 			if (_touchActive && !_touchMoved && !_touchMulti) 
 			{
@@ -130,7 +159,7 @@ package ui.screens
 			
 			//trace(touch);
 			
-			/*
+			
 			switch(touch.phase)
 			{
 				case "began":
@@ -170,12 +199,12 @@ package ui.screens
 					
 						
 					break;
-			}*/
+			}
 		}
 		
 		private function onTouchMulti(touches:Vector.<Touch>):void 
 		{
-			/*if (touches.length == 2) 
+			if (touches.length == 2) 
 			{
 				_touchMulti = true;
 				
@@ -196,7 +225,7 @@ package ui.screens
 				}
 				
 				
-			}*/
+			}
 		}
 		
 		//-----------------------------------------------------------------------------
@@ -242,7 +271,7 @@ package ui.screens
 		{
 			trace("ZONE", r);
 			
-			/*
+			
 			
 			var i:uint;
 			
@@ -254,7 +283,7 @@ package ui.screens
 			for (i = 0; i < selection.length; i++ )
 			{
 				selection[i].setSelected(true);
-			}*/
+			}
 		}
 		
 		//-----------------------------------------------------------------------------
