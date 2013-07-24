@@ -4,6 +4,7 @@ package {
 	import flash.display.*;
 	import flash.events.*;
 	import flash.geom.*;
+	import utils.Map;
  
 	import starling.core.*;
 	import starling.events.ResizeEvent;
@@ -22,6 +23,8 @@ package {
 			
 			//evite la mise en veille auto
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
+			
+			var m:Map = Map.load();
 		}
 		private function resizeStage(e:Event):void {
 			/**
