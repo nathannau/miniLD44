@@ -204,6 +204,10 @@ package
 		 */
 		public static const DISTANCE_VISION:Array = [100, 400, 900, 2500];
 		
+		
+		
+		///// Divers
+		public static const THROW_NOT_IMPLEMENTED:Boolean = false;
 	}
 
 }

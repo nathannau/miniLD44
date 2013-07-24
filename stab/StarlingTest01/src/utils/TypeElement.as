@@ -23,7 +23,7 @@ package utils
 		public static const CENTRE_DE_TIR:TypeElement 		= new TypeElement("CENTRE_DE_TIR", 		6,	ElementCentreDeTir);
 		public static const ELEVAGE_WAARK:TypeElement 		= new TypeElement("ELEVAGE_WAARK", 		7,	ElementElevageWaark);
 		public static const RELAIS:TypeElement 				= new TypeElement("RELAIS", 			8,	ElementRelais);
-		public static const LABORATOIRE:TypeElement 				= new TypeElement("LABORATOIRE", 		9,	ElementLaboratoire);
+		public static const LABORATOIRE:TypeElement 		= new TypeElement("LABORATOIRE", 		9,	ElementLaboratoire);
 		
 		public function TypeElement(nom:String, index:uint, className:Class) 
 		{
