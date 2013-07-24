@@ -29,6 +29,7 @@ package ui.game
 					}
 					
 					var tile:Quad = new Quad(BASE_SIZE, BASE_SIZE, color);
+					//tile.touchable = false;
 					addChild(tile);
 					tile.x = tx * BASE_SIZE;
 					tile.y = ty * BASE_SIZE;
