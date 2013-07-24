@@ -20,8 +20,7 @@ package utils
 		 */
 		public function getStartPositions():Array
 		{
-			throw new Error("Fonction non implémenté");
-			
+			if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("Fonction non implémenté");			
 		}
 		
 		
