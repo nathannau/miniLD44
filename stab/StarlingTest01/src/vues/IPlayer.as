@@ -1,5 +1,6 @@
 package vues 
 {
+	import utils.RessourcesSet;
 	
 	/**
 	 * Interface de tous les joueurs (Humain, IA, ou autre ?)
@@ -7,7 +8,10 @@ package vues
 	 */
 	public interface IPlayer 
 	{
+		function get index():uint;
+		function set index(value:uint):void;
 		
+		function update():void;
 	}
 	
 }

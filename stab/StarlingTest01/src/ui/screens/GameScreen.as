@@ -1,5 +1,6 @@
 package ui.screens 
 {
+	import controller.Game;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import starling.core.Starling;
@@ -11,10 +12,12 @@ package ui.screens
 	import ui.game.gameObjects.GameObject;
 	import ui.game.GameUI;
 	import ui.game.Map;
+	import vues.humain.Player;
 
 	public class GameScreen extends BaseScreen 
 	{
-		public var gameUI:GameUI;
+		//public var gameUI:GameUI;
+		public var view:Player;
 		
 		public var selection:Vector.<GameObject>;
 		
@@ -55,8 +58,9 @@ package ui.screens
 		
 		private function initUI():void
 		{
-			gameUI = new GameUI(Main.instance.game);
-			addChild(gameUI);
+			//gameUI = new GameUI(Main.instance.game);
+			//addChild(gameUI);
+			//view = new
 			
 			/*var quad:Quad = new Quad(stage.stageWidth, stage.stageHeight, 0x202020);
 			quad.alpha = 0;
@@ -68,18 +72,22 @@ package ui.screens
 		
 		override public function onEnter():void
 		{
-			if (gameUI == null)
-				initUI();
+			/*if (gameUI == null)
+				initUI();*/
+			if (!Game.current.isStarted)
+				Game.current.start();
+			else
+				Game.current.resume();
 		}
 		
 		override public function onExit():void
 		{
-			
+			Game.current.pause();
 		}
 		
 		override protected function onEnterFrame(e:EnterFrameEvent):void
 		{
-			gameUI.update(e.passedTime);
+			//gameUI.update(e.passedTime);
 			
 			if (_touchActive && !_touchMoved && !_touchMulti) 
 			{
@@ -122,6 +130,7 @@ package ui.screens
 			
 			//trace(touch);
 			
+			/*
 			switch(touch.phase)
 			{
 				case "began":
@@ -161,12 +170,12 @@ package ui.screens
 					
 						
 					break;
-			}
+			}*/
 		}
 		
 		private function onTouchMulti(touches:Vector.<Touch>):void 
 		{
-			if (touches.length == 2) 
+			/*if (touches.length == 2) 
 			{
 				_touchMulti = true;
 				
@@ -187,7 +196,7 @@ package ui.screens
 				}
 				
 				
-			}
+			}*/
 		}
 		
 		//-----------------------------------------------------------------------------
@@ -233,6 +242,8 @@ package ui.screens
 		{
 			trace("ZONE", r);
 			
+			/*
+			
 			var i:uint;
 			
 			for (i = 0; i < selection.length; i++ )
@@ -243,7 +254,7 @@ package ui.screens
 			for (i = 0; i < selection.length; i++ )
 			{
 				selection[i].setSelected(true);
-			}
+			}*/
 		}
 		
 		//-----------------------------------------------------------------------------
