@@ -13,6 +13,18 @@ package utils
 			
 		}
 		
+		/**
+		 * Listes des positions de departs 
+		 * TODO : getStartPositions fonction non implémentée
+		 * @return {x:uint, y:uint}[]
+		 */
+		public function getStartPositions():Array
+		{
+			throw new Error("Fonction non implémenté");
+			
+		}
+		
+		
 	}
 
 }

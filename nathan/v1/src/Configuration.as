@@ -34,7 +34,12 @@ package
 			Ressource.NOURITURE, 10,
 			Ressource.PIERRE, 5
 		);
-				
+
+		/**
+		 * Distance de vision des unités (Carré du rayon en careau)
+		 */
+		public static const DISTANCE_VISION_UNITE:uint = 9;
+		
 		///// RAFINAGE
 		/**
 		 * Qualité du rafinage en %
@@ -170,6 +175,34 @@ package
 		 * Nombre de cycle de forage par mise à jour.
 		 */
 		public static const MINE_NB_CYCLE_BY_FORAGE_LEVEL:Array = [1, 2, 4, 8];
+		
+		
+		///// Relais
+		
+		/**
+		 * Couts des upgrade "Relais"
+		 */
+		public static const UPGRADES_RELAIS_COST:Array = [
+			new RessourcesSet(
+				Ressource.FER, 10,
+				Ressource.PIERRE, 10,
+				Ressource.CHARBON, 10
+			),
+			new RessourcesSet(
+				Ressource.FER, 20,
+				Ressource.PIERRE, 40,
+				Ressource.DIAMANT, 10
+			),
+			new RessourcesSet(
+				Ressource.FER, 50,
+				Ressource.PIERRE, 80,
+				Ressource.URANIUM, 20
+			)
+		];
+		/**
+		 * Distance de vision des tours de relais est du centre de forage (Carré du rayon en careau)
+		 */
+		public static const DISTANCE_VISION:Array = [100, 400, 900, 2500];
 		
 	}
 
