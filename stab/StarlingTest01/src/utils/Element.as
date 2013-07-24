@@ -72,9 +72,7 @@ package utils
 		
 		public static function createElement(player:IPlayer, type:TypeElement):Element
 		{
-			var cls:Class = type.className;
-			trace(cls);
-			return new cls(player);
+			return type.className(player);
 		}
 		
 		public function update():void

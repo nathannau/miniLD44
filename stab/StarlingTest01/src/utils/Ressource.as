@@ -30,7 +30,7 @@ package utils
 			
 			this._nom = nom;
 			this._index = index;
-			_nbInitConst++;
+			Ressource._nbInitConst++;
 		}
 		
 	}

@@ -25,7 +25,7 @@ package utils
 			
 			this._nom = nom;
 			this._index = index;
-			_nbInitConst++;
+			Terrain._nbInitConst++;
 		}
 		
 	}
