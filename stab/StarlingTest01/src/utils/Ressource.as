@@ -6,6 +6,8 @@ package utils
 	 */
 	public final class Ressource 
 	{
+//		private static var _nbInitConst:uint = 0;
+		
 		private var _nom:String;
 		private var _index:uint;
 		public function get nom():String { return this._nom; }
@@ -23,14 +25,13 @@ package utils
 
 		public static const NB_TYPE_RESSOURCE:uint = 9;
 		
-		private static var _nbInitConst:uint = 0;
 		public function Ressource(nom:String, index:uint) 
 		{
-			if (_nbInitConst == NB_TYPE_RESSOURCE) throw new Error("classe abtraite");
+//			if (_nbInitConst == NB_TYPE_RESSOURCE) throw new Error("classe abtraite");
 			
 			this._nom = nom;
 			this._index = index;
-			Ressource._nbInitConst++;
+//			Ressource._nbInitConst++;
 		}
 		
 	}

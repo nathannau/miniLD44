@@ -246,5 +246,5 @@ class Colors {
 	public var ms : uint = 0x00ff00;
 	public var mem : uint = 0x00ffff;
 	public var memmax : uint = 0xff0070;
-	
+	public function Colors() {}
 }

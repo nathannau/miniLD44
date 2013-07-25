@@ -1,5 +1,6 @@
 package utils 
 {
+	import flash.utils.getQualifiedClassName;
 	/**
 	 * Class abstraite pour l'ensemble des elements
 	 * @author Nathan
@@ -8,6 +9,7 @@ package utils
 	{
 		public function ElementUnite() 
 		{
+			if (getQualifiedClassName(this)=="utils::ElementUnite")
 			throw new Error("Fonction abstraite"); 
 		}
 		

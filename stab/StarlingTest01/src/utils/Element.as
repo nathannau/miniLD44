@@ -1,5 +1,6 @@
 package utils 
 {
+	import flash.utils.getQualifiedClassName;
 	import vues.IPlayer;
 	/**
 	 * Class abstraite pour l'ensemble des elements
@@ -65,14 +66,13 @@ package utils
 		
 		public function Element() //player:IPlayer, type:TypeElement) 
 		{
-			throw new Error("Fonction abstraite"); 
-			//_player = player;
-			//_type = type;
+			if (getQualifiedClassName(this)=="utils::Element")
+				throw new Error("Fonction abstraite"); 
 		}
 		
 		public static function createElement(player:IPlayer, type:TypeElement):Element
 		{
-			return type.className(player);
+			return new type.className(player);
 		}
 		
 		public function update():void

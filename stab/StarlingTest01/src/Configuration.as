@@ -25,7 +25,7 @@ package
 		/**
 		 * Frequence d'appel de la method "game.update"
 		 */
-		public static const FRAMERATE:uint = 60;
+		public static const FRAMERATE:uint = 30;
 		
 		/**
 		 * Ressources disponible en début de partie

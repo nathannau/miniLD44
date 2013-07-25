@@ -17,15 +17,15 @@ package utils
 
 		public static const NB_TYPE_TERRAIN:uint = 3;
 		
-		private static var _nbInitConst:uint = 0;
+//		private static var _nbInitConst:uint = 0;
 
 		public function Terrain(nom:String, index:uint) 
 		{
-			if (_nbInitConst == NB_TYPE_TERRAIN) throw new Error("classe abtraite");
+//			if (_nbInitConst == NB_TYPE_TERRAIN) throw new Error("classe abtraite");
 			
 			this._nom = nom;
 			this._index = index;
-			Terrain._nbInitConst++;
+//			Terrain._nbInitConst++;
 		}
 		
 	}
