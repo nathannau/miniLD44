@@ -15,6 +15,7 @@ package ui
 		[Embed(source = "/../assets/sounds/miniLD44_03.mp3")]
 		protected static const MUSIC:Class;
 
+		public static var instance:Assets = new Assets();
 		
 		public static var texture:Texture;
 		public static var xml:XML;
@@ -22,6 +23,16 @@ package ui
 		
 		public static var music:Sound;
 		
+		public function Assets() {
+			// create atlas
+			texture = Texture.fromBitmap(new ATLAS_IMAGE());
+			xml = XML(new ATLAS_XML());
+			atlas = new TextureAtlas(texture, xml);
+			
+			music = new MUSIC();
+		}
+		
+		/*
 		public static function init():void
 		{
 			
@@ -32,7 +43,9 @@ package ui
 			
 			music = new MUSIC();
 			
-		}
+		}*/
+		
+		
 		
 		
 	}

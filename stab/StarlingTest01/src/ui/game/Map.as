@@ -60,6 +60,9 @@ package ui.game
 					var tile:Image = new Image(Assets.atlas.getTexture(name));
 					//tile.color = color;
 					
+					if (tx == 0 || tx == map.width - 1 || ty == 0 || ty == map.height - 1)
+						tile.color = 0xB0B0B0;
+					
 					//tile.touchable = false;
 					addChild(tile);
 					tile.x = tx * BASE_SIZE;

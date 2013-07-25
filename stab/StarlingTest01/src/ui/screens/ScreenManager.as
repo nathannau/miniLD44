@@ -37,7 +37,7 @@ package ui.screens
 			instance = this;
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
-			Assets.init();
+			//Assets.init();
 		}
 		
 		protected function onAddedToStage(e:Event):void {
