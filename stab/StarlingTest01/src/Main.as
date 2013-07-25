@@ -16,6 +16,8 @@ package
 		/** Instance de Main */
 		public static var instance: Main;
 		
+		public var player:vues.humain.Player; 
+		
 		// utilisé pour l'optimisation de culling
 		public static var stageWidth:uint;
 		public static var stageHeight:uint;
@@ -31,11 +33,10 @@ package
 			g.map = m;
 			
 			var iaPlayer:IPlayer = new vues.ia.Player();
-			var humanPlayer:IPlayer = new vues.humain.Player();
+			//var humanPlayer:IPlayer = new vues.humain.Player();
+			player = new vues.humain.Player();
 			
-			var array:Array = new Array(iaPlayer, humanPlayer);
-			
-			g.players = array;// [humanPlayer, iaPlayer];
+			g.players = new Array(player, iaPlayer);
 			
 			
 			

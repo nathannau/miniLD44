@@ -1,28 +1,26 @@
-package ui.screens 
+package ui.game 
 {
 	import controller.Game;
-	import feathers.controls.Button;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import starling.core.Starling;
-	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
-	import ui.Assets;
 	import ui.game.gameObjects.GameObject;
-	import ui.game.GameUI;
-	import ui.game.Map;
-	import vues.humain.Player;
-
-	public class GameScreen extends BaseScreen 
+	/**
+	 * ...
+	 * @author Stab
+	 */
+	public class GameArea extends Sprite
 	{
-		public var container:Sprite;
-		//public var gameUI:GameUI;
-		public var view:Player;
+		//private var _container:Sprite;
+		
+		private var _map:Map;
+		private var _objects: Vector.<GameObject>;
 		
 		public var selection:Vector.<GameObject>;
 		
@@ -32,7 +30,6 @@ package ui.screens
 		//scroll start point
 		private var _touchPos: Point;
 		
-		//touch start time
 		private var _touchActive:Boolean = false;
 		private var _touchMulti:Boolean = false;
 		private var _touchObject:GameObject = null;
@@ -41,94 +38,58 @@ package ui.screens
 		
 		private const TOUCH_HOLD_TIME:Number = 500;
 		
-		
-		
-		public function GameScreen() 
+		public function GameArea() 
 		{
-			super();
-			screenName = "GAME";
+			//_container = new Sprite();
+			//addChild(_container);
+			
+			_map = new Map();
+			addChild(_map);
+			
+			_objects = new Vector.<GameObject>();
+			
+			for (var i:uint = 0; i < 100; i++)
+			{
+				var obj:GameObject = new GameObject();
+				addChild(obj);
+				
+				obj.x = Math.random() * 60 * 54;
+				obj.y = Math.random() * 60 * 54;
+				
+				_objects.push(obj);
+			}
+			
 			
 			_touchesQuad = new Object();
 			
 			selection = new Vector.<GameObject>();
+			
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 		
-		
-		override protected function onInitialize(event:Event):void
-		{	
-			view = new Player();
-			addChild(view);
-			
-			
-			//map = new Map();
-			//addChild(map);
-			
-			//container = new Sprite();
-			//addChild(container);
-			
-			/*
-			var butPause:Button = new Button();
-			butPause.defaultIcon = new Image(Assets.atlas.getTexture("pause"));
-			butPause.nameList.add("smallButton");
-			addChild(butPause);
-			butPause.x = Main.stageWidth - butPause.width - 5;
-			butPause.y = 5;
-			butPause.addEventListener(Event.TRIGGERED, function(e:Event):void { ScreenManager.instance.showScreen(ScreenManager.instance.mainMenuScreen); } );
-			*/
-			
-			/*
-			var butPause: Image = new Image(Assets.atlas.getTexture("pause"));
-			butPause.x = Main.stageWidth - butPause.width - 5;
-			butPause.y = 5;
-			butPause.addEventListener(Event.TRIGGERED, function(e:Event):void { ScreenManager.instance.showScreen(ScreenManager.instance.mainMenuScreen); } );
-			addChild(butPause);*/
-		}
-		
-		private function initUI():void
+		public function getObjectsInRect(r:Rectangle):Vector.<GameObject>
 		{
-			//gameUI = new GameUI(Main.instance.game);
-			//container.addChild(gameUI);
-			
-			
-			
-			/*var quad:Quad = new Quad(stage.stageWidth, stage.stageHeight, 0x202020);
-			quad.alpha = 0;
-			addChild(quad);*/
-			
-			//container.addEventListener(TouchEvent.TOUCH, onTouch);
-			
-		}
-		
-		override public function onEnter():void
-		{
-			//if (view == null)
-			//	initUI();
-			//if (gameUI == null)
-			//	initUI();
+			var res:Vector.<GameObject> = new Vector.<GameObject>();
+			for (var i:uint = 0; i < _objects.length; i++)
+			{
+				var obj:GameObject = _objects[i];
+				if (r.x > obj.x + obj.width || r.x + r.width < obj.x || r.y > obj.y + obj.height || r.y + r.height < obj.y) continue;
 				
-			/*
-			if (!Game.current.isStarted)
-				Game.current.start();
-			else
-				Game.current.resume();
-			*/
+				res.push(obj);
+			}
+			return res;
 		}
 		
-		override public function onExit():void
+		protected function onEnterFrame(e:EnterFrameEvent):void
 		{
-			//Game.current.pause();
-		}
-		
-		/*override protected function onEnterFrame(e:EnterFrameEvent):void
-		{
-			view.update();
+			var delta:Number = e.passedTime;
 			
-		}*/
-		
-		/*
-		override protected function onEnterFrame(e:EnterFrameEvent):void
-		{
-			gameUI.update(e.passedTime);
+			for (var i:uint = 0; i < _objects.length; i++)
+			{
+				var obj:GameObject = _objects[i];
+				obj.update(delta);
+			}
 			
 			if (_touchActive && !_touchMoved && !_touchMulti) 
 			{
@@ -169,8 +130,8 @@ package ui.screens
 			switch(touch.phase)
 			{
 				case "began":
-					p = touch.getLocation(this);
-					_touchPos = new Point(p.x - gameUI.x, p.y - gameUI.y);
+					p = touch.getLocation(this.parent);
+					_touchPos = new Point(p.x - x, p.y - y);
 					
 					_touchObject = null;
 					if(touch.target.parent is GameObject)
@@ -183,10 +144,10 @@ package ui.screens
 					break;
 					
 				case "moved":
-					p = touch.getLocation(this);
+					p = touch.getLocation(this.parent);
 					
-					gameUI.x = Math.min(0, Math.max(-Map.BASE_SIZE * Game.current.map.width + stage.stageWidth, p.x - _touchPos.x));
-					gameUI.y = Math.min(0, Math.max( -Map.BASE_SIZE * Game.current.map.height + stage.stageHeight, p.y - _touchPos.y));
+					x = Math.min(0, Math.max(-Map.BASE_SIZE * Game.current.map.width + stage.stageWidth, p.x - _touchPos.x));
+					y = Math.min(0, Math.max( -Map.BASE_SIZE * Game.current.map.height + stage.stageHeight, p.y - _touchPos.y));
 					
 					_touchMoved = true;
 					break;
@@ -216,8 +177,8 @@ package ui.screens
 				
 				if (touches[0].phase == "ended" || touches[1].phase == "ended")
 				{
-					var posA:Point = touches[0].getLocation(gameUI);
-					var posB:Point = touches[1].getLocation(gameUI);
+					var posA:Point = touches[0].getLocation(this);
+					var posB:Point = touches[1].getLocation(this);
 					
 					var minX:Number = Math.min(posA.x, posB.x);
 					var maxX:Number = Math.max(posA.x, posB.x);
@@ -285,7 +246,7 @@ package ui.screens
 			{
 				selection[i].setSelected(false);
 			}
-			selection = gameUI.getObjectsInRect(r);
+			selection = getObjectsInRect(r);
 			for (i = 0; i < selection.length; i++ )
 			{
 				selection[i].setSelected(true);
@@ -332,7 +293,6 @@ package ui.screens
 				}
 			}
 		}
-		*/
 		
 	}
 
