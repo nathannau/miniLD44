@@ -59,7 +59,7 @@ package controller
 		public function set players(values:Array):void
 		{
 			for (var i:uint; i < values.length; i++)
-				if (!(values is IPlayer)) throw new ArgumentError("Un tableau de IPlayer est attendu");
+				if (!(values[i] is IPlayer)) throw new ArgumentError("Un tableau de IPlayer est attendu");
 			_players = values;
 		}
 		private var _players:Array = null;
@@ -97,7 +97,7 @@ package controller
 			
 			_playersInfos = new Array(_players.length);
 			
-			var startPositions:Array = _map.getStartPositions();
+			var startPositions:Array = _map.startPositions;
 			
 			for (var i:int = 0; i < _players.length; i++)
 			{
@@ -261,7 +261,10 @@ package controller
 		 * @return	true si la transaction à réussi.
 		 */
 		public function buyUpgrade(player:IPlayer, upgrade:String):Boolean
-		{ if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("fonction non implémentée : priorité basse"); }
+		{ 
+			if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("fonction non implémentée : priorité basse"); 
+			return false;
+		}
 		
 		/**
 		 * Achete un element.
@@ -272,7 +275,10 @@ package controller
 		 * @return	true si la transaction à réussi.
 		 */
 		public function buyElement(player:IPlayer, type:TypeElement, from:*):Boolean
-		{ if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("fonction non implémentée : priorité basse"); }
+		{ 
+			if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("fonction non implémentée : priorité basse"); 
+			return false;
+		}
 		
 	}
 

@@ -100,7 +100,8 @@ package ui.screens
 		 */
 		override public function onEnter():void
 		{	
-			if ( Main.instance.game == null) {
+			//if ( Main.instance.game == null) {
+			if(Game.current == null) {
 				_gameButton.label = "New Game";
 			}
 			else {
@@ -127,8 +128,8 @@ package ui.screens
 		 */
 		private function gameButtonTriggered(event:Event):void
 		{
-			if(Main.instance.game == null)
-				Main.instance.game = new Game();
+			//if(Game.current == null)
+			//	Main.instance.game = new Game();
 				
 			ScreenManager.instance.showScreen(ScreenManager.instance.storyScreen);
 		}

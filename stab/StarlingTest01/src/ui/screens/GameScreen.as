@@ -179,8 +179,8 @@ package ui.screens
 				case "moved":
 					p = touch.getLocation(this);
 					
-					gameUI.x = Math.min(0, Math.max(-Map.BASE_SIZE * 60 + stage.stageWidth, p.x - _touchPos.x));
-					gameUI.y = Math.min(0, Math.max( -Map.BASE_SIZE * 60 + stage.stageHeight, p.y - _touchPos.y));
+					gameUI.x = Math.min(0, Math.max(-Map.BASE_SIZE * Game.current.map.width + stage.stageWidth, p.x - _touchPos.x));
+					gameUI.y = Math.min(0, Math.max( -Map.BASE_SIZE * Game.current.map.height + stage.stageHeight, p.y - _touchPos.y));
 					
 					_touchMoved = true;
 					break;
