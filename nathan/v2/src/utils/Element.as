@@ -30,6 +30,18 @@ package utils
 		 * Type de l'unité
 		 */
 		public function get type():TypeElement { throw new Error("Fonction abstraite"); /*return _type;*/ }
+		/**
+		 * Si l'element peut se déplacer
+		 */
+		public function get canMove():Boolean { throw new Error("Fonction abstraite"); /*return _type;*/ }
+		/**
+		 * Si l'element peut attaquer
+		 */
+		public function get canAttack():Boolean { throw new Error("Fonction abstraite"); /*return _type;*/ }
+		
+		public function get rayon():Number { throw new Error("Fonction abstraite"); /*return _type;*/ }
+		
+		
 		//private var _type:TypeElement;
 		/**
 		 * Niveau de l'unité
@@ -63,6 +75,23 @@ package utils
 		public function get available():Boolean { return _available; }
 		public function set available(value:Boolean):void { _available = value; }
 		private var _available:Boolean;
+
+		/** 
+		 * A attaqué
+		 */
+		public function get hasAttacked():Boolean { return _hasAttacked; }
+		public function set hasAttacked(value:Boolean):void 
+		{ 
+			_hasAttacked = value; 
+			if (value) animation = Animation.COMBAT;
+		}
+		private var _hasAttacked:Boolean;
+		/**
+		 * Nombre de cycle depuis la derniere attaque;
+		 */
+		public function get lastAttack():uint { return _lastAttack; }
+		public function set lastAttack(value:uint):void { _lastAttack = value; }
+		private var _lastAttack:uint=0;
 		
 		public function Element() //player:IPlayer, type:TypeElement) 
 		{
@@ -77,7 +106,7 @@ package utils
 		
 		public function update():void
 		{
-			
+			if (canAttack) _lastAttack++;
 		}
 		
 	}
