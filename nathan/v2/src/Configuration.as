@@ -189,6 +189,10 @@ package
 			/* Unite */ [2/(1*FRAMERATE), 3/(2*FRAMERATE), 3/(1*FRAMERATE), 5/(1*FRAMERATE)]
 		]
 		
+		/**
+		 * Carre de la distance minimal entre deux batiment
+		 */
+		public static const DISTANCE_BETWEEN_BATIMENTS:uint = 9;
 		
 		///// RAFINAGE
 		/**

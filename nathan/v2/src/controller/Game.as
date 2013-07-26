@@ -134,8 +134,6 @@ package controller
 				_elements.push(centreForage);
 			}
 			
-			
-			
 			_isStarted = true;
 		}
 		/**
@@ -291,16 +289,26 @@ package controller
 		{
 			if (!e.canMove || e.hasAttacked || e.path.length == 0) return;
 			var dx:Number = e.path[0].x - e.x, dy:Number = e.path[0].y - e.y;
+			var d2:Number = dx * dx + dy * dy;
 			var r:Number = Configuration.DISTANCE_VISION_UNITE / (dx * dx + dy * dy);
-			var obstacle:Array = getElementsV2( { contain: { x:dx * r + e.x, y:dy * r + e.y }} );
+			var filter:Object = { x:dx * r + e.x, y:dy * r + e.y };
+			var obstacle:Array = getElementsV2( { contain: filter } );
 			
 			if (obstacle.length > 0)
 			{
+				var o:Element = obstacle[0];
 				// TODO : to complete...
+				var d:Number = Math.sqrt(d2);
+				var cx:Number = dy * o.rayon / d;
+				var cy:Number = -dx * o.rayon / d;
+				if ((o.x + cx - filter.x) * (o.x + cx - filter.x) + (o.y + cy - filter.y) * (o.y + cy - filter.y) <
+					(o.x - cx - filter.x) * (o.x - cx - filter.x) + (o.y - cy - filter.y) * (o.y - cy - filter.y))
+					e.path.unshift( { x:o.x + cx, y:o.y + cy } );
+				else
+					e.path.unshift( { x:o.x - cx, y:o.y - cy } );
 				
-				
-				
-				
+				move(e);
+				return;
 			}
 			
 			var vitesse:Number;
@@ -309,9 +317,19 @@ package controller
 			else
 				vitesse = Configuration.ELEMENTS_VITESSE[1][e.level];
 				
-			r = vitesse * vitesse / (dx * dx + dy * dy);
-			e.x += dx * r;
-			e.y += dy * r; 
+			var v2:Number = vitesse * vitesse;
+			if (v2 > d2)
+			{
+				e.x = e.path[0].x;
+				e.y = e.path[0].y;
+				e.path.shift();
+			}
+			else
+			{
+				r = v2 / d2;
+				e.x += dx * r;
+				e.y += dy * r;
+			}
 		}
 		
 		
@@ -523,6 +541,7 @@ package controller
 				case TypeElement.RELAIS:
 					if (getQualifiedClassName(from) != "Object" || from.x == undefined || from == undefined)
 						throw new Error("Destination incoherente"); // return false;
+					if (!canBuildBatimentAt(from.x, from.y)) return false;
 					var bat:Element = new type.className(player);
 					bat.x = from.x;
 					bat.y = from.y;
@@ -580,7 +599,12 @@ package controller
 			return true;
 		}
 		
-		
+		public function canBuildBatimentAt(x:uint, y:uint):Boolean
+		{
+			var es:Array = getElementsV2( { cercle: { x:x, y:y, r2:Configuration.DISTANCE_BETWEEN_BATIMENTS, c2: 0 } } );
+			
+			return es.length==0;
+		}
 		
 		
 		
