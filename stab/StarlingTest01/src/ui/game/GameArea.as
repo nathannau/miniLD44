@@ -15,6 +15,7 @@ package ui.game
 	import utils.ElementCentreDeForage;
 	import utils.Mine;
 	import utils.TypeElement;
+	import vues.humain.Player;
 	import vues.IPlayer;
 	/**
 	 * ...
@@ -23,7 +24,7 @@ package ui.game
 	public class GameArea extends Sprite
 	{
 		//private var _container:Sprite;
-		private var _player:IPlayer;
+		private var _player:Player;
 		
 		private var _map:MapUI;
 		private var _objects: Vector.<GameObject>;
@@ -44,7 +45,7 @@ package ui.game
 		
 		private const TOUCH_HOLD_TIME:Number = 500;
 		
-		public function GameArea(player:IPlayer) 
+		public function GameArea(player:Player) 
 		{			
 			_player = player;
 			
@@ -85,8 +86,9 @@ package ui.game
 				
 				_objects.push(obj);
 				
-				
 			}
+			
+			gotoMine();
 		}
 		
 		public function getObjectsInRect(r:Rectangle):Vector.<GameObject>
@@ -102,18 +104,24 @@ package ui.game
 			return res;
 		}
 		
+		public function centerXY(cx:Number, cy:Number):void 
+		{
+			trace(cx, cy);
+			
+			cx -= Main.stageWidth * 0.5;
+			cy -= Main.stageHeight * 0.5;
+			
+			x = Math.min(0, Math.max(-MapUI.BASE_SIZE * Game.current.map.width + stage.stageWidth, -cx));
+			y = Math.min(0, Math.max( -MapUI.BASE_SIZE * Game.current.map.height + stage.stageHeight, -cy));
+			
+			trace(x, y);
+		}
+		
 		
 		public function gotoMine():void
 		{
-			//var mine:Element = Game.current.getElements(_player, [TypeElement.CENTRE_DE_FORAGE])[0]
-			//var mine:Element = Game.current.getElementsV2({player: _player, types: [TypeElement.CENTRE_DE_FORAGE]})[0]
-			//trace(mine);
-			
-			var a:Array = new Array();
-			
-			trace(_player);
-			a = Game.current.getElementsV2( { player:_player, types: [TypeElement.CENTRE_DE_FORAGE] });
-			trace(a, a.length);
+			var mine:Element = Game.current.getElementsV2( { player:_player, types: [TypeElement.CENTRE_DE_FORAGE] })[0];
+			centerXY(mine.x * MapUI.BASE_SIZE, mine.y * MapUI.BASE_SIZE);
 			
 			/*
 			trace(Game.current.getElements(_player, [TypeElement.CENTRE_DE_FORAGE]));

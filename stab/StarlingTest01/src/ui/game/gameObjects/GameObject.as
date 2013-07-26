@@ -1,9 +1,12 @@
 package ui.game.gameObjects 
 {
 	import flash.geom.Point;
+	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import ui.Assets;
 	import ui.CullingSprite;
 	import ui.game.MapUI;
 	import utils.*;
@@ -14,6 +17,8 @@ package ui.game.gameObjects
 		
 		public var sizeX:int = 1;
 		public var sizeY:int = 1;
+		
+		//protected var gfxName:String = "melee";
 		
 		private var _quad:Quad;
 		
@@ -57,17 +62,17 @@ package ui.game.gameObjects
 			
 		}
 		
-		private function onAddedToStage(e:Event):void 
+		public function onAddedToStage(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
-			trace(sizeX, sizeY);
-			
-			_quad = new Quad(sizeX * MapUI.BASE_SIZE, sizeY * MapUI.BASE_SIZE, 0xFF8020);
-			//quad.pivotX = quad.width * 0.5;
-			//quad.pivotY = quad.height;
-			
+			//trace(sizeX, sizeY);
+	
+			_quad = new Quad(sizeX * MapUI.BASE_SIZE, sizeY * MapUI.BASE_SIZE, 0xFF8020);			
 			addChild(_quad);
+			
+			//var mc:MovieClip = new MovieClip(Assets.atlas.getTextures(gfxName));
+			//addChild(mc);
 		}
 		
 		public function setSelected(sel:Boolean):void

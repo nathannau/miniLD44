@@ -8,6 +8,7 @@ package vues.humain
 	import starling.events.Event;
 	import ui.Assets;
 	import ui.game.GameArea;
+	import ui.HUDRessource;
 	import ui.screens.ScreenManager;
 	import ui.SmallButton;
 	import vues.IPlayer;
@@ -24,6 +25,8 @@ package vues.humain
 		private var _isInit:Boolean = false;
 		
 		private var _gameAera:GameArea;
+		
+		private var _hudRessource:HUDRessource;
 		
 		public function Player() 
 		{			
@@ -45,6 +48,14 @@ package vues.humain
 			var gotoMineButton:Button = addChild(new SmallButton("pause", onGotoMineTriggered)) as Button;
 			gotoMineButton.x = 5;
 			gotoMineButton.y = 5;
+			
+			_hudRessource = new HUDRessource();
+			addChild(_hudRessource);
+			
+			_hudRessource.y = 5;
+			_hudRessource.x = (Main.stageWidth - _hudRessource.width) * 0.5;
+			
+			
 			
 			/*
 			var pauseButton:Button = new Button();	

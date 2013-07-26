@@ -18,6 +18,8 @@ package controller
 	import utils.TypeElement;
 	import utils.Upgrades;
 	import vues.IPlayer;
+	import vues.humain.Player;
+	
 	/**
 	 * Noyau du jeu
 	 * @author Nathan
@@ -311,7 +313,13 @@ package controller
 			updateVisiblity(nextAvaible);
 		}
 		
-		
+		public function getHumainPlayer():vues.humain.Player
+		{
+			for (var i:uint; i < _players.length; i++)
+				if (_players[i] is vues.humain.Player) return _players[i];
+			return null;
+		}
+  
 		/**
 		 * Fournit la liste des elements présents dans une zone
 		 * @param	filters Filtre des l'éléments renvoyés :
@@ -364,6 +372,10 @@ package controller
 					(e.y - this.cercle.y) * (e.y - this.cercle.y) -
 					(e.rayon*e.rayon + this.c2) // La formule est biaisé mais doit fonctionner...
 					> this.cercle.r2) return false;
+					
+				/*if (this.player != undefined) {
+					trace(this.player, e.player, this.players == e.player);
+				}*/
 				if (this.player != undefined && ((e.player != this.player) != this.otherPlayer) ) return false;
 				
 				if (this.types.length == 0) return true;

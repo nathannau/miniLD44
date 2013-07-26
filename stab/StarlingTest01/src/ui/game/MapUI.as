@@ -19,17 +19,12 @@ package ui.game
 		public function MapUI() 
 		{
 			var map:Map = Game.current.map;
-			trace(map.cases);
 			
 			for (var tx:int = 0; tx < map.width; tx++)
 			{
 				for (var ty:int = 0; ty < map.height; ty++)
 				{
 					var c:uint = map.getCase(tx, ty);
-					
-					if (c != 0)
-						trace(c);
-					
 					
 					var name:String;
 					switch(c) {
