@@ -165,6 +165,8 @@ package controller
 		{
 			if (!isStarted || isPaused) return;
 			
+			var toto:Array = getElements(_players[0], TypeElement.CENTRE_DE_FORAGE);
+			
 			var i:uint;
 			for (i = 0; i < _playersInfos.length; i++)
 				(_playersInfos[i].mine as Mine).update();
@@ -324,7 +326,8 @@ package controller
 		public function getElements(... filters):Array
 		{
 			if (filters.length == 0) return _elements;
-			var f:Object = { rectangle:null, player:null, types:[], cercle:null, otherPlayer:false };
+			//var f:Object = { rectangle:null, player:null, types:[], cercle:null, otherPlayer:false };
+			var f:Object = { /*rectangle:null, player:null,*/ types:[], /*cercle:null, */otherPlayer:false };
 			for (var i:uint = 0; i < filters.length; i++)
 			{
 				if (filters[i] is Rectangle)
@@ -357,9 +360,9 @@ package controller
 			if (filters.otherPlayer == undefined) filters.otherPlayer = false;
 			var callback:Function = function getElementsCallback(e:Element, index:int, array:Array):Boolean
 			{
-				if (this.rectangle != null && (e.x<this.rectangle.minX || e.x>this.rectangle.maxX || 
+				if (this.rectangle != undefined && (e.x<this.rectangle.minX || e.x>this.rectangle.maxX || 
 					e.y<this.rectangle.minY || e.y>this.rectangle.maxY)) return false;
-				if (this.cercle != null && 
+				if (this.cercle != undefined && 
 					(e.x - this.cercle.x) * (e.x - this.cercle.x) + 
 					(e.y - this.cercle.y) * (e.y - this.cercle.y) -
 					(e.rayon*e.rayon + this.c2) // La formule est biaisé mais doit fonctionner...
@@ -367,9 +370,8 @@ package controller
 				if (this.player != undefined && ((e.player != this.player) != this.otherPlayer) ) return false;
 				
 				if (this.types.length == 0) return true;
-				for (var i:uint = 0; i < this.types; i++)
+				for (var i:uint = 0; i < this.types.length; i++)
 					if (e.type == this.types[i]) return true;
-				
 				return false;
 			}
 			
@@ -529,6 +531,7 @@ package controller
 		{
 			
 			
+			return true;
 		}
 		
 		
