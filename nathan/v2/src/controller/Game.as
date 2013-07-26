@@ -174,7 +174,7 @@ package controller
 		{
 			if (!isStarted || isPaused) return;
 			
-			var toto:Array = getElements(_players[0], TypeElement.CENTRE_DE_FORAGE);
+			//var toto:Array = getElements(_players[0], TypeElement.CENTRE_DE_FORAGE);
 			
 			var i:uint;
 			for (i = 0; i < _playersInfos.length; i++)
@@ -229,8 +229,6 @@ package controller
 			return true;
 		}
 
-//		private static var 
-		
 		private function getBonusAttack(att:Element, def:Element):Number
 		{
 			var bonus:Number = 1;
@@ -288,6 +286,7 @@ package controller
 		private function move(e:Element):void
 		{
 			if (!e.canMove || e.hasAttacked || e.path.length == 0) return;
+			if (e.type == TypeElement.CENTRE_DE_FORAGE && !ElementCentreDeForage(e).isUp) return;
 			var dx:Number = e.path[0].x - e.x, dy:Number = e.path[0].y - e.y;
 			var d2:Number = dx * dx + dy * dy;
 			var r:Number = Configuration.DISTANCE_VISION_UNITE / (dx * dx + dy * dy);

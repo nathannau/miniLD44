@@ -155,6 +155,7 @@ package
 		 * Distance de vision des unités (Carré du rayon en careau)
 		 */
 		public static const DISTANCE_VISION_UNITE:uint = 12;
+		public static const DISTANCE_VISION_UNITE_REAL:uint = Math.sqrt(DISTANCE_VISION_UNITE);
 		/**
 		 * Distance à laquelle une unité va se foutre sur la gueule
 		 */
@@ -179,7 +180,19 @@ package
 		 * Degats infligés par niveau
 		 */
 		public static const DEGATS_BY_LEVEL:Array = [2,4,8];
-
+		
+		/**
+		 * Vitesse de déplacement des unités (case/cycle)
+		 */
+		public static const ELEMENTS_VITESSE:Array = [
+			/* Batiment */ [1 / (2 * FRAMERATE)],
+			/* Unite */ [2/(1*FRAMERATE), 3/(2*FRAMERATE), 3/(1*FRAMERATE), 5/(1*FRAMERATE)]
+		]
+		
+		/**
+		 * Carre de la distance minimal entre deux batiment
+		 */
+		public static const DISTANCE_BETWEEN_BATIMENTS:uint = 9;
 		
 		///// RAFINAGE
 		/**
@@ -317,6 +330,8 @@ package
 		 */
 		public static const MINE_NB_CYCLE_BY_FORAGE_LEVEL:Array = [1, 2, 4, 8];
 		
+		public static const MINE_UP_TIME:uint = 90;
+		public static const MINE_DOWN_TIME:uint = 90;
 		
 		///// Relais
 		

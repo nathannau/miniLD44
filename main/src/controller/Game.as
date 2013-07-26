@@ -10,6 +10,7 @@ package controller
 	import utils.Animation;
 	import utils.Element;
 	import utils.ElementBatiment;
+	import utils.ElementCentreDeForage;
 	import utils.ElementUnite;
 	import utils.IElementVision;
 	import utils.Map;
@@ -17,6 +18,8 @@ package controller
 	import utils.RessourcesSet;
 	import utils.TypeElement;
 	import utils.Upgrades;
+	import vues.humain.Player;
+	import vues.ia.Player;
 	import vues.IPlayer;
 	/**
 	 * Noyau du jeu
@@ -66,6 +69,12 @@ package controller
 				if (!(values[i] is IPlayer)) throw new ArgumentError("Un tableau de IPlayer est attendu");
 			_players = values;
 		}
+		public function getHumainPlayer():vues.humain.Player
+		{
+			for (var i:uint; i < _players.length; i++)
+				if (_players[i] is vues.humain.Player) return _players[i]
+			return null
+		}
 		private var _players:Array = null;
 		private var _playersInfos:Array;
 		
@@ -73,6 +82,8 @@ package controller
 		{ return _playersInfos[player.index].upgrades as Upgrades; }
 		public function getRessources(player: IPlayer):RessourcesSet
 		{ return _playersInfos[player.index].ressources as RessourcesSet; }
+		public function getMine(player: IPlayer):Mine
+		{ return _playersInfos[player.index].mine as Mine; }
 
 				
 		private var idTimer:uint;
@@ -123,8 +134,6 @@ package controller
 				_elements.push(centreForage);
 			}
 			
-			
-			
 			_isStarted = true;
 		}
 		/**
@@ -164,6 +173,8 @@ package controller
 		protected function update():void
 		{
 			if (!isStarted || isPaused) return;
+			
+			//var toto:Array = getElements(_players[0], TypeElement.CENTRE_DE_FORAGE);
 			
 			var i:uint;
 			for (i = 0; i < _playersInfos.length; i++)
@@ -218,8 +229,6 @@ package controller
 			return true;
 		}
 
-//		private static var 
-		
 		private function getBonusAttack(att:Element, def:Element):Number
 		{
 			var bonus:Number = 1;
@@ -276,8 +285,50 @@ package controller
 		 */
 		private function move(e:Element):void
 		{
-			if (!e.canMove || e.hasAttacked) return;
+			if (!e.canMove || e.hasAttacked || e.path.length == 0) return;
+			if (e.type == TypeElement.CENTRE_DE_FORAGE && !ElementCentreDeForage(e).isUp) return;
+			var dx:Number = e.path[0].x - e.x, dy:Number = e.path[0].y - e.y;
+			var d2:Number = dx * dx + dy * dy;
+			var r:Number = Configuration.DISTANCE_VISION_UNITE / (dx * dx + dy * dy);
+			var filter:Object = { x:dx * r + e.x, y:dy * r + e.y };
+			var obstacle:Array = getElementsV2( { contain: filter } );
 			
+			if (obstacle.length > 0)
+			{
+				var o:Element = obstacle[0];
+				// TODO : to complete...
+				var d:Number = Math.sqrt(d2);
+				var cx:Number = dy * o.rayon / d;
+				var cy:Number = -dx * o.rayon / d;
+				if ((o.x + cx - filter.x) * (o.x + cx - filter.x) + (o.y + cy - filter.y) * (o.y + cy - filter.y) <
+					(o.x - cx - filter.x) * (o.x - cx - filter.x) + (o.y - cy - filter.y) * (o.y - cy - filter.y))
+					e.path.unshift( { x:o.x + cx, y:o.y + cy } );
+				else
+					e.path.unshift( { x:o.x - cx, y:o.y - cy } );
+				
+				move(e);
+				return;
+			}
+			
+			var vitesse:Number;
+			if (e.type == TypeElement.CENTRE_DE_FORAGE)
+				vitesse = Configuration.ELEMENTS_VITESSE[0][0];
+			else
+				vitesse = Configuration.ELEMENTS_VITESSE[1][e.level];
+				
+			var v2:Number = vitesse * vitesse;
+			if (v2 > d2)
+			{
+				e.x = e.path[0].x;
+				e.y = e.path[0].y;
+				e.path.shift();
+			}
+			else
+			{
+				r = v2 / d2;
+				e.x += dx * r;
+				e.y += dy * r;
+			}
 		}
 		
 		
@@ -324,7 +375,8 @@ package controller
 		public function getElements(... filters):Array
 		{
 			if (filters.length == 0) return _elements;
-			var f:Object = { rectangle:null, player:null, types:[], cercle:null, otherPlayer:false };
+			//var f:Object = { rectangle:null, player:null, types:[], cercle:null, otherPlayer:false };
+			var f:Object = { /*rectangle:null, player:null,*/ types:[], /*cercle:null, */otherPlayer:false };
 			for (var i:uint = 0; i < filters.length; i++)
 			{
 				if (filters[i] is Rectangle)
@@ -348,18 +400,23 @@ package controller
 		/**
 		 * Fournit la liste des elements présents dans une zone
 		 * @param	filters Filtre des l'éléments renvoyés :
-		 * { rectangle: { minX:uint, minY:uint, maxX:uint, maxY:uint }, player:IPlayer, types:TypeElement[], cercle:{x:uint, y:uint, r2:uint, c2:uint}, otherPlayer:Boolean }
+		 * { rectangle: { minX:uint, minY:uint, maxX:uint, maxY:uint }, player:IPlayer, types:TypeElement[], cercle:{x:uint, y:uint, r2:uint, c2:uint}, contain: {x, y}, otherPlayer:Boolean }
 		 * @return Element[]
 		 */
 		public function getElementsV2(filters:Object, elements:Array = null):Array
 		{
+			var e:Element;
 			if (elements == null) elements = _elements;
 			if (filters.otherPlayer == undefined) filters.otherPlayer = false;
 			var callback:Function = function getElementsCallback(e:Element, index:int, array:Array):Boolean
 			{
-				if (this.rectangle != null && (e.x<this.rectangle.minX || e.x>this.rectangle.maxX || 
+				if (this.rectangle != undefined && (e.x<this.rectangle.minX || e.x>this.rectangle.maxX || 
 					e.y<this.rectangle.minY || e.y>this.rectangle.maxY)) return false;
-				if (this.cercle != null && 
+				if (this.contain != undefined &&
+					(e.x - this.contain.x) * (e.x - this.contain.x) +
+					(e.y - this.contain.y) * (e.y - this.contain.y) > 
+					e.rayon * e.rayon) return false;
+				if (this.cercle != undefined && 
 					(e.x - this.cercle.x) * (e.x - this.cercle.x) + 
 					(e.y - this.cercle.y) * (e.y - this.cercle.y) -
 					(e.rayon*e.rayon + this.c2) // La formule est biaisé mais doit fonctionner...
@@ -367,9 +424,8 @@ package controller
 				if (this.player != undefined && ((e.player != this.player) != this.otherPlayer) ) return false;
 				
 				if (this.types.length == 0) return true;
-				for (var i:uint = 0; i < this.types; i++)
+				for (var i:uint = 0; i < this.types.length; i++)
 					if (e.type == this.types[i]) return true;
-				
 				return false;
 			}
 			
@@ -484,6 +540,7 @@ package controller
 				case TypeElement.RELAIS:
 					if (getQualifiedClassName(from) != "Object" || from.x == undefined || from == undefined)
 						throw new Error("Destination incoherente"); // return false;
+					if (!canBuildBatimentAt(from.x, from.y)) return false;
 					var bat:Element = new type.className(player);
 					bat.x = from.x;
 					bat.y = from.y;
@@ -527,11 +584,26 @@ package controller
 		 */
 		public function moveElement(e:Element, x:uint, y:uint):Boolean
 		{
+			if (!e.canMove) return false;
+			while (e.path.length > 0) e.path.pop();
 			
-			
+			e.path.push( { x:x, y:y } );
+			if (e.type == TypeElement.CENTRE_DE_FORAGE)
+			{
+				if (ElementCentreDeForage(e).isDown) 
+					ElementCentreDeForage(e).up();
+			}
+			else
+				e.animation = Animation.MOUVEMENT;
+			return true;
 		}
 		
-		
+		public function canBuildBatimentAt(x:uint, y:uint):Boolean
+		{
+			var es:Array = getElementsV2( { cercle: { x:x, y:y, r2:Configuration.DISTANCE_BETWEEN_BATIMENTS, c2: 0 } } );
+			
+			return es.length==0;
+		}
 		
 		
 		
