@@ -11,6 +11,11 @@ package ui.game
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import ui.game.gameObjects.GameObject;
+	import utils.Element;
+	import utils.ElementCentreDeForage;
+	import utils.Mine;
+	import utils.TypeElement;
+	import vues.IPlayer;
 	/**
 	 * ...
 	 * @author Stab
@@ -18,8 +23,9 @@ package ui.game
 	public class GameArea extends Sprite
 	{
 		//private var _container:Sprite;
+		private var _player:IPlayer;
 		
-		private var _map:Map;
+		private var _map:MapUI;
 		private var _objects: Vector.<GameObject>;
 		
 		public var selection:Vector.<GameObject>;
@@ -38,34 +44,49 @@ package ui.game
 		
 		private const TOUCH_HOLD_TIME:Number = 500;
 		
-		public function GameArea() 
-		{
-			//_container = new Sprite();
-			//addChild(_container);
+		public function GameArea(player:IPlayer) 
+		{			
+			_player = player;
 			
-			_map = new Map();
+			_map = new MapUI();
 			addChild(_map);
 			
 			_objects = new Vector.<GameObject>();
 			
-			for (var i:uint = 0; i < 100; i++)
-			{
-				var obj:GameObject = new GameObject();
-				addChild(obj);
-				
-				obj.x = Math.random() * 60 * 54;
-				obj.y = Math.random() * 60 * 54;
-				
-				_objects.push(obj);
-			}
-			
-			
+
+			//
 			_touchesQuad = new Object();
 			
 			selection = new Vector.<GameObject>();
 			
+			//events
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			addEventListener(TouchEvent.TOUCH, onTouch);
+		}
+		
+		public function onStart():void
+		{
+			var i:uint;
+			
+			var elements:Array = Game.current.getElements();
+			for (i = 0; i < elements.length; i++)
+			{
+				var element:Element = elements[i];
+				//trace(element.type.className == ElementCentreDeForage);
+				
+				var cls:Class = GameObject.getGameObjectClass(element.type.className);
+				trace(cls)
+				
+				var obj:GameObject = new cls(element);//new GameObject(element);
+				addChild(obj);
+				
+				obj.x = element.x * MapUI.BASE_SIZE;
+				obj.y = element.y * MapUI.BASE_SIZE;
+				
+				_objects.push(obj);
+				
+				
+			}
 		}
 		
 		public function getObjectsInRect(r:Rectangle):Vector.<GameObject>
@@ -81,6 +102,23 @@ package ui.game
 			return res;
 		}
 		
+		
+		public function gotoMine():void
+		{
+			var mine:Element = Game.current.getElements(_player, [TypeElement.CENTRE_DE_FORAGE])[0]
+			trace(mine);
+			
+			/*
+			trace(Game.current.getElements(_player, [TypeElement.CENTRE_DE_FORAGE]));
+			trace(Game.current.getElements(TypeElement.CENTRE_DE_FORAGE));
+			
+			var a:Array = Game.current.getElements(TypeElement.CENTRE_DE_FORAGE);
+			trace(a);
+			
+			trace(Game.current.getElements());*/
+		}
+		
+		//==================================================================================================
 		protected function onEnterFrame(e:EnterFrameEvent):void
 		{
 			var delta:Number = e.passedTime;
@@ -101,6 +139,10 @@ package ui.game
 			}
 		}
 		
+		
+		
+		//==================================================================================================
+		//TOUCH FUNCTIONS
 		protected function onTouch(e:TouchEvent):void
 		{
 			//trace(e);
@@ -146,8 +188,8 @@ package ui.game
 				case "moved":
 					p = touch.getLocation(this.parent);
 					
-					x = Math.min(0, Math.max(-Map.BASE_SIZE * Game.current.map.width + stage.stageWidth, p.x - _touchPos.x));
-					y = Math.min(0, Math.max( -Map.BASE_SIZE * Game.current.map.height + stage.stageHeight, p.y - _touchPos.y));
+					x = Math.min(0, Math.max(-MapUI.BASE_SIZE * Game.current.map.width + stage.stageWidth, p.x - _touchPos.x));
+					y = Math.min(0, Math.max( -MapUI.BASE_SIZE * Game.current.map.height + stage.stageHeight, p.y - _touchPos.y));
 					
 					_touchMoved = true;
 					break;

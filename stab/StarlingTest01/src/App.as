@@ -25,7 +25,7 @@ package {
 			_starling.simulateMultitouch = true;
 			
 			stage.addEventListener(ResizeEvent.RESIZE, resizeStage);
-			stage.addEventListener(Event.DEACTIVATE, deactivateHandler);
+			//stage.addEventListener(Event.DEACTIVATE, deactivateHandler);
 			
 			//evite la mise en veille auto
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;

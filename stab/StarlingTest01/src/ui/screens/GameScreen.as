@@ -15,7 +15,7 @@ package ui.screens
 	import ui.Assets;
 	import ui.game.gameObjects.GameObject;
 	import ui.game.GameUI;
-	import ui.game.Map;
+	import ui.game.MapUI;
 	import vues.humain.Player;
 
 	public class GameScreen extends BaseScreen 
@@ -57,8 +57,7 @@ package ui.screens
 		override protected function onInitialize(event:Event):void
 		{	
 			view = new Player();
-			addChild(view);
-			
+			addChild(view);			
 			
 			//map = new Map();
 			//addChild(map);

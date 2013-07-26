@@ -10,7 +10,7 @@ package utils
 		public function ElementUnite() 
 		{
 			if (getQualifiedClassName(this)=="utils::ElementUnite")
-			throw new Error("Fonction abstraite"); 
+				throw new Error("Fonction abstraite"); 
 		}
 		
 		public function get distanceVision():uint

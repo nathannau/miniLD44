@@ -9,16 +9,16 @@ package ui.game
 	import utils.Map;
 
 	
-	public class Map extends Sprite 
+	public class MapUI extends Sprite 
 	{
 		public static const BASE_SIZE:int = 54;
 		
 		//public static const MAP_SIZE_X:int = 60;
 		//public static const MAP_SIZE_Y:int = 60;
 		
-		public function Map() 
+		public function MapUI() 
 		{
-			var map:utils.Map = Game.current.map;
+			var map:Map = Game.current.map;
 			trace(map.cases);
 			
 			for (var tx:int = 0; tx < map.width; tx++)

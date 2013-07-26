@@ -3,11 +3,18 @@ package ui.game.gameObjects
 	import flash.geom.Point;
 	import starling.display.Quad;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import ui.CullingSprite;
-	import ui.game.Map;
+	import ui.game.MapUI;
+	import utils.*;
 	
 	public class GameObject extends Sprite//CullingSprite 
 	{		
+		private var _element:Element;
+		
+		public var sizeX:int = 1;
+		public var sizeY:int = 1;
+		
 		private var _quad:Quad;
 		
 		private var _selected:Boolean = false;
@@ -16,9 +23,47 @@ package ui.game.gameObjects
 		private var _moveTo:Point;
 		private var _moveToObject:GameObject;
 		
-		public function GameObject() 
+		public static function getGameObjectClass(e:Class):Class {
+			
+			switch(e)
+			{
+				case ElementCaserne: 
+				case ElementCentreDeTir:
+				case ElementElevageWaark:
+				case ElementLaboratoire:
+					return GBuilding;
+					
+				case ElementCentreDeForage:
+					return GMine;
+					
+				case ElementSoldat:
+				case ElementFusilleur:
+				case ElementChevaucheur:
+					return GUnit;
+					
+				
+				
+			}
+			
+			return null;
+		}
+		
+		public function GameObject(e:Element) 
 		{
-			_quad = new Quad(Map.BASE_SIZE, Map.BASE_SIZE, 0xFF8020);
+			_element = e;
+			
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			
+			
+		}
+		
+		private function onAddedToStage(e:Event):void 
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			
+			trace(sizeX, sizeY);
+			
+			_quad = new Quad(sizeX * MapUI.BASE_SIZE, sizeY * MapUI.BASE_SIZE, 0xFF8020);
 			//quad.pivotX = quad.width * 0.5;
 			//quad.pivotY = quad.height;
 			

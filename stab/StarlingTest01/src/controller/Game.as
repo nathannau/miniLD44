@@ -5,7 +5,9 @@ package controller
 	import flash.geom.Rectangle;
 	import flash.text.engine.ElementFormat;
 	import flash.utils.clearInterval;
+	import flash.utils.getQualifiedClassName;
 	import flash.utils.setInterval;
+	import utils.Animation;
 	import utils.Element;
 	import utils.IElementVision;
 	import utils.Map;
@@ -65,6 +67,8 @@ package controller
 		private var _players:Array = null;
 		private var _playersInfos:Array;
 		
+		public function getMine(player: IPlayer):Mine
+		{ return _playersInfos[player.index].mine as Mine;}
 		public function getUpgrades(player: IPlayer):Upgrades 
 		{ return _playersInfos[player.index].upgrades as Upgrades; }
 		public function getRessources(player: IPlayer):RessourcesSet
@@ -276,10 +280,65 @@ package controller
 		 * @return	true si la transaction à réussi.
 		 */
 		public function buyElement(player:IPlayer, type:TypeElement, from:*):Boolean
-		{ 
+		{
+			var upgrade:Upgrades = getUpgrades(player);
+			var niveau:uint = 0;
+			var cost:RessourcesSet;
+			
+			switch(type)
+			{
+				case TypeElement.SOLDAT:
+					niveau = 0;
+					break;
+				case TypeElement.FUSILLEUR:
+				case TypeElement.CHEVAUCHEUR:
+				
+				
+			}
+			
+			switch(type)
+			{
+				case TypeElement.CENTRE_DE_FORAGE:
+					throw new Error("Impossible d'acheter un centre de forage");
+					break;
+				case TypeElement.CASERNE:
+				case TypeElement.CENTRE_DE_TIR:
+				case TypeElement.ELEVAGE_WAARK:
+				case TypeElement.LABORATOIRE:
+				case TypeElement.RELAIS:
+					if (getQualifiedClassName(from) != "Object" || from.x == undefined || from == undefined)
+						return false;
+						
+					cost = Configuration.ELEMENTS_COST[type.index][0];
+					var pr:RessourcesSet = getRessources(player);
+					if (!pr.estPlusGrandOuEgalQue(cost)) return false;
+					var bat:Element = new type.className(player);
+					bat.x = from.x;
+					bat.y = from.y;
+					bat.animation = Animation.CONSTRUCTION;
+					pr.subRessourcesSet(cost);
+					
+					_elements.push(bat);
+					break;
+				case TypeElement.MECANO:
+					if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("Unité non implémentée : priorité basse"); 
+				case TypeElement.SOLDAT:
+				case TypeElement.FUSILLEUR:
+				case TypeElement.CHEVAUCHEUR:
+					cost = Configuration.ELEMENTS_COST[type.index][0];
+					
+					
+					
+					
+			}
 			if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("fonction non implémentée : priorité basse"); 
 			return false;
 		}
+		
+		
+		
+		
+		
 		
 	}
 

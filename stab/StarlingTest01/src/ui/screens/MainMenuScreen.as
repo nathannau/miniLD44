@@ -130,8 +130,10 @@ package ui.screens
 		{
 			//if(Game.current == null)
 			//	Main.instance.game = new Game();
-				
-			ScreenManager.instance.showScreen(ScreenManager.instance.storyScreen);
+			if(!Game.current.isStarted)	
+				ScreenManager.instance.showScreen(ScreenManager.instance.storyScreen);
+			else
+				ScreenManager.instance.showScreen(ScreenManager.instance.gameScreen);
 		}
 		
 		/**
