@@ -18,6 +18,19 @@ package utils
 		public function set relais(value:uint):void { _relais = value; }
 		private var _relais:uint = 0;
 		
+		public function get uniteGlobal():uint { return _uniteGlobal; }
+		public function set uniteGlobal(value:uint):void { _uniteGlobal = value; }
+		private var _uniteGlobal:uint = 0;
+		
+		public function get soldat():uint { return _soldat; }
+		public function set soldat(value:uint):void { _soldat = value; }
+		private var _soldat:uint = 0;
+		
+		public function get fusilleur():uint { return _fusilleur; }
+		public function set fusilleur(value:uint):void { _fusilleur = value; }
+		private var _fusilleur:uint = 0;
+		
+		
 		public function Upgrades() 
 		{
 			

@@ -29,10 +29,12 @@ package utils
 		/**
 		 * Largeur de la map
 		 */
+		public function get width():uint { return _width;}
 		private var _width:uint;
 		/**
 		 * Hauteur de la map
 		 */
+		public function get height():uint { return _height;}
 		private var _height:uint
 		
 		public function Map() 

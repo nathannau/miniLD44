@@ -2,9 +2,13 @@ package ui.screens
 {
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.core.DisplayListWatcher;
 	import feathers.motion.transitions.ScreenFadeTransitionManager;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import ui.Assets;
+	import ui.feathers.themes.CustomTheme;
+	import ui.feathers.themes.MetalWorksMobileTheme;
 	
 	/**
 	 * ...
@@ -14,6 +18,8 @@ package ui.screens
 	{
 		public static var instance: ScreenManager;
 		
+		public var theme:DisplayListWatcher;
+		
 		private var _navigator:ScreenNavigator;
 		private var _transitionManager:ScreenFadeTransitionManager;
 		
@@ -22,19 +28,23 @@ package ui.screens
 		public var storyScreen:StoryScreen;
 		public var gameScreen:GameScreen;*/
 		
+		public var mainMenuScreen:MainMenuScreen;
+		public var storyScreen:StoryScreen;
 		public var gameScreen:GameScreen;
 		
 		public function ScreenManager() 
 		{
 			instance = this;
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			
+			Assets.init();
 		}
 		
 		protected function onAddedToStage(e:Event):void {
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 			//THEME
-			//theme = new MetalWorksMobileTheme(null, false);
+			theme = new CustomTheme(null, false);
 			
 			//SCREEN NAVIGATOR
 			this._navigator = new ScreenNavigator();
@@ -44,7 +54,12 @@ package ui.screens
 			this._transitionManager.duration = 0.7;
 			
 			//SCREENS
+			mainMenuScreen = new MainMenuScreen();
+			storyScreen = new StoryScreen();
 			gameScreen = new GameScreen();
+			
+			addScreen(mainMenuScreen);
+			addScreen(storyScreen);
 			addScreen(gameScreen);
 			
 			

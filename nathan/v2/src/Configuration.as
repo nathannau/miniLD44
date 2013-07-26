@@ -3,6 +3,7 @@ package
 	import utils.Ressource;
 	import utils.RessourcesSet;
 	import utils.Terrain;
+	import utils.TypeElement;
 	/**
 	 * Classe static pour la configuration du jeu.
 	 * Tous les parametres doit être géné ici.
@@ -35,6 +36,91 @@ package
 			Ressource.PIERRE, 5
 		);
 
+		/**
+		 * Prix d'achat des unités
+		 * RessourcesSet[TypeElement][uint Niveau]
+		 */
+		public static const ELEMENTS_COST:Array = initElementsCost();
+		private static function initElementsCost():Array
+		{
+			var ret:Array = new Array();
+			ret[TypeElement.CASERNE.index] = [
+				new RessourcesSet(
+					Ressource.FER, 10,
+					Ressource.PIERRE, 10
+				)
+			];
+			ret[TypeElement.CENTRE_DE_TIR.index] = [
+				new RessourcesSet(
+					Ressource.FER, 10,
+					Ressource.PIERRE, 10
+				)
+			];
+			ret[TypeElement.ELEVAGE_WAARK.index] = [
+				new RessourcesSet(
+					Ressource.FER, 10,
+					Ressource.PIERRE, 10
+				)
+			];
+			ret[TypeElement.LABORATOIRE.index] = [
+				new RessourcesSet(
+					Ressource.FER, 10,
+					Ressource.PIERRE, 10
+				)
+			];
+			ret[TypeElement.RELAIS.index] = [
+				new RessourcesSet(
+					Ressource.FER, 10,
+					Ressource.PIERRE, 10
+				)
+			];
+
+			ret[TypeElement.CHEVAUCHEUR.index] = [
+				new RessourcesSet(
+					Ressource.FER, 10,
+					Ressource.PIERRE, 10
+				),
+				new RessourcesSet(
+					Ressource.FER, 15,
+					Ressource.PIERRE, 15
+				),
+				new RessourcesSet(
+					Ressource.FER, 25,
+					Ressource.PIERRE, 25
+				)
+			];
+			ret[TypeElement.FUSILLEUR.index] = [
+				new RessourcesSet(
+					Ressource.FER, 10,
+					Ressource.PIERRE, 10
+				),
+				new RessourcesSet(
+					Ressource.FER, 15,
+					Ressource.PIERRE, 15
+				),
+				new RessourcesSet(
+					Ressource.FER, 25,
+					Ressource.PIERRE, 25
+				)
+			];
+			ret[TypeElement.SOLDAT.index] = [
+				new RessourcesSet(
+					Ressource.FER, 10,
+					Ressource.PIERRE, 10
+				),
+				new RessourcesSet(
+					Ressource.FER, 15,
+					Ressource.PIERRE, 15
+				),
+				new RessourcesSet(
+					Ressource.FER, 25,
+					Ressource.PIERRE, 25
+				)
+			];
+			
+			return ret;
+		}
+				
 		/**
 		 * Distance de vision des unités (Carré du rayon en careau)
 		 */
