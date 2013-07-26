@@ -72,7 +72,16 @@ package
 				new RessourcesSet(
 					Ressource.FER, 10,
 					Ressource.PIERRE, 10
+				),
+				new RessourcesSet(
+					Ressource.FER, 10,
+					Ressource.PIERRE, 10
+				),
+				new RessourcesSet(
+					Ressource.FER, 10,
+					Ressource.PIERRE, 10
 				)
+				
 			];
 
 			ret[TypeElement.CHEVAUCHEUR.index] = [
@@ -120,11 +129,57 @@ package
 			
 			return ret;
 		}
-				
+		/**
+		 * Prix d'achat des unités
+		 * RessourcesSet[TypeElement][uint Niveau]
+		 */
+		public static const ELEMENTS_PV_INITIAL:Array = initElementsPvInitial();
+		private static function initElementsPvInitial():Array
+		{
+			var ret:Array = new Array();
+			ret[TypeElement.CENTRE_DE_FORAGE.index] = [500];
+			ret[TypeElement.CASERNE.index] = [100];
+			ret[TypeElement.CENTRE_DE_TIR.index] = [100];
+			ret[TypeElement.ELEVAGE_WAARK.index] = [100];
+			ret[TypeElement.LABORATOIRE.index] = [100];
+			ret[TypeElement.RELAIS.index] = [75,100,150];
+
+			ret[TypeElement.CHEVAUCHEUR.index] = [10,20,40];
+			ret[TypeElement.FUSILLEUR.index] = [10,20,40];
+			ret[TypeElement.SOLDAT.index] = [10,20,40];
+			
+			return ret;
+		}
+		
 		/**
 		 * Distance de vision des unités (Carré du rayon en careau)
 		 */
-		public static const DISTANCE_VISION_UNITE:uint = 9;
+		public static const DISTANCE_VISION_UNITE:uint = 12;
+		/**
+		 * Distance à laquelle une unité va se foutre sur la gueule
+		 */
+		public static const DISTANCE_GO_ATTACK:uint = 9;
+		/**
+		 * Porte des attaques
+		 */
+		public static const PORTE_ATACK:uint = 3;
+		/**
+		 * Nombre de tour entre deux attaque
+		 */
+		public static const CYCLE_BETWEEN_ATTACK:uint = 15;
+		/**
+		 * Bonus pour le triangle des unités en combat
+		 */
+		public static const BONUS_BETWEEN_UNITE:Number = 1.5;
+		/**
+		 * Bonus de terrain pour les unités en combat
+		 */
+		public static const BONUS_FROM_TERRAIN:Number = 1.5;
+		/**
+		 * Degats infligés par niveau
+		 */
+		public static const DEGATS_BY_LEVEL:Array = [2,4,8];
+
 		
 		///// RAFINAGE
 		/**

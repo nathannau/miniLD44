@@ -5,7 +5,7 @@ package utils
 	 * Caserne
 	 * @author Nathan
 	 */
-	public class ElementCaserne extends Element 
+	public class ElementCaserne extends ElementBatiment 
 	{
 		override public function get type():TypeElement  { return TypeElement.CASERNE; }	
 		
@@ -13,6 +13,11 @@ package utils
 		{
 			_player = player;
 		}
+
+		override public function get canMove():Boolean { return false; }
+		override public function get canAttack():Boolean { return false; }
+
+		override public function get rayon():Number { return 1; }
 		
 	}
 

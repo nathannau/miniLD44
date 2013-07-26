@@ -29,7 +29,14 @@ package utils
 		public function get fusilleur():uint { return _fusilleur; }
 		public function set fusilleur(value:uint):void { _fusilleur = value; }
 		private var _fusilleur:uint = 0;
-		
+
+		public function get chevaucheur():uint { return _chevaucheur; }
+		public function set chevaucheur(value:uint):void { _chevaucheur = value; }
+		private var _chevaucheur:uint = 0;
+
+		public function get defense():uint { return _defense; }
+		public function set defense(value:uint):void { _defense = value; }
+		private var _defense:uint = 0;
 		
 		public function Upgrades() 
 		{
