@@ -2,7 +2,7 @@ package utils
 {
 	import flash.utils.getQualifiedClassName;
 	/**
-	 * Class abstraite pour l'ensemble des unitÃ©s
+	 * Class abstraite pour l'ensemble des unités
 	 * @author Nathan
 	 */
 	public class ElementUnite extends Element implements IElementVision 

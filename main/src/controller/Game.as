@@ -293,11 +293,12 @@ package controller
 			var filter:Object = { x:dx * r + e.x, y:dy * r + e.y };
 			var obstacle:Array = getElementsV2( { contain: filter } );
 			
+			var d:Number;
 			if (obstacle.length > 0)
 			{
 				var o:Element = obstacle[0];
 				// TODO : to complete...
-				var d:Number = Math.sqrt(d2);
+				d = Math.sqrt(d2);
 				var cx:Number = dy * o.rayon / d;
 				var cy:Number = -dx * o.rayon / d;
 				if ((o.x + cx - filter.x) * (o.x + cx - filter.x) + (o.y + cy - filter.y) * (o.y + cy - filter.y) <
@@ -322,12 +323,26 @@ package controller
 				e.x = e.path[0].x;
 				e.y = e.path[0].y;
 				e.path.shift();
+				// TODO : Verifier que ca va bien ici
+				if (e.path.length == 0)
+				{
+					e.animation = Animation.REPOS;
+					if (e.type == TypeElement.CENTRE_DE_FORAGE)
+					{
+						(e as ElementCentreDeForage).down();
+					}
+				}
+				
 			}
 			else
 			{
-				r = v2 / d2;
+				d = Math.sqrt(d2);
+				
+				/*r = v2 / d2;
 				e.x += dx * r;
-				e.y += dy * r;
+				e.y += dy * r;*/
+				e.x += dx / d * vitesse;
+				e.y += dy / d * vitesse;
 			}
 		}
 		
@@ -423,7 +438,7 @@ package controller
 					> this.cercle.r2) return false;
 				if (this.player != undefined && ((e.player != this.player) != this.otherPlayer) ) return false;
 				
-				if (this.types.length == 0) return true;
+				if (this.types == undefined || this.types.length == 0) return true;
 				for (var i:uint = 0; i < this.types.length; i++)
 					if (e.type == this.types[i]) return true;
 				return false;

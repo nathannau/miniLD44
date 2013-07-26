@@ -35,12 +35,12 @@ package utils
 		{
 			_endChangingStateIn = Configuration.MINE_UP_TIME;
 			animation = Animation.UP;
-			Game.current.getMine(_player).currentTerrain = Game.current.map.getTerrain(this.x, this.y);
 		}
 		public function down():void
 		{
 			_endChangingStateIn = Configuration.MINE_DOWN_TIME;
 			animation = Animation.DOWN;
+			Game.current.getMine(_player).currentTerrain = Game.current.map.getTerrain(this.x, this.y);
 		}
 		
 		

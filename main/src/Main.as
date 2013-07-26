@@ -58,7 +58,7 @@ package
 			_screenManager = new ScreenManager();
 			addChild(_screenManager);
 			
-			addChild(new Stats());
+			//addChild(new Stats());
 		}	
 		
 		

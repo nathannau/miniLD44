@@ -88,6 +88,12 @@ package utils
 		 * Liste des cases accéssible
 		 */
 		public function get casesAccessibles():Array { return _casesAccessibles; }
+		public function isAccessible(x:uint, y:uint):Boolean
+		{
+			for (var i:uint = 0; i < _casesAccessibles.length; i++)
+				if (_casesAccessibles[i].x == x && _casesAccessibles[i].y == y) return true;
+			return false;
+		}
 		private var _casesAccessibles:Array = new Array();
 				
 		/**

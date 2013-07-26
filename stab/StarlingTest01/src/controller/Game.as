@@ -322,7 +322,7 @@ package controller
 				e.x = e.path[0].x;
 				e.y = e.path[0].y;
 				e.path.shift();
-				
+				// TODO : Verifier que ca va bien ici
 				if (e.path.length == 0)
 				{
 					e.animation = Animation.REPOS;

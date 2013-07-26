@@ -9,27 +9,22 @@ package ui.game
 	import utils.Map;
 
 	
-	public class Map extends Sprite 
+	public class MapUI extends Sprite 
 	{
 		public static const BASE_SIZE:int = 54;
 		
 		//public static const MAP_SIZE_X:int = 60;
 		//public static const MAP_SIZE_Y:int = 60;
 		
-		public function Map() 
+		public function MapUI() 
 		{
-			var map:utils.Map = Game.current.map;
-			trace(map.cases);
+			var map:Map = Game.current.map;
 			
 			for (var tx:int = 0; tx < map.width; tx++)
 			{
 				for (var ty:int = 0; ty < map.height; ty++)
 				{
 					var c:uint = map.getCase(tx, ty);
-					
-					if (c != 0)
-						trace(c);
-					
 					
 					var name:String;
 					switch(c) {
@@ -44,21 +39,12 @@ package ui.game
 							break;
 					}
 					
-					/*
-					var color:int = 0x505050;
-					if ((tx + ty) % 2 == 0)
-						color = 0x707070;
-						
-					if (tx == 0 || tx == map.width - 1 || ty == 0 || ty == map.height - 1)
-					{
-						color = 0x905050;
-						if ((tx + ty) % 2 == 0)
-							color = 0xD07070;
-					}*/
-					
 					//var tile:Quad = new Quad(BASE_SIZE, BASE_SIZE, color);
 					var tile:Image = new Image(Assets.atlas.getTexture(name));
 					//tile.color = color;
+					
+					if (tx == 0 || tx == map.width - 1 || ty == 0 || ty == map.height - 1)
+						tile.color = 0xB0B0B0;
 					
 					//tile.touchable = false;
 					addChild(tile);

@@ -10,7 +10,7 @@ package vues
 	{
 		function get index():uint;
 		function set index(value:uint):void;
-
+		
 		function update():void;
 	}
 	
