@@ -71,7 +71,7 @@ package utils
 		 * @param	d Coordonnée de profondeur
 		 * @return	true si la case est à ajouter, sinon false
 		 */
-		private function isNowAccessible(x:uint, d:uint):Boolean
+		public function isNowAccessible(x:uint, d:uint):Boolean
 		{
 			if (_cases[d * _width + x] == null) return false;
 			var p:Object = { x:x, d:d };

@@ -42,6 +42,7 @@ package ui.game
 		private var _touchObject:GameObject = null;
 		private var _touchTime:Number;
 		private var _touchMoved:Boolean;
+		private var _touchHolded:Boolean = false;
 		
 		private const TOUCH_HOLD_TIME:Number = 500;
 		
@@ -211,6 +212,7 @@ package ui.game
 					
 				case "ended":
 					_touchActive = false;
+					_touchHolded = false;
 					
 					if (!_touchMoved)
 					{
@@ -283,11 +285,16 @@ package ui.game
 		
 		private function onTouchHold(p:Point, obj:GameObject):void 
 		{
+			if (_touchHolded) return;
+			_touchHolded = true;
+			
 			trace("HOLD", p, obj);
 			
 			for (var i:uint = 0; i < selection.length; i++ )
 			{
-				selection[i].setTarget(p, null);
+				//selection[i].setTarget(p, null);
+				if(selection[i].element.player == _player)
+					Game.current.moveElement(selection[i].element, p.x / MapUI.BASE_SIZE, p.y / MapUI.BASE_SIZE);
 			}
 		}
 		

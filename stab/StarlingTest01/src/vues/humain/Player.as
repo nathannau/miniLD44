@@ -11,6 +11,9 @@ package vues.humain
 	import ui.HUDRessource;
 	import ui.screens.ScreenManager;
 	import ui.SmallButton;
+	import utils.Animation;
+	import utils.ElementCentreDeForage;
+	import utils.TypeElement;
 	import vues.IPlayer;
 	
 	/**
@@ -27,6 +30,9 @@ package vues.humain
 		private var _gameAera:GameArea;
 		
 		private var _hudRessource:HUDRessource;
+		
+		private var _mineButton:Button;
+		private var _eMine:ElementCentreDeForage;
 		
 		public function Player() 
 		{			
@@ -45,9 +51,13 @@ package vues.humain
 			pauseButton.x = Main.stageWidth - 55;
 			pauseButton.y = 5;
 			
-			var gotoMineButton:Button = addChild(new SmallButton("pause", onGotoMineTriggered)) as Button;
+			var gotoMineButton:Button = addChild(new SmallButton("gotoMine", onGotoMineTriggered)) as Button;
 			gotoMineButton.x = 5;
 			gotoMineButton.y = 5;
+			
+			_mineButton = addChild(new SmallButton("drill", onMineTriggered)) as Button;
+			_mineButton.x = 5;
+			_mineButton.y = 60;
 			
 			_hudRessource = new HUDRessource();
 			addChild(_hudRessource);
@@ -86,14 +96,17 @@ package vues.humain
 			if (!_isInit && Game.current.isStarted) {
 				_isInit = true;
 				_gameAera.onStart();
+				onInit();
 			}
+			
+			_mineButton.visible = _eMine.animation == Animation.REPOS;
 		}
 		
 		
 			
 		private function onInit():void 
 		{
-			
+			_eMine = Game.current.getElements(this, [TypeElement.CENTRE_DE_FORAGE])[0];
 		}
 		
 		public function get index():uint
@@ -120,6 +133,11 @@ package vues.humain
 			//ScreenManager.instance.showScreen(ScreenManager.instance.mainMenuScreen); 
 			_gameAera.gotoMine();
 		} 
+		
+		public function onMineTriggered(e:Event):void
+		{
+			ScreenManager.instance.showScreen(ScreenManager.instance.mineScreen);
+		}
 		
 
 		

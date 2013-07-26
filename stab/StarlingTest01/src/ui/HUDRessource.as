@@ -15,6 +15,19 @@ package ui
 	 */
 	public class HUDRessource extends Sprite 
 	{
+		private var resList:Array = new Array(
+			Ressource.NOURITURE, 
+			Ressource.TERRE, 
+			Ressource.PIERRE, 
+			Ressource.FER, 
+			Ressource.OR, 
+			Ressource.PETROLE, 
+			Ressource.CHARBON,
+			Ressource.DIAMANT,
+			Ressource.URANIUM
+		);
+		
+		private var resLbl:Object = new Object();
 		
 		public function HUDRessource() 
 		{
@@ -24,18 +37,9 @@ package ui
 		private function onAddedToStage(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			
-			var resList:Array = new Array(
-				Ressource.NOURITURE, 
-				Ressource.TERRE, 
-				Ressource.PIERRE, 
-				Ressource.FER, 
-				Ressource.OR, 
-				Ressource.PETROLE, 
-				Ressource.CHARBON,
-				Ressource.DIAMANT,
-				Ressource.URANIUM
-			);
+			
 			
 			var resSet:RessourcesSet = Game.current.getRessources(Game.current.getHumainPlayer());
 			
@@ -62,12 +66,26 @@ package ui
 				lbl.x = i * 55 - 10;
 				lbl.y = 30;
 				
+				resLbl[res] = lbl;
+				
 			}
 			
 			
 			
 			
 			
+		}
+		
+		private function onEnterFrame(e:Event):void 
+		{
+			var resSet:RessourcesSet = Game.current.getRessources(Game.current.getHumainPlayer());
+			
+			for (var i:uint = 0; i < resList.length; i++)
+			{
+				var res:Ressource = resList[i];
+				var value:uint = resSet.getRessource(res);
+				resLbl[res].text = value.toString();
+			}
 		}
 		
 	}

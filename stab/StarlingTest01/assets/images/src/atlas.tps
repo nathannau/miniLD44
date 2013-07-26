@@ -978,6 +978,10 @@
             <filename>townmine0000.png</filename>
             <filename>URANIUM.png</filename>
             <filename>NOURITURE.png</filename>
+            <filename>drill.png</filename>
+            <filename>gotoMine.png</filename>
+            <filename>drill.png</filename>
+            <filename>gotoMine.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

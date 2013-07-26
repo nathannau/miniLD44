@@ -1,9 +1,7 @@
 package ui.feathers.themes 
 {
 	import feathers.controls.Button;
-	import feathers.core.DisplayListWatcher;
 	import flash.text.TextFormat;
-	import starling.core.Starling;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import ui.Assets;
@@ -16,13 +14,7 @@ package ui.feathers.themes
 		
 		public function CustomTheme(container:DisplayObjectContainer = null, scaleToDPI:Boolean = true)
 		{
-			
-			/*if(!container)
-			{
-				container = Starling.current.stage;
-			}
-			super(container);// , scaleToDPI);*/
-			super(container , scaleToDPI);
+			super(container, scaleToDPI);
 			
 			setInitializerForClass( Button, mainMenuButtonInitializer, "mainMenuButton" );
 			setInitializerForClass(Button, smallButtonInitializer, "smallButton");
@@ -45,7 +37,6 @@ package ui.feathers.themes
 		{
 			button.height = 54;
 			button.width = 54;
-			
 		}
 		
 		

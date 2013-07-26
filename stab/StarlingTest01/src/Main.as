@@ -39,10 +39,10 @@ package
 			
 			g.players = array;// [humanPlayer, iaPlayer];
 			*/
-			g.players = [new vues.humain.Player(), new vues.ia.Player()];
+			g.players = [new vues.ia.Player(), new vues.humain.Player()];
 			
 			g.start();
-			trace(g.buyElement(g.players[0], TypeElement.CASERNE, { x:15, y:15 } ));
+			g.buyElement(g.players[0], TypeElement.CASERNE, { x:15, y:15 } );
 			
 			instance = this;
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);

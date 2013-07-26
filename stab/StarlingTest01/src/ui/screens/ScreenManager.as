@@ -31,6 +31,7 @@ package ui.screens
 		public var mainMenuScreen:MainMenuScreen;
 		public var storyScreen:StoryScreen;
 		public var gameScreen:GameScreen;
+		public var mineScreen:MineScreen;
 		
 		public function ScreenManager() 
 		{
@@ -57,10 +58,12 @@ package ui.screens
 			mainMenuScreen = new MainMenuScreen();
 			storyScreen = new StoryScreen();
 			gameScreen = new GameScreen();
+			mineScreen = new MineScreen();
 			
 			addScreen(mainMenuScreen);
 			addScreen(storyScreen);
 			addScreen(gameScreen);
+			addScreen(mineScreen);
 			
 			
 			showScreen(gameScreen);

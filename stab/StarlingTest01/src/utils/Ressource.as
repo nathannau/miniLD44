@@ -7,7 +7,6 @@ package utils
 	public final class Ressource 
 	{
 //		private static var _nbInitConst:uint = 0;
-
 		
 		private var _nom:String;
 		private var _index:uint;
@@ -25,7 +24,6 @@ package utils
 		public static const URANIUM:Ressource = new Ressource("URANIUM", 8);
 
 		public static const NB_TYPE_RESSOURCE:uint = 9;
-		//public static var ressources:Vector.<Ressource> = new Vector.<Ressource>();
 		
 		public function Ressource(nom:String, index:uint) 
 		{
@@ -34,8 +32,6 @@ package utils
 			this._nom = nom;
 			this._index = index;
 //			Ressource._nbInitConst++;
-
-			//ressources.push(this);
 		}
 		
 	}

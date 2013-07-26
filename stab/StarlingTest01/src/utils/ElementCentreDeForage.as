@@ -25,6 +25,47 @@ package utils
 		
 		override public function get rayon():Number { return 1; }
 		
+		
+		public function get isChangingState():Boolean { return _endChangingStateIn > 0; }
+		public function get isUp():Boolean { return _endChangingStateIn == 0 && path.length>0; }
+		public function get isDown():Boolean { return _endChangingStateIn == 0 && path.length==0; }
+		private var _endChangingStateIn:uint = 0;
+		
+		public function up():void
+		{
+			_endChangingStateIn = Configuration.MINE_UP_TIME;
+			animation = Animation.UP;
+		}
+		public function down():void
+		{
+			_endChangingStateIn = Configuration.MINE_DOWN_TIME;
+			animation = Animation.DOWN;
+			Game.current.getMine(_player).currentTerrain = Game.current.map.getTerrain(this.x, this.y);
+		}
+		
+		
+		override public function update():void 
+		{
+			super.update();
+			if (_endChangingStateIn > 0) 
+			{
+				_endChangingStateIn--;
+				if (_endChangingStateIn == 0)
+				if (path.length > 0)
+					
+					animation = Animation.MOUVEMENT;
+				else
+				{
+					animation = Animation.REPOS;
+					//down();
+					//Game.current.getMine(_player).currentTerrain = Game.current.map.getTerrain(x, y);
+					Game.current.getMine(_player).reinit();
+				}
+				
+			}
+		}
+		
+		
 	}
 
 }
