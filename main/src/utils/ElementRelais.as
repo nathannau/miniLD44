@@ -19,6 +19,13 @@ package utils
 		{
 			return Configuration.DISTANCE_VISION[Game.current.getUpgrades(player).relais];
 		}
+
+		override public function get canMove():Boolean { return false; }
+		override public function get canAttack():Boolean { return _canAttack; }
+		public function set canAttack(value:Boolean):void { _canAttack = value; }
+		private var _canAttack:Boolean = false;
+		
+		override public function get rayon():Number { return 1; }
 		
 	}
 

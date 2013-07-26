@@ -50,7 +50,7 @@ package {
 			/**
 			 * permet de vraiment quitter l'appli quand on la desactive
 			 */
-			NativeApplication.nativeApplication.exit();
+			//NativeApplication.nativeApplication.exit();
 		}
 	}
 }

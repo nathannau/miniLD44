@@ -5,8 +5,12 @@ package controller
 	import flash.geom.Rectangle;
 	import flash.text.engine.ElementFormat;
 	import flash.utils.clearInterval;
+	import flash.utils.getQualifiedClassName;
 	import flash.utils.setInterval;
+	import utils.Animation;
 	import utils.Element;
+	import utils.ElementBatiment;
+	import utils.ElementUnite;
 	import utils.IElementVision;
 	import utils.Map;
 	import utils.Mine;
@@ -114,6 +118,7 @@ package controller
 				var centreForage:Element = Element.createElement(p, TypeElement.CENTRE_DE_FORAGE);
 				centreForage.x = startPositions[i].x;
 				centreForage.y = startPositions[i].y;
+				centreForage.pointDeVie = Configuration.ELEMENTS_PV_INITIAL[TypeElement.CENTRE_DE_FORAGE.index];
 				
 				_elements.push(centreForage);
 			}
@@ -166,17 +171,115 @@ package controller
 			
 			updateVisiblity();
 			
-			
 			for (i = 0; i < _elements.length; i++) (_elements[i] as Element).update();
-				
-				
-			for (i = 0; i < _players.length; i++)
-				(_players[i] as IPlayer).update();
-				
 			
-			if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("TODO : niveau haut")
-			// TODO
+			for (i = 0; i < _elements.length; i++) (_elements[i] as Element).hasAttacked = attack(_elements[i]);
+			
+			_elements = _elements.filter(function isAlive(e:Element, index:int, array:Array):Boolean { return e.pointDeVie > 1 } );
+			
+			for (i = 0; i < _elements.length; i++) move(_elements[i]);
+			
+			for (i = 0; i < _players.length; i++) (_players[i] as IPlayer).update();
+			
+			
+			if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("TODO : niveau haut");
 		}
+		
+		/**
+		 * auto attaque des element adverse à proximité
+		 * @param	e
+		 */
+		private function attack(e:Element):Boolean
+		{
+			if (!e.canAttack) return false;
+			var elements:Array = getElementsV2( 
+				{ 
+					player:e.player, 
+					otherPlayer:true, 
+					cercle: { x:e.x, y:e.y, r2:Configuration.PORTE_ATACK, c2:e.rayon*e.rayon }
+				} 
+			);
+			if (elements.length == 0) return false;
+			if (e.lastAttack < Configuration.CYCLE_BETWEEN_ATTACK) return true;
+			
+			e.lastAttack=0;
+			
+			var callback:Function = function callbackSortAttack(a:Element, b:Element):Number {
+				var pa:int = (a is ElementUnite)?1:0;
+				var pb:int = (b is ElementUnite)?1:0;
+				return pb-pa;
+			}
+			elements.sort(callback);
+			
+			var bonus:Number = getBonusAttack(e, elements[0]);
+			
+			Element(elements[0]).pointDeVie -= Configuration.DEGATS_BY_LEVEL[e.level] * bonus;
+			
+			return true;
+		}
+
+//		private static var 
+		
+		private function getBonusAttack(att:Element, def:Element):Number
+		{
+			var bonus:Number = 1;
+			var ta:int = 0;
+			switch(att.type)
+			{
+				case TypeElement.SOLDAT: ta = 0; break;
+				case TypeElement.FUSILLEUR: ta = 1; break;
+				case TypeElement.CHEVAUCHEUR: ta = 2; break;
+			}
+			var td:int = 0;
+			switch(def.type)
+			{
+				case TypeElement.SOLDAT: ta = 0; break;
+				case TypeElement.FUSILLEUR: ta = 1; break;
+				case TypeElement.CHEVAUCHEUR: ta = 2; break;
+			}
+			var tt:int = map.getCase(att.x + 0.5, att.y + 0.5); // 0:Plaine, 1:montagne, 2:marais
+			/*
+			ta-td [-2;2] :
+				-2 : malus
+				-1 : bonus
+				0 : neutre
+				1 : malus
+				2 : bonus
+			*/
+			switch(ta - tt)
+			{
+				case -2: case 1: bonus *= Configuration.BONUS_BETWEEN_UNITE; break;
+				case 2: case -1: bonus /= Configuration.BONUS_BETWEEN_UNITE; break;
+			}
+			/*
+			ta-tt [-2;2] :
+				-2 : malus
+				-1 : neutre
+				0 : bonus
+				1 : malus
+				2 : neutre
+			*/
+			switch(ta - td)
+			{
+				case 0: 		 bonus *= Configuration.BONUS_FROM_TERRAIN; break;
+				case -2: case 1: bonus /= Configuration.BONUS_BETWEEN_UNITE; break;
+			}
+			
+			return bonus;
+		}
+		
+		
+		/**
+		 * deplace une unité vers sa destination
+		 * TODO : function non implementé
+		 * @param	e
+		 */
+		private function move(e:Element):void
+		{
+			if (!e.canMove || e.hasAttacked) return;
+			
+		}
+		
 		
 		private function updateVisiblity(lastAvailable:Array=null):void
 		{
@@ -215,12 +318,13 @@ package controller
 		 * Rectangle : zone où rechercher les elements
 		 * IPlayer : Proprietaire des elements recherchés
 		 * TypeElement* : Types des elements recherché
+		 * {x:uint, y:uint, r2:uint, c2:uint} : perimetre ou rechercher les elements
 		 * @return Element[]
 		 */
 		public function getElements(... filters):Array
 		{
 			if (filters.length == 0) return _elements;
-			var f:Object = { rectangle:null, player:null, types:[] };
+			var f:Object = { rectangle:null, player:null, types:[], cercle:null, otherPlayer:false };
 			for (var i:uint = 0; i < filters.length; i++)
 			{
 				if (filters[i] is Rectangle)
@@ -232,13 +336,35 @@ package controller
 					f.player = filters[i];
 				else if (filters[i] is TypeElement) 
 					f.types.push(filters[i]);
+				else if (getQualifiedClassName(this) == "Object" && filters[i].x != undefined  && filters[i].y != undefined  && filters[i].r2 != undefined)
+				{
+					f.cercle = filters[i];
+					if (f.cercle.c2 == undefined) f.cercle.c2 = 0;
+				}
 			}
 			
+			return getElementsV2(f);
+		}
+		/**
+		 * Fournit la liste des elements présents dans une zone
+		 * @param	filters Filtre des l'éléments renvoyés :
+		 * { rectangle: { minX:uint, minY:uint, maxX:uint, maxY:uint }, player:IPlayer, types:TypeElement[], cercle:{x:uint, y:uint, r2:uint, c2:uint}, otherPlayer:Boolean }
+		 * @return Element[]
+		 */
+		public function getElementsV2(filters:Object, elements:Array = null):Array
+		{
+			if (elements == null) elements = _elements;
+			if (filters.otherPlayer == undefined) filters.otherPlayer = false;
 			var callback:Function = function getElementsCallback(e:Element, index:int, array:Array):Boolean
 			{
 				if (this.rectangle != null && (e.x<this.rectangle.minX || e.x>this.rectangle.maxX || 
 					e.y<this.rectangle.minY || e.y>this.rectangle.maxY)) return false;
-				if (this.player != null && e.player != players) return false;
+				if (this.cercle != null && 
+					(e.x - this.cercle.x) * (e.x - this.cercle.x) + 
+					(e.y - this.cercle.y) * (e.y - this.cercle.y) -
+					(e.rayon*e.rayon + this.c2) // La formule est biaisé mais doit fonctionner...
+					> this.cercle.r2) return false;
+				if (this.player != undefined && ((e.player != this.player) != this.otherPlayer) ) return false;
 				
 				if (this.types.length == 0) return true;
 				for (var i:uint = 0; i < this.types; i++)
@@ -247,7 +373,7 @@ package controller
 				return false;
 			}
 			
-			return _elements.filter(callback, f);
+			return elements.filter(callback, filters);
 		}
 		private var _elements:Array;
 		
@@ -268,18 +394,147 @@ package controller
 		}
 		
 		/**
+		 * Indique le type d'unité produit par un batiment
+		 * @param	bat	Batiment qui genere l'unité
+		 * @return	TypeElement de l'unité
+		 */
+		public function getUniteForBatiment(bat:Element):TypeElement
+		{
+			switch (bat.type)
+			{
+				case TypeElement.CASERNE: return TypeElement.SOLDAT;
+				case TypeElement.CENTRE_DE_TIR : return TypeElement.FUSILLEUR;
+				case TypeElement.ELEVAGE_WAARK : return TypeElement.CHEVAUCHEUR;
+				//case TypeElement.CENTRE_DE_FORAGE : return TypeElement.MECANO;
+				default : return null;
+			}
+		}
+		/**
+		 * Calcul le niveau de creation d'un unité
+		 * @param	player propriétaire du futur l'élément
+		 * @param	type TypeElement de l'unité
+		 */
+		public function getNiveauForUnite(player:IPlayer ,type:TypeElement):uint
+		{
+			var upgrade:Upgrades = getUpgrades(player);
+			var niveau:uint = 0;
+			var delta:int;
+//			var fromElement:Element = from as Element;
+			
+			switch(type)
+			{
+				case TypeElement.SOLDAT:
+//					if (fromElement == null || fromElement.type != TypeElement.CASERNE) return false;
+					niveau = upgrade.uniteGlobal + upgrade.soldat;
+					delta = upgrade.soldat - upgrade.uniteGlobal;
+					if (delta < -1) niveau += delta + 1;
+					break;
+				case TypeElement.FUSILLEUR:
+//					if (fromElement == null || fromElement.type != TypeElement.CENTRE_DE_TIR) return false;
+					niveau = upgrade.uniteGlobal + upgrade.fusilleur;
+					delta = upgrade.fusilleur - upgrade.uniteGlobal;
+					if (delta < -1) niveau += delta + 1;
+					break;
+				case TypeElement.CHEVAUCHEUR:
+//					if (fromElement == null || fromElement.type != TypeElement.ELEVAGE_WAARK) return false;
+					niveau = upgrade.uniteGlobal + upgrade.chevaucheur;
+					delta = upgrade.chevaucheur - upgrade.uniteGlobal;
+					if (delta < -1) niveau += delta + 1;
+					break;
+				case TypeElement.RELAIS:
+					niveau = upgrade.relais;
+			}
+			return niveau;
+		}
+		/**
+		 * Calcul le cout d'achat d'un element
+		 * @param	player
+		 * @param	type
+		 * @return
+		 */
+		public function getUniteCost(player:IPlayer ,type:TypeElement):RessourcesSet
+		{
+			var niveau:uint = getNiveauForUnite(player, type);
+			return Configuration.ELEMENTS_COST[type.index][niveau];
+		}
+		/**
 		 * Achete un element.
-		 * TODO : buyElement fonction non implémentée
 		 * @param	player	propriétaire du futur l'élément
 		 * @param	type	type d'element 
 		 * @param	from	Element qui produit l'unité, ou position {x:uint, y:uint} où sera construit le batiment
 		 * @return	true si la transaction à réussi.
 		 */
 		public function buyElement(player:IPlayer, type:TypeElement, from:*):Boolean
-		{ 
+		{
+			var niveau:uint = getNiveauForUnite(player, type);
+			var cost:RessourcesSet = Configuration.ELEMENTS_COST[type.index][niveau];
+			//var upgrade:Upgrades = getUpgrades(player);
+			var pr:RessourcesSet = getRessources(player);
+			if (!pr.estPlusGrandOuEgalQue(cost)) return false;
+			
+			switch(type)
+			{
+				case TypeElement.CENTRE_DE_FORAGE:
+					throw new Error("Impossible d'acheter un centre de forage");
+					break;
+				case TypeElement.CASERNE:
+				case TypeElement.CENTRE_DE_TIR:
+				case TypeElement.ELEVAGE_WAARK:
+				case TypeElement.LABORATOIRE:
+				case TypeElement.RELAIS:
+					if (getQualifiedClassName(from) != "Object" || from.x == undefined || from == undefined)
+						throw new Error("Destination incoherente"); // return false;
+					var bat:Element = new type.className(player);
+					bat.x = from.x;
+					bat.y = from.y;
+					bat.level = niveau;
+					bat.animation = Animation.CONSTRUCTION;
+					bat.pointDeVie = Configuration.ELEMENTS_PV_INITIAL[type.index][niveau];
+					pr.subRessourcesSet(cost);
+					
+					_elements.push(bat);
+					break;
+				case TypeElement.MECANO:
+					if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("Unité non implémentée : priorité basse"); 
+				case TypeElement.SOLDAT:
+				case TypeElement.FUSILLEUR:
+				case TypeElement.CHEVAUCHEUR:
+					var fromElement:ElementBatiment = from as ElementBatiment;
+					if (fromElement == null || type != getUniteForBatiment(fromElement)) 
+						throw new Error("Type d'unité incompatible avec le type d'origine"); //return false;
+					if (!fromElement.animation) return false;
+					
+					var unit:Element = new type.className(player);
+					//bat.x = from.x;
+					//bat.y = from.y;
+					unit.level = niveau;
+					unit.pointDeVie = Configuration.ELEMENTS_PV_INITIAL[type.index][niveau];
+					//bat.animation = Animation.CONSTRUCTION;
+					fromElement.tasks.push(unit);
+					pr.subRessourcesSet(cost);
+			}
 			if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("fonction non implémentée : priorité basse"); 
 			return false;
 		}
+		
+		/**
+		 * Déplace un element
+		 * TODO : fonction non implementé
+		 * @param	e Element à déplacer
+		 * @param	x Coordonne de destination
+		 * @param	y Coordonne de destination
+		 * @return	est déplacable.
+		 */
+		public function moveElement(e:Element, x:uint, y:uint):Boolean
+		{
+			
+			
+		}
+		
+		
+		
+		
+		
 		
 	}
 
