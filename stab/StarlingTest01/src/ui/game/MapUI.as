@@ -39,18 +39,6 @@ package ui.game
 							break;
 					}
 					
-					/*
-					var color:int = 0x505050;
-					if ((tx + ty) % 2 == 0)
-						color = 0x707070;
-						
-					if (tx == 0 || tx == map.width - 1 || ty == 0 || ty == map.height - 1)
-					{
-						color = 0x905050;
-						if ((tx + ty) % 2 == 0)
-							color = 0xD07070;
-					}*/
-					
 					//var tile:Quad = new Quad(BASE_SIZE, BASE_SIZE, color);
 					var tile:Image = new Image(Assets.atlas.getTexture(name));
 					//tile.color = color;

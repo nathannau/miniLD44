@@ -52,13 +52,10 @@ package utils
 				_endChangingStateIn--;
 				if (_endChangingStateIn == 0)
 				if (path.length > 0)
-					
 					animation = Animation.MOUVEMENT;
 				else
 				{
 					animation = Animation.REPOS;
-					//down();
-					//Game.current.getMine(_player).currentTerrain = Game.current.map.getTerrain(x, y);
 					Game.current.getMine(_player).reinit();
 				}
 				

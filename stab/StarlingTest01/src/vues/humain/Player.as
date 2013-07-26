@@ -8,12 +8,14 @@ package vues.humain
 	import starling.events.Event;
 	import ui.Assets;
 	import ui.game.GameArea;
+
 	import ui.HUDRessource;
 	import ui.screens.ScreenManager;
 	import ui.SmallButton;
 	import utils.Animation;
 	import utils.ElementCentreDeForage;
 	import utils.TypeElement;
+
 	import vues.IPlayer;
 	
 	/**
@@ -29,11 +31,13 @@ package vues.humain
 		
 		private var _gameAera:GameArea;
 		
+
 		private var _hudRessource:HUDRessource;
 		
 		private var _mineButton:Button;
 		private var _eMine:ElementCentreDeForage;
 		
+
 		public function Player() 
 		{			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedOnStage);
@@ -64,7 +68,6 @@ package vues.humain
 			
 			_hudRessource.y = 5;
 			_hudRessource.x = (Main.stageWidth - _hudRessource.width) * 0.5;
-			
 			
 			
 			/*
@@ -107,6 +110,7 @@ package vues.humain
 		private function onInit():void 
 		{
 			_eMine = Game.current.getElements(this, [TypeElement.CENTRE_DE_FORAGE])[0];
+
 		}
 		
 		public function get index():uint
@@ -139,7 +143,6 @@ package vues.humain
 			ScreenManager.instance.showScreen(ScreenManager.instance.mineScreen);
 		}
 		
-
 		
 	}
 

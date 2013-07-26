@@ -18,9 +18,7 @@ package ui.game.gameObjects
 		
 		public var sizeX:int = 1;
 		public var sizeY:int = 1;
-		
-		//protected var gfxName:String = "melee";
-		
+
 		private var _quad:Quad;
 		
 		private var _selected:Boolean = false;
@@ -57,11 +55,8 @@ package ui.game.gameObjects
 		
 		public function GameObject(e:Element) 
 		{
-			_element = e;
-			
+			_element = e;			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			
-			
 		}
 		
 		public function onAddedToStage(e:Event):void 

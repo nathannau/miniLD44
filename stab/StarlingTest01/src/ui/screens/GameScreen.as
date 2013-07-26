@@ -29,6 +29,7 @@ package ui.screens
 		
 		override protected function onInitialize(event:Event):void
 		{	
+
 			addChild(Game.current.getHumainPlayer());
 		}
 		
@@ -41,6 +42,7 @@ package ui.screens
 		{
 			Game.current.pause();
 		}
+
 	}
 
 }

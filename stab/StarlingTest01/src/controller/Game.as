@@ -2,7 +2,6 @@ package controller
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.engine.ElementFormat;
 	import flash.utils.clearInterval;
@@ -175,7 +174,7 @@ package controller
 		{
 			if (!isStarted || isPaused) return;
 			
-			var toto:Array = getElements(_players[0], TypeElement.CENTRE_DE_FORAGE);
+			//var toto:Array = getElements(_players[0], TypeElement.CENTRE_DE_FORAGE);
 			
 			var i:uint;
 			for (i = 0; i < _playersInfos.length; i++)
@@ -230,8 +229,6 @@ package controller
 			return true;
 		}
 
-//		private static var 
-		
 		private function getBonusAttack(att:Element, def:Element):Number
 		{
 			var bonus:Number = 1;
@@ -289,6 +286,7 @@ package controller
 		private function move(e:Element):void
 		{
 			if (!e.canMove || e.hasAttacked || e.path.length == 0) return;
+			if (e.type == TypeElement.CENTRE_DE_FORAGE && !ElementCentreDeForage(e).isUp) return;
 			var dx:Number = e.path[0].x - e.x, dy:Number = e.path[0].y - e.y;
 			var d2:Number = dx * dx + dy * dy;
 			var r:Number = Configuration.DISTANCE_VISION_UNITE / (dx * dx + dy * dy);
@@ -317,22 +315,7 @@ package controller
 				vitesse = Configuration.ELEMENTS_VITESSE[0][0];
 			else
 				vitesse = Configuration.ELEMENTS_VITESSE[1][e.level];
-			
-			/*
-			var v2:Number = vitesse * vitesse;
-			if (v2 > d2)
-			{
-				e.x = e.path[0].x;
-				e.y = e.path[0].y;
-				e.path.shift();
-			}
-			else
-			{
-				r = v2 / d2;
-				e.x += dx * r;
-				e.y += dy * r;
-			}
-			*/
+				
 			var v2:Number = vitesse * vitesse;
 			if (v2 > d2)
 			{
@@ -348,18 +331,18 @@ package controller
 						(e as ElementCentreDeForage).down();
 					}
 				}
+				
 			}
 			else
 			{
-				var p:Point = new Point(dx, dy);
-				p.normalize(1);
+				var d:Number = Math.sqrt(d2);
 				
-				//r = v2 / d2;
-				//trace(r);
-				e.x += p.x * vitesse;
-				e.y += p.y * vitesse;
+				/*r = v2 / d2;
+				e.x += dx * r;
+				e.y += dy * r;*/
+				e.x += dx / d * vitesse;
+				e.y += dy / d * vitesse;
 			}
-			
 		}
 		
 		
@@ -454,7 +437,7 @@ package controller
 					> this.cercle.r2) return false;
 				if (this.player != undefined && ((e.player != this.player) != this.otherPlayer) ) return false;
 				
-				if (this.types == undefined || this.types.length == 0) return true;
+				if (this.types.length == 0) return true;
 				for (var i:uint = 0; i < this.types.length; i++)
 					if (e.type == this.types[i]) return true;
 				return false;
@@ -619,8 +602,9 @@ package controller
 			while (e.path.length > 0) e.path.pop();
 			
 			e.path.push( { x:x, y:y } );
-			if (e.type == TypeElement.CENTRE_DE_FORAGE && (ElementCentreDeForage(e).isDown) )
+			if (e.type == TypeElement.CENTRE_DE_FORAGE)
 			{
+				if (ElementCentreDeForage(e).isDown) 
 					ElementCentreDeForage(e).up();
 			}
 			else

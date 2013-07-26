@@ -17,6 +17,8 @@ package utils
 		public static const MAL_EN_POINT:Animation 	= new Animation("MAL_EN_POINT", 3);
 		public static const MORT:Animation 			= new Animation("MORT", 		4);
 		public static const CONSTRUCTION:Animation 	= new Animation("CONSTRUCTION", 5);
+		public static const UP:Animation 			= new Animation("UP", 			5);
+		public static const DOWN:Animation 			= new Animation("DOWN", 		5);
 		
 		public function Animation(nom:String, index:uint) 
 		{
