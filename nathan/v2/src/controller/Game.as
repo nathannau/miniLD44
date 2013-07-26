@@ -10,6 +10,7 @@ package controller
 	import utils.Animation;
 	import utils.Element;
 	import utils.ElementBatiment;
+	import utils.ElementCentreDeForage;
 	import utils.ElementUnite;
 	import utils.IElementVision;
 	import utils.Map;
@@ -17,6 +18,8 @@ package controller
 	import utils.RessourcesSet;
 	import utils.TypeElement;
 	import utils.Upgrades;
+	import vues.humain.Player;
+	import vues.ia.Player;
 	import vues.IPlayer;
 	/**
 	 * Noyau du jeu
@@ -66,6 +69,12 @@ package controller
 				if (!(values[i] is IPlayer)) throw new ArgumentError("Un tableau de IPlayer est attendu");
 			_players = values;
 		}
+		public function getHumainPlayer():vues.humain.Player
+		{
+			for (var i:uint; i < _players.length; i++)
+				if (_players[i] is vues.humain.Player) return _players[i]
+			return null
+		}
 		private var _players:Array = null;
 		private var _playersInfos:Array;
 		
@@ -73,6 +82,8 @@ package controller
 		{ return _playersInfos[player.index].upgrades as Upgrades; }
 		public function getRessources(player: IPlayer):RessourcesSet
 		{ return _playersInfos[player.index].ressources as RessourcesSet; }
+		public function getMine(player: IPlayer):Mine
+		{ return _playersInfos[player.index].mine as Mine; }
 
 				
 		private var idTimer:uint;
@@ -278,8 +289,29 @@ package controller
 		 */
 		private function move(e:Element):void
 		{
-			if (!e.canMove || e.hasAttacked) return;
+			if (!e.canMove || e.hasAttacked || e.path.length == 0) return;
+			var dx:Number = e.path[0].x - e.x, dy:Number = e.path[0].y - e.y;
+			var r:Number = Configuration.DISTANCE_VISION_UNITE / (dx * dx + dy * dy);
+			var obstacle:Array = getElementsV2( { contain: { x:dx * r + e.x, y:dy * r + e.y }} );
 			
+			if (obstacle.length > 0)
+			{
+				// TODO : to complete...
+				
+				
+				
+				
+			}
+			
+			var vitesse:Number;
+			if (e.type == TypeElement.CENTRE_DE_FORAGE)
+				vitesse = Configuration.ELEMENTS_VITESSE[0][0];
+			else
+				vitesse = Configuration.ELEMENTS_VITESSE[1][e.level];
+				
+			r = vitesse * vitesse / (dx * dx + dy * dy);
+			e.x += dx * r;
+			e.y += dy * r; 
 		}
 		
 		
@@ -351,17 +383,22 @@ package controller
 		/**
 		 * Fournit la liste des elements présents dans une zone
 		 * @param	filters Filtre des l'éléments renvoyés :
-		 * { rectangle: { minX:uint, minY:uint, maxX:uint, maxY:uint }, player:IPlayer, types:TypeElement[], cercle:{x:uint, y:uint, r2:uint, c2:uint}, otherPlayer:Boolean }
+		 * { rectangle: { minX:uint, minY:uint, maxX:uint, maxY:uint }, player:IPlayer, types:TypeElement[], cercle:{x:uint, y:uint, r2:uint, c2:uint}, contain: {x, y}, otherPlayer:Boolean }
 		 * @return Element[]
 		 */
 		public function getElementsV2(filters:Object, elements:Array = null):Array
 		{
+			var e:Element;
 			if (elements == null) elements = _elements;
 			if (filters.otherPlayer == undefined) filters.otherPlayer = false;
 			var callback:Function = function getElementsCallback(e:Element, index:int, array:Array):Boolean
 			{
 				if (this.rectangle != undefined && (e.x<this.rectangle.minX || e.x>this.rectangle.maxX || 
 					e.y<this.rectangle.minY || e.y>this.rectangle.maxY)) return false;
+				if (this.contain != undefined &&
+					(e.x - this.contain.x) * (e.x - this.contain.x) +
+					(e.y - this.contain.y) * (e.y - this.contain.y) > 
+					e.rayon * e.rayon) return false;
 				if (this.cercle != undefined && 
 					(e.x - this.cercle.x) * (e.x - this.cercle.x) + 
 					(e.y - this.cercle.y) * (e.y - this.cercle.y) -
@@ -529,8 +566,17 @@ package controller
 		 */
 		public function moveElement(e:Element, x:uint, y:uint):Boolean
 		{
+			if (!e.canMove) return false;
+			while (e.path.length > 0) e.path.pop();
 			
-			
+			e.path.push( { x:x, y:y } );
+			if (e.type == TypeElement.CENTRE_DE_FORAGE)
+			{
+				if (ElementCentreDeForage(e).isDown) 
+					ElementCentreDeForage(e).up();
+			}
+			else
+				e.animation = Animation.MOUVEMENT;
 			return true;
 		}
 		

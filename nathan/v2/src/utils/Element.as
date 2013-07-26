@@ -41,6 +41,8 @@ package utils
 		
 		public function get rayon():Number { throw new Error("Fonction abstraite"); /*return _type;*/ }
 		
+		public function get path():Array { return _path; }
+		protected var _path:Array = new Array();
 		
 		//private var _type:TypeElement;
 		/**

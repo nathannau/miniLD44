@@ -23,8 +23,10 @@ package utils
 		 */
 		public function get cases():Array { return _cases; }
 		public function getCase(x:uint, y:uint):uint { return _cases[y*_width+x]; }
-		
 		private var _cases:Array;
+		private static const TERRAIN_INDEX:Array = [ Terrain.PLAINE, Terrain.MONTAGNE, Terrain.MARAIS ];
+		public function getTerrain(x:uint, y:uint):Terrain { return TERRAIN_INDEX[_cases[y*_width+x]]; }
+
 		
 		/**
 		 * Largeur de la map
