@@ -5,6 +5,7 @@ package
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import utils.Map;
+	import utils.TypeElement;
 	import vues.ia.Player;
 	import vues.humain.Player;
 	import vues.IPlayer;
@@ -15,8 +16,6 @@ package
 	{
 		/** Instance de Main */
 		public static var instance: Main;
-		
-		public var player:vues.humain.Player; 
 		
 		// utilisé pour l'optimisation de culling
 		public static var stageWidth:uint;
@@ -32,13 +31,18 @@ package
 			var m:Map = Map.load();// new Map();
 			g.map = m;
 			
+			/*
 			var iaPlayer:IPlayer = new vues.ia.Player();
-			//var humanPlayer:IPlayer = new vues.humain.Player();
-			player = new vues.humain.Player();
+			var humanPlayer:IPlayer = new vues.humain.Player();
 			
-			g.players = new Array(player, iaPlayer);
+			var array:Array = new Array(iaPlayer, humanPlayer);
 			
+			g.players = array;// [humanPlayer, iaPlayer];
+			*/
+			g.players = [new vues.ia.Player(), new vues.humain.Player()];
 			
+			g.start();
+			g.buyElement(g.players[0], TypeElement.CASERNE, { x:15, y:15 } );
 			
 			instance = this;
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
@@ -54,7 +58,7 @@ package
 			_screenManager = new ScreenManager();
 			addChild(_screenManager);
 			
-			addChild(new Stats());
+			//addChild(new Stats());
 		}	
 		
 		

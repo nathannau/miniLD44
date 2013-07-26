@@ -107,4 +107,4 @@ echo.
 echo Installing the app on the device failed
 
 :end
-pause
+::pause
