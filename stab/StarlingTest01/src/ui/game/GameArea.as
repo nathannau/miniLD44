@@ -105,8 +105,15 @@ package ui.game
 		
 		public function gotoMine():void
 		{
-			var mine:Element = Game.current.getElements(_player, [TypeElement.CENTRE_DE_FORAGE])[0]
-			trace(mine);
+			//var mine:Element = Game.current.getElements(_player, [TypeElement.CENTRE_DE_FORAGE])[0]
+			//var mine:Element = Game.current.getElementsV2({player: _player, types: [TypeElement.CENTRE_DE_FORAGE]})[0]
+			//trace(mine);
+			
+			var a:Array = new Array();
+			
+			trace(_player);
+			a = Game.current.getElementsV2( { player:_player, types: [TypeElement.CENTRE_DE_FORAGE] });
+			trace(a, a.length);
 			
 			/*
 			trace(Game.current.getElements(_player, [TypeElement.CENTRE_DE_FORAGE]));
