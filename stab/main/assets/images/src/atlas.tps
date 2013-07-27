@@ -118,11 +118,6 @@
         <false/>
         <key>outputFormat</key>
         <enum type="SettingsBase::OutputFormat">RGBA8888</enum>
-        <key>contentProtection</key>
-        <struct type="ContentProtection">
-            <key>key</key>
-            <string></string>
-        </struct>
         <key>autoAliasEnabled</key>
         <true/>
         <key>trimSpriteNames</key>
@@ -982,13 +977,14 @@
             <filename>gotoMine.png</filename>
             <filename>drill.png</filename>
             <filename>gotoMine.png</filename>
-            <filename>../../../../StarlingTest01/assets/images/src/tile_black.png</filename>
+            <filename>tile_black.png</filename>
+            <filename>menuBackground.png</filename>
+            <filename>redCross.png</filename>
+            <filename>hammer.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
         <key>replaceList</key>
-        <array/>
-        <key>ignoredWarnings</key>
         <array/>
         <key>commonDivisorX</key>
         <uint>1</uint>

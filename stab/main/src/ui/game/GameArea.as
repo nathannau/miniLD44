@@ -29,7 +29,7 @@ package ui.game
 		private var _map:MapUI;
 		private var _objects: Vector.<GameObject>;
 		
-		public var selection:Vector.<GameObject>;
+		//public var selection:Vector.<GameObject>;
 		
 		//TOUCH DEBUG
 		private var _touchesQuad:Object;
@@ -61,7 +61,7 @@ package ui.game
 			//
 			_touchesQuad = new Object();
 			
-			selection = new Vector.<GameObject>();
+			//selection = new Vector.<GameObject>();
 			
 			//events
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -263,26 +263,28 @@ package ui.game
 			
 			if (obj != null)
 			{
-				var objIndex:int = selection.indexOf(obj);
+				var objIndex:int = _player.selection.indexOf(obj);
 				if (objIndex != -1)
 				{
-					selection.splice(objIndex, 1);
+					_player.selection.splice(objIndex, 1);
 					obj.setSelected(false);
 				}
 				else
 				{
-					selection.push(obj);
+					_player.selection.push(obj);
 					obj.setSelected(true);
 				}
 			}
 			else
 			{
-				for (var i:uint = 0; i < selection.length; i++ )
+				for (var i:uint = 0; i < _player.selection.length; i++ )
 				{
-					selection[i].setSelected(false);
+					_player.selection[i].setSelected(false);
 				}
-				selection = new Vector.<GameObject>();
+				_player.selection = new Vector.<GameObject>();
 			}
+			
+			_player.updateSelection();
 		}
 		
 		private function onTouchHold(p:Point, obj:GameObject):void 
@@ -292,11 +294,13 @@ package ui.game
 			
 			trace("HOLD", p, obj);
 			
-			for (var i:uint = 0; i < selection.length; i++ )
+			for (var i:uint = 0; i < _player.selection.length; i++ )
 			{
-				if(selection[i].element.player == _player)
-					Game.current.moveElement(selection[i].element, p.x / MapUI.BASE_SIZE, p.y / MapUI.BASE_SIZE);
+				if(_player.selection[i].element.player == _player)
+					Game.current.moveElement(_player.selection[i].element, p.x / MapUI.BASE_SIZE, p.y / MapUI.BASE_SIZE);
 			}
+			
+			_player.updateSelection();
 		}
 		
 		private function onTouchZone(r:Rectangle):void
@@ -307,14 +311,15 @@ package ui.game
 			
 			var i:uint;
 			
-			for (i = 0; i < selection.length; i++ )
+			for (i = 0; i < _player.selection.length; i++ )
 			{
-				selection[i].setSelected(false);
+				_player.selection[i].setSelected(false);
 			}
-			selection = getObjectsInRect(r);
-			for (i = 0; i < selection.length; i++ )
+			_player.selection = getObjectsInRect(r);
+			_player.updateSelection();
+			for (i = 0; i < _player.selection.length; i++ )
 			{
-				selection[i].setSelected(true);
+				_player.selection[i].setSelected(true);
 			}
 		}
 		

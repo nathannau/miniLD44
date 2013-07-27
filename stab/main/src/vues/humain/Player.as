@@ -8,6 +8,8 @@ package vues.humain
 	import starling.events.Event;
 	import ui.Assets;
 	import ui.game.GameArea;
+	import ui.game.gameObjects.GameObject;
+	import ui.store.StoreUI;
 
 	import ui.HUDRessource;
 	import ui.screens.ScreenManager;
@@ -31,15 +33,21 @@ package vues.humain
 		
 		private var _gameAera:GameArea;
 		
+		public var selection:Vector.<GameObject>;
+		
 
 		private var _hudRessource:HUDRessource;
 		
 		private var _mineButton:Button;
 		private var _eMine:ElementCentreDeForage;
 		
+		private var _store:StoreUI;
+		
 
 		public function Player() 
 		{			
+			selection = new Vector.<GameObject>();
+			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedOnStage);
 		}
 		
@@ -63,11 +71,18 @@ package vues.humain
 			_mineButton.x = 5;
 			_mineButton.y = 60;
 			
-			_hudRessource = new HUDRessource();
+			_hudRessource = new HUDRessource(Game.current.getRessources(Game.current.getHumainPlayer()));
+			_hudRessource.showOwnedOnly = false;
 			addChild(_hudRessource);
 			
 			_hudRessource.y = 5;
 			_hudRessource.x = (Main.stageWidth - _hudRessource.width) * 0.5;
+			
+			_store = new StoreUI();
+			_store.visible = false;
+			addChild(_store);
+			
+			_store.y = Main.stageHeight;
 			
 			
 			/*
@@ -141,6 +156,22 @@ package vues.humain
 		public function onMineTriggered(e:Event):void
 		{
 			ScreenManager.instance.showScreen(ScreenManager.instance.mineScreen);
+		}
+		
+		//public function changeSelection(sel:Vector.<GameObject>):void
+		public function updateSelection():void
+		{
+			//selection = sel;
+			
+			if (selection.length == 1 && selection[0].hasStore()) {
+				_store.visible = true;
+				_store.gameObject = selection[0];
+			}
+			else
+			{
+				_store.visible = false;
+				_store.close();
+			}
 		}
 		
 		

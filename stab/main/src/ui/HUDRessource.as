@@ -27,10 +27,19 @@ package ui
 			Ressource.URANIUM
 		);
 		
+		private var _resSet:RessourcesSet;
+		
 		private var resLbl:Object = new Object();
 		
-		public function HUDRessource() 
+		public var showOwnedOnly:Boolean = true;
+		private var _offset:uint;
+		
+		private var _compareTo:RessourcesSet = null;
+		
+		public function HUDRessource(resSet:RessourcesSet) 
 		{
+			_resSet = resSet;
+			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
@@ -39,9 +48,24 @@ package ui
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			
+			for (var i:uint = 0; i < resList.length; i++)
+			{
+				var res:Ressource = resList[i];
+				var value:uint = _resSet.getRessource(res);
+				
+				var rp:RessourcePair = new RessourcePair(res, value);
+				addChild(rp);
+				
+				rp.x = i * 55;
+				
+				resLbl[res.index] = rp;
+			}
 			
+			updateSize();
 			
-			var resSet:RessourcesSet = Game.current.getRessources(Game.current.getHumainPlayer());
+			/*
+			
+			//var resSet:RessourcesSet = Game.current.getRessources(Game.current.getHumainPlayer());
 			
 			for (var i:uint = 0; i < resList.length; i++)
 			{
@@ -54,7 +78,7 @@ package ui
 				
 				img.x = i * 55;
 				
-				var value:uint = resSet.getRessource(res);
+				var value:uint = _resSet.getRessource(res);
 				var lbl:Label = new Label();
 				lbl.text = value.toString();
 				//lbl.width = 55;
@@ -72,7 +96,7 @@ package ui
 				resLbl[res.index] = lbl;
 				
 			}
-			
+			*/
 			
 			
 			
@@ -81,16 +105,53 @@ package ui
 		
 		private function onEnterFrame(e:Event):void 
 		{
-			var resSet:RessourcesSet = Game.current.getRessources(Game.current.getHumainPlayer());
+			//var resSet:RessourcesSet = Game.current.getRessources(Game.current.getHumainPlayer());
+			updateSize();
 			
+		}
+		
+		private function updateSize():void
+		{
+			
+			var offset:uint = 0;
 			for (var i:uint = 0; i < resList.length; i++)
-			{
+			{				
 				var res:Ressource = resList[i];
-				var value:uint = resSet.getRessource(res);
-				//resLbl[res].text = 
-				(resLbl[res.index] as Label).text = value.toString();
+				var value:uint = _resSet.getRessource(res);
 				
+				var rp:RessourcePair = resLbl[res.index] as RessourcePair;
+				if (showOwnedOnly && value == 0)
+				{
+					
+					rp.visible = false;
+					//rp.width = 0;
+					rp.x = 0;
+				}
+				else
+				{
+					rp.visible = true;
+					rp.value = value;
+					
+					rp.x = offset;
+					offset += rp.width;
+					
+					if (_compareTo != null) {
+						rp.compareTo(_compareTo.getRessource(res));
+					}
+				}
+
 			}
+			_offset = offset;
+		}
+		
+		public function realWidth():uint
+		{
+			return _offset;
+		}
+		
+		public function compareTo(rs:RessourcesSet):void
+		{
+			_compareTo = rs;
 		}
 		
 	}
