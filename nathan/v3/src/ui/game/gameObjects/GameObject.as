@@ -96,8 +96,8 @@ package ui.game.gameObjects
 		
 		public function update(delta:Number):void
 		{
-			if(_element.animation != null)
-				trace(_element.animation.nom);
+			//if(_element.animation != null)
+			//	trace(_element.animation.nom);
 			
 			x = _element.x * MapUI.BASE_SIZE;
 			y = _element.y * MapUI.BASE_SIZE;
