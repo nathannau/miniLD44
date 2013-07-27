@@ -1,6 +1,7 @@
 package ui.mine 
 {
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import utils.Mine;
@@ -18,6 +19,10 @@ package ui.mine
 	{
 		private var _mine:Mine;
 		
+		private var _container:Sprite;
+		
+		private var _selected:Boolean;
+		
 		private var _tx:uint;
 		public function get tx():uint { return _tx; }
 		
@@ -31,6 +36,9 @@ package ui.mine
 			_ty = y;
 			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			
+			_container = new Sprite();
+			addChild(_container);
 		}
 		
 		private function onAddedToStage(e:Event):void 
@@ -38,31 +46,54 @@ package ui.mine
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			update();
 			
+			//_container = new Sprite();
+			//addChild(_container);
+			
+			var quad:Quad = new Quad(MapUI.BASE_SIZE, MapUI.BASE_SIZE);
+			quad.alpha = 0;
+			addChild(quad);
+			
 			x = _tx * MapUI.BASE_SIZE;
 			y = _ty * MapUI.BASE_SIZE;
 		}
 		
 		public function update():void
 		{
-			removeChildren();
+			_container.removeChildren();
 			if (_mine.isAccessible(_tx,_ty))
 			{
-				var tileBack:Image = new Image(Assets.atlas.getTexture("tile_marais"));
-				addChild(tileBack);
-				//tileBack.touchable = false;
+				var tileBack:Image;
+				if (_selected)
+					tileBack = new Image(Assets.atlas.getTexture("tile_montagne"));
+				else
+					tileBack = new Image(Assets.atlas.getTexture("tile_marais"));
+				_container.addChild(tileBack);
+				tileBack.touchable = false;
 				
 				var res:Ressource = _mine.getCaseAt(_tx, _ty);
-				var imgRes:Image = new Image(Assets.atlas.getTexture(res.nom));
-				addChild(imgRes);
-				imgRes.touchable = false;
+				if (res != null) {
+					var imgRes:Image = new Image(Assets.atlas.getTexture(res.nom));
+					_container.addChild(imgRes);
+					imgRes.touchable = false;
+				}
+				
 
 			}
 			else {
 				var tileBack:Image = new Image(Assets.atlas.getTexture("tile_black"));
-				addChild(tileBack);
+				_container.addChild(tileBack);
+				tileBack.touchable = false;
 			}
 			
 			
+		}
+		
+		public function setSelected(value:Boolean):void
+		{
+			/*var tileBack:Image = new Image(Assets.atlas.getTexture("tile_montagne"));
+			_container.addChild(tileBack);
+			tileBack.touchable = false;*/
+			_selected = value;
 		}
 		
 	}

@@ -50,13 +50,19 @@ package utils
 		 */
 		public function addTask(x:uint, d:uint):Boolean
 		{
-			if (x >= _width || d >= _width) throw new Error("Case en dehors de la mine");
+			if (x >= _width || d >= _deep) throw new Error("Case en dehors de la mine");
 			var i:int;
 			
 			var p:Object = { x:x, d:d };
-			if (_casesAccessibles.indexOf(p)<0) return false;
+			//if (_casesAccessibles.indexOf(p)<0) return false;
+			if (!isAccessible(x, d) || isInTask(x, d)) return false;
+			
+			//still have ressource ?
+			if (getCaseAt(x, d) == null) return false;
+			
+			
 			_tasks.push(p);
-			_casesAccessibles.splice(_casesAccessibles.indexOf(p), 1);
+			//_casesAccessibles.splice(_casesAccessibles.indexOf(p), 1);
 			
 			if (x > 0 && 		isNowAccessible(x - 1, d)) _casesAccessibles.push( { x:x - 1, d:d } );
 			if (x < _width-1 && isNowAccessible(x + 1, d)) _casesAccessibles.push( { x:x + 1, d:d } );
@@ -65,6 +71,14 @@ package utils
 			
 			return true;
 		}
+		
+		public function isInTask(x:uint, y:uint):Boolean
+		{
+			for (var i:uint = 0; i < _tasks.length; i++)
+				if (_tasks[i].x == x && _tasks[i].d == y) return true;
+			return false;
+		}
+		
 		/**
 		 * Permet de savoir si un case est a ajouter dans la liste des cases accéssible
 		 * @param	x Coordonnée horizontale
@@ -174,18 +188,28 @@ package utils
 			//	quantite : Quantité maximum de ressources dans une case 
 			var ressourceDetail:Object = Configuration.MINE_RESSOURCES_DETAIL[currentRessource.index];
 			
+			
 			var playerRessources:RessourcesSet = Game.current.getRessources(_player);
 			playerRessources.addRessource(
 				currentRessource, 
-				Configuration.QUALITE_RAFINAGE[upgrade.rafinage] *
-				ressourceDetail.quantite * nbCycleSup / (ressourceDetail.cycle * 100)
+				Math.max(1, Configuration.QUALITE_RAFINAGE[upgrade.rafinage] *
+				ressourceDetail.quantite * nbCycleSup / (ressourceDetail.cycle * 100.0))
 			);
+			trace(_nbCycle, ressourceDetail.cycle);
 			if (_nbCycle > ressourceDetail.cycle)
 			{
 				_cases[_tasks[0].d * _width + _tasks[0].x] = null;
 				_tasks.shift();
 				_nbCycle = 0;
 				_avancementForage = 0;
+				
+				/*
+				var playerRessources:RessourcesSet = Game.current.getRessources(_player);
+				playerRessources.addRessource(
+					currentRessource, 
+					Configuration.QUALITE_RAFINAGE[upgrade.rafinage] *
+					ressourceDetail.quantite / 
+				);*/
 			}
 			else
 			{

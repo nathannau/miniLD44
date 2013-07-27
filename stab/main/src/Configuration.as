@@ -245,7 +245,7 @@ package
 			var ret:Array = new Array();
 			ret[Terrain.PLAINE.index] = new Array(
 				{ start:0, stop:19, prob:100, type:Ressource.TERRE },
-				{ start:0, stop:0, prob:5, type:Ressource.NOURITURE },
+				{ start:0, stop:0, prob:90, type:Ressource.NOURITURE },
 				{ start:2, stop:19, prob:10, type:Ressource.PIERRE },
 				{ start:4, stop:7, prob:10, type:Ressource.FER },
 				{ start:5, stop:6, prob:5, type:Ressource.OR },
