@@ -29,6 +29,7 @@ package ui.mine
 			_tiles = new Array();
 			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		private function onAddedToStage(e:Event):void 
@@ -61,6 +62,11 @@ package ui.mine
 			
 		}
 		
+		private function onEnterFrame(e:Event):void 
+		{
+			update();
+		}
+		
 		public function update():void
 		{
 			for (var i:uint = 0; i < _tiles.length; i++) 
@@ -75,7 +81,10 @@ package ui.mine
 			
 			var tile:MineTile = obj.parent as MineTile;
 			
-			trace(tile.tx, tile.ty);
+			//trace(tile.tx, tile.ty);
+			
+			if (_mine.addTask(tile.tx, tile.ty))
+				tile.setSelected(true);
 		}
 		
 	}

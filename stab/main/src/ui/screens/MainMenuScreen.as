@@ -106,9 +106,12 @@ package ui.screens
 			}
 			else {
 				_gameButton.label = "Continue";
+				Game.current.pause();
 			}
 			
 			_musicChannel = Assets.music.play(0, 9999);
+			
+			//if (Game.current.isPaused) Game.current.resume();
 			
 		}
 		
@@ -119,7 +122,6 @@ package ui.screens
 		{
 			_musicChannel.stop();
 		}
-		
 
 
 		/**

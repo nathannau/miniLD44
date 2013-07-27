@@ -129,6 +129,8 @@ package controller
 				var centreForage:Element = Element.createElement(p, TypeElement.CENTRE_DE_FORAGE);
 				centreForage.x = startPositions[i].x;
 				centreForage.y = startPositions[i].y;
+				centreForage.animation = Animation.REPOS;       
+				Mine(_playersInfos[i].mine).currentTerrain = map.getTerrain(centreForage.x, centreForage.y);
 				centreForage.pointDeVie = Configuration.ELEMENTS_PV_INITIAL[TypeElement.CENTRE_DE_FORAGE.index];
 				
 				_elements.push(centreForage);
@@ -289,7 +291,7 @@ package controller
 			if (e.type == TypeElement.CENTRE_DE_FORAGE && !ElementCentreDeForage(e).isUp) return;
 			var dx:Number = e.path[0].x - e.x, dy:Number = e.path[0].y - e.y;
 			var d2:Number = dx * dx + dy * dy;
-			var r:Number = Configuration.DISTANCE_VISION_UNITE / (dx * dx + dy * dy);
+			var r:Number = Configuration.DISTANCE_VISION_UNITE / d2;
 			var filter:Object = { x:dx * r + e.x, y:dy * r + e.y };
 			var obstacle:Array = getElementsV2( { contain: filter } );
 			
@@ -602,6 +604,7 @@ package controller
 			if (!e.canMove) return false;
 			while (e.path.length > 0) e.path.pop();
 			
+			if (uint(e.x) == x && uint(e.y) == y) return false;
 			if (e.type == TypeElement.CENTRE_DE_FORAGE)
 			{
 				if (ElementCentreDeForage(e).isDown) 

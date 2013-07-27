@@ -33,15 +33,17 @@ package ui.screens
 			addChild(Game.current.getHumainPlayer());
 		}
 		
+		
 		override public function onEnter():void
 		{
 			if (Game.current.isPaused) Game.current.resume();
 		}
 		
+		/*
 		override public function onExit():void
 		{
 			Game.current.pause();
-		}
+		}*/
 
 	}
 
