@@ -32,14 +32,12 @@ package ui.game.gameObjects
 			
 			switch(e)
 			{
-				case ElementCaserne: 
-				case ElementCentreDeTir:
-				case ElementElevageWaark:
-				case ElementLaboratoire:
-					return GBuilding;
+				case ElementCaserne:		return GCaserne;					
+				case ElementCentreDeTir:	return GCentreDeTir;
+				case ElementElevageWaark:	return GElevageWaark;
+				case ElementLaboratoire:	return GBuilding;
 					
-				case ElementCentreDeForage:
-					return GMine;
+				case ElementCentreDeForage:	return GMine;
 					
 				case ElementSoldat:
 				case ElementFusilleur:

@@ -34,8 +34,8 @@ package ui.feathers.themes
 			
 			
 			button.height = 40;
-			button.defaultSkin = new Scale9Image(new Scale9Textures(Assets.atlas.getTexture("menuBackground"), new Rectangle(16, 16, 22, 22)));;
-			//button.downSkin = buttonDownImage;
+			button.defaultSkin = new Scale9Image(new Scale9Textures(Assets.atlas.getTexture("menuBackground"), new Rectangle(16, 16, 22, 22)));
+			button.downSkin = new Scale9Image(new Scale9Textures(Assets.atlas.getTexture("menuBackgroundLight"), new Rectangle(16, 16, 22, 22)));
 		 
 			button.defaultLabelProperties.textFormat = new TextFormat( "SourceSansProSemibold", 15, 0xFFFFFF );
 		}

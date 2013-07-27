@@ -2,6 +2,7 @@ package vues.humain
 {
 	import controller.Game;
 	import feathers.controls.Button;
+	import flash.geom.Point;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -9,7 +10,9 @@ package vues.humain
 	import ui.Assets;
 	import ui.game.GameArea;
 	import ui.game.gameObjects.GameObject;
+	import ui.store.PlaceBuildingUI;
 	import ui.store.StoreUI;
+	import utils.Element;
 
 	import ui.HUDRessource;
 	import ui.screens.ScreenManager;
@@ -42,6 +45,14 @@ package vues.humain
 		private var _eMine:ElementCentreDeForage;
 		
 		private var _store:StoreUI;
+		
+		private var _placeBuildingMode:Boolean = false;
+		public function get placeBuildingMode():Boolean { return _placeBuildingMode; }
+		
+		private var _placeBuilding:TypeElement;
+		public function get placeBuidingType():TypeElement { return _placeBuilding; }
+		
+		private var _placeBuildingUI:PlaceBuildingUI;
 		
 
 		public function Player() 
@@ -78,11 +89,15 @@ package vues.humain
 			_hudRessource.y = 5;
 			_hudRessource.x = (Main.stageWidth - _hudRessource.width) * 0.5;
 			
-			_store = new StoreUI();
+			_store = new StoreUI(this);
 			_store.visible = false;
 			addChild(_store);
 			
 			_store.y = Main.stageHeight;
+			
+			_placeBuildingUI = new PlaceBuildingUI(this);
+			_placeBuildingUI.visible = false;
+			addChild(_placeBuildingUI);
 			
 			
 			/*
@@ -144,17 +159,20 @@ package vues.humain
 		
 		public function onPauseTriggered(e:Event):void 
 		{ 
+			closeAll();
 			ScreenManager.instance.showScreen(ScreenManager.instance.mainMenuScreen); 
 		} 
 		
 		public function onGotoMineTriggered(e:Event):void 
 		{ 
+			
 			//ScreenManager.instance.showScreen(ScreenManager.instance.mainMenuScreen); 
 			_gameAera.gotoMine();
 		} 
 		
 		public function onMineTriggered(e:Event):void
 		{
+			closeAll();
 			ScreenManager.instance.showScreen(ScreenManager.instance.mineScreen);
 		}
 		
@@ -174,6 +192,65 @@ package vues.humain
 			}
 		}
 		
+		public function clearSelection():void
+		{
+			for (var i:uint = 0; i < selection.length; i++)
+				selection[i].setSelected(false);
+			
+			selection.length = 0;	
+		}
+		
+		public function placeBuilding(t:TypeElement):void
+		{
+			trace("place building", t);
+			
+			_store.close();
+			
+			_placeBuilding = t;
+			_placeBuildingMode = true;
+			//_placeBuildingUI.visible = true;
+			_placeBuildingUI.open(t);
+			
+			clearSelection();
+		}
+		
+		public function closePlaceBuildingMode():void
+		{
+			_placeBuildingUI.visible = false;
+			_placeBuildingMode = false;
+			
+			_gameAera.closePlaceBuilding();
+		}
+		
+		public function validateBuild(tx:uint, ty:uint):void
+		{
+			if (Game.current.buyElement(this, _placeBuilding, { x:tx, y:ty } ))
+			{
+				var elements:Array = Game.current.getElements();
+				_gameAera.addElement(elements[elements.length - 1]);
+			
+				closePlaceBuildingMode();
+			}
+			else trace("can't build o_O");
+			
+		}
+		
+		public function placeUnite(t:TypeElement, from:Element):void
+		{
+			if (Game.current.buyElement(this, t, from))
+			{
+				var elements:Array = Game.current.getElements();
+				_gameAera.addElement(elements[elements.length - 1]);
+				
+			}
+			else trace("can't build o_O");
+		}
+		
+		public function closeAll():void
+		{
+			closePlaceBuildingMode();
+			_store.close();
+		}
 		
 	}
 

@@ -13,7 +13,11 @@ package ui.store
 	import ui.HUDRessource;
 	import ui.SmallButton;
 	import utils.Element;
+	import utils.ElementBatiment;
+	import utils.ElementUnite;
+	import utils.RessourcesSet;
 	import utils.TypeElement;
+	import vues.humain.Player;
 	
 	/**
 	 * ...
@@ -21,6 +25,7 @@ package ui.store
 	 */
 	public class StoreUI extends Sprite 
 	{
+		private var _player:Player;
 		private var _gameObject:GameObject;
 		
 		private var _opened:Boolean = false;
@@ -33,8 +38,9 @@ package ui.store
 		private var _storeCloseButton:Button;
 		
 		
-		public function StoreUI() 
+		public function StoreUI(player:Player) 
 		{
+			_player = player;
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
@@ -113,6 +119,14 @@ package ui.store
 
 		}
 		
+		private function menuButtonCallbackCreator(type:TypeElement):Function
+		{
+			return function(e:Event):void
+			{
+				buyButtonTriggered(type);
+			}
+		}
+		
 		public function set gameObject(g:GameObject):void
 		{
 			_gameObject = g;
@@ -128,6 +142,7 @@ package ui.store
 				but.nameList.add("menuButton");
 				but.label = type.nom;
 				but.width = 160;
+				but.addEventListener(Event.TRIGGERED, menuButtonCallbackCreator(type));
 				
 				var res:HUDRessource = new HUDRessource(Game.current.getUniteCost(Game.current.getHumainPlayer(), type));
 				res.scaleX = res.scaleY = 0.6;
@@ -146,8 +161,35 @@ package ui.store
 			
 			trace(maxResSize);
 			
-			setStoreSize(160 + maxResSize * 0.6 + 30, _storeContainer.height + 10);
+			setStoreSize(160 + maxResSize * 0.6 + 30, Math.max(32, _storeContainer.height + 10));
 			
+		}
+		
+		private function buyButtonTriggered(t:TypeElement):void 
+		{
+			if (!Game.current.canBuy(Game.current.getHumainPlayer(), t)) return;
+			
+			//selectedType = t;
+			switch(t)
+			{
+				case TypeElement.CASERNE:
+				case TypeElement.CENTRE_DE_TIR:
+				case TypeElement.ELEVAGE_WAARK:
+				case TypeElement.LABORATOIRE:
+				case TypeElement.RELAIS:
+					_player.placeBuilding(t);
+					break;
+					
+				case TypeElement.MECANO:
+				case TypeElement.SOLDAT:
+				case TypeElement.FUSILLEUR:
+				case TypeElement.CHEVAUCHEUR:
+					_player.placeUnite(t, _gameObject.element);
+					break;
+			}
+
+			
+			//var cost:RessourcesSet = Game.current.getUniteCost(Game.current.getHumainPlayer(), t);
 		}
 		
 		

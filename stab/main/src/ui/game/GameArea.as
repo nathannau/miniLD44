@@ -12,6 +12,7 @@ package ui.game
 	import starling.events.TouchEvent;
 	import ui.game.gameObjects.GameObject;
 	import utils.Element;
+	import utils.ElementBatiment;
 	import utils.ElementCentreDeForage;
 	import utils.Mine;
 	import utils.TypeElement;
@@ -75,23 +76,23 @@ package ui.game
 			var elements:Array = Game.current.getElements();
 			for (i = 0; i < elements.length; i++)
 			{
-				var element:Element = elements[i];
-				//trace(element.type.className == ElementCentreDeForage);
-				
-				var cls:Class = GameObject.getGameObjectClass(element.type.className);
-				trace(cls)
-				
-				var obj:GameObject = new cls(element);//new GameObject(element);
-				addChild(obj);
-				
-				obj.x = element.x * MapUI.BASE_SIZE;
-				obj.y = element.y * MapUI.BASE_SIZE;
-				
-				_objects.push(obj);
-				
+				var element:Element = elements[i];				
+				addElement(element);
 			}
 			
 			gotoMine();
+		}
+		
+		public function addElement(element:Element):void
+		{
+			var cls:Class = GameObject.getGameObjectClass(element.type.className);
+			var obj:GameObject = new cls(element);
+			addChild(obj);
+			
+			obj.x = element.x * MapUI.BASE_SIZE;
+			obj.y = element.y * MapUI.BASE_SIZE;
+			
+			_objects.push(obj);
 		}
 		
 		public function getObjectsInRect(r:Rectangle):Vector.<GameObject>
@@ -261,6 +262,12 @@ package ui.game
 		{
 			trace("TAP", p, obj);
 			
+			if (_player.placeBuildingMode)
+			{
+				placeBuildingTouchTap(p);
+				return;
+			}
+			
 			if (obj != null)
 			{
 				var objIndex:int = _player.selection.indexOf(obj);
@@ -281,7 +288,7 @@ package ui.game
 				{
 					_player.selection[i].setSelected(false);
 				}
-				_player.selection = new Vector.<GameObject>();
+				_player.selection.length = 0;
 			}
 			
 			_player.updateSelection();
@@ -291,6 +298,11 @@ package ui.game
 		{
 			if (_touchHolded) return;
 			_touchHolded = true;
+			
+			if (_player.placeBuildingMode)
+			{
+				return;
+			}
 			
 			trace("HOLD", p, obj);
 			
@@ -306,6 +318,11 @@ package ui.game
 		private function onTouchZone(r:Rectangle):void
 		{
 			trace("ZONE", r);
+			
+			if (_player.placeBuildingMode)
+			{
+				return;
+			}
 			
 			
 			
@@ -361,6 +378,72 @@ package ui.game
 					
 					break;
 				}
+			}
+		}
+		
+		private var _buildingPos:Point;
+		private var _buildingGhost:Quad;
+		private function placeBuildingTouchTap(p:Point):void
+		{
+			var tx:uint = Math.floor(p.x / MapUI.BASE_SIZE);
+			var ty:uint = Math.floor(p.y / MapUI.BASE_SIZE);
+			
+			trace(tx, ty);
+			
+			var size:uint = 2;
+			
+			if (_buildingPos != null && _buildingPos.x == tx && _buildingPos.y == ty)
+			{
+				//BUILD
+				_buildingPos = null;
+				removeChild(_buildingGhost);
+				_buildingGhost = null;
+				
+				if (Game.current.getElementsV2( { rectangle: { minX:tx, minY:ty, maxX:tx + size-1, maxY:ty + size-1 }} ).length == 0)
+					_player.validateBuild(tx, ty);
+				
+			}
+			else
+			{
+				//PLACE GHOST
+				_buildingPos = new Point(tx, ty);
+				
+				if (_buildingGhost == null)
+				{
+					//var size:uint = (_player.placeBuidingType as ElementBatiment).size;
+					
+					
+					_buildingGhost = new Quad(MapUI.BASE_SIZE * size, MapUI.BASE_SIZE * size, 0xA0FFFF);
+					_buildingGhost.alpha = 0.5;
+					addChild(_buildingGhost);
+					
+					
+				}
+				
+				_buildingGhost.x = tx * MapUI.BASE_SIZE;
+				_buildingGhost.y = ty * MapUI.BASE_SIZE;
+				
+				if (Game.current.getElementsV2({rectangle: { minX:tx, minY:ty, maxX:tx+size-1, maxY:ty+size-1 }}).length)
+				{
+					_buildingGhost.color = 0xFF0000
+				}
+				else
+				{
+					_buildingGhost.color = 0xA0FFFF;
+				}
+				
+				
+				
+			}
+		}
+		
+		public function closePlaceBuilding():void
+		{
+			if (_buildingGhost != null) 
+			{
+				removeChild(_buildingGhost);
+				_buildingGhost = null;
+				_buildingPos = null;
 			}
 		}
 		

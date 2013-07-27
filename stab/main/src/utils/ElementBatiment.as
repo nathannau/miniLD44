@@ -17,6 +17,8 @@ package utils
 		public function get tasks():Array { return _tasks; }
 		private var _tasks:Array = new Array();
 		
+		override public function get size():uint { return 2;}
+		
 	}
 
 }

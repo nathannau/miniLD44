@@ -981,6 +981,7 @@
             <filename>menuBackground.png</filename>
             <filename>redCross.png</filename>
             <filename>hammer.png</filename>
+            <filename>menuBackgroundLight.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

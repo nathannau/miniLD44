@@ -60,9 +60,9 @@ package ui.mine
 		public function update():void
 		{
 			_container.removeChildren();
+			var tileBack:Image;
 			if (_mine.isAccessible(_tx,_ty))
 			{
-				var tileBack:Image;
 				if (_selected)
 					tileBack = new Image(Assets.atlas.getTexture("tile_montagne"));
 				else
@@ -80,7 +80,7 @@ package ui.mine
 
 			}
 			else {
-				var tileBack:Image = new Image(Assets.atlas.getTexture("tile_black"));
+				tileBack = new Image(Assets.atlas.getTexture("tile_black"));
 				_container.addChild(tileBack);
 				tileBack.touchable = false;
 			}
