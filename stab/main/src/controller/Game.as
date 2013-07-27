@@ -602,7 +602,6 @@ package controller
 			if (!e.canMove) return false;
 			while (e.path.length > 0) e.path.pop();
 			
-			e.path.push( { x:x, y:y } );
 			if (e.type == TypeElement.CENTRE_DE_FORAGE)
 			{
 				if (ElementCentreDeForage(e).isDown) 
@@ -610,6 +609,8 @@ package controller
 			}
 			else
 				e.animation = Animation.MOUVEMENT;
+				
+			e.path.push( { x:x, y:y } );
 			return true;
 		}
 		
