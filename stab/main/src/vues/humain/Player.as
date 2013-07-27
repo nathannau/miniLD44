@@ -102,7 +102,7 @@ package vues.humain
 				onInit();
 			}
 			
-			_mineButton.visible = _eMine.animation == Animation.REPOS;
+			_mineButton.visible = _eMine.isDown;
 		}
 		
 		

@@ -17,12 +17,12 @@ package ui
 	{
 		private var resList:Array = new Array(
 			Ressource.NOURITURE, 
-			Ressource.TERRE, 
+			//Ressource.TERRE, 
 			Ressource.PIERRE, 
+			Ressource.CHARBON,
 			Ressource.FER, 
 			Ressource.OR, 
 			Ressource.PETROLE, 
-			Ressource.CHARBON,
 			Ressource.DIAMANT,
 			Ressource.URANIUM
 		);

@@ -982,6 +982,7 @@
             <filename>gotoMine.png</filename>
             <filename>drill.png</filename>
             <filename>gotoMine.png</filename>
+            <filename>../../../../StarlingTest01/assets/images/src/tile_black.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
