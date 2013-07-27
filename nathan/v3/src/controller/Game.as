@@ -287,30 +287,45 @@ package controller
 		 */
 		private function move(e:Element):void
 		{
-			if (!e.canMove || e.hasAttacked || e.path.length == 0) return;
+			if (!e.canMove || e.hasAttacked || e.pathDest == null) return;
 			if (e.type == TypeElement.CENTRE_DE_FORAGE && !ElementCentreDeForage(e).isUp) return;
-			var dx:Number = e.path[0].x - e.x, dy:Number = e.path[0].y - e.y;
-			var d2:Number = dx * dx + dy * dy;
-			var r:Number = Configuration.DISTANCE_VISION_UNITE / d2;
-			var filter:Object = { x:dx * r + e.x, y:dy * r + e.y };
-			var obstacle:Array = getElementsV2( { contain: filter } );
 			
-			var d:Number;
-			if (obstacle.length > 0)
+			var dx:Number = e.pathStep.x - e.x, dy:Number = e.pathStep.y - e.y;
+			var dLen2:Number = dx * dx + dy * dy;
+			var dLen:Number = Math.sqrt(dLen2);
+			var dirX:Number = dx / dLen, dirY:Number = dy / dLen;
+			
+			var obstacles:Array = getElementsV2( 
+				{ cercle: { x:e.x, y:e.y, r2:Math.min(Configuration.DISTANCE_VISION_UNITE, dLen2), c2:e.rayon }}
+			);
+			obstacles.sort(function sortByDistance(a:Element, b:Element):Number
 			{
-				var o:Element = obstacle[0];
-				// TODO : to complete...
-				d = Math.sqrt(d2);
-				var cx:Number = dy * o.rayon / d;
-				var cy:Number = -dx * o.rayon / d;
-				if ((o.x + cx - filter.x) * (o.x + cx - filter.x) + (o.y + cy - filter.y) * (o.y + cy - filter.y) <
-					(o.x - cx - filter.x) * (o.x - cx - filter.x) + (o.y - cy - filter.y) * (o.y - cy - filter.y))
-					e.path.unshift( { x:o.x + cx, y:o.y + cy } );
-				else
-					e.path.unshift( { x:o.x - cx, y:o.y - cy } );
-				
-				move(e);
-				return;
+				var da:Number = (a.x - e.x) * (a.x - e.x) + (a.y - e.y) * (a.y - e.y);
+				var db:Number = (b.x - e.x) * (b.x - e.x) + (b.y - e.y) * (b.y - e.y);
+				if (da < db) 
+					return -1;
+				else if (da > db) 
+					return 1;
+				else 
+					return 0;
+			});
+			
+			for (var i:uint = 0; i < obstacles.length; i++)
+			{
+				var o:Element = obstacles[i];
+				var ox:Number = o.x - e.x, oy:Number = o.y - e.y;
+				var oLen: Number = Math.sqrt(ox * ox + oy * oy);
+				var cx:Number = dirX * oLen + e.x, cy:Number = dirY * oLen + e.y;
+				var ocx:Number = cx - o.x, ocy:Number = cy - o.y;
+				var ocLen2:Number = ocx * ocx + ocy * ocy;
+				if (ocLen2 <= o.rayon)
+				{
+					var olLen:Number = Math.sqrt(ocLen2);
+					var psl:Number = Math.sqrt(o.rayon)+1;
+					e.pathStep = { x: ocx * psl / olLen + o.x, y:ocy * psl / olLen + o.y };
+					move(e);
+					return;
+				}
 			}
 			
 			var vitesse:Number;
@@ -318,33 +333,36 @@ package controller
 				vitesse = Configuration.ELEMENTS_VITESSE[0][0];
 			else
 				vitesse = Configuration.ELEMENTS_VITESSE[1][e.level];
-				
+			
 			var v2:Number = vitesse * vitesse;
-			if (v2 > d2)
+			if (v2 > dLen2)
 			{
-				e.x = e.path[0].x;
-				e.y = e.path[0].y;
-				e.path.shift();
-				// TODO : Verifier que ca va bien ici
-				if (e.path.length == 0)
+				e.x = e.pathStep.x;
+				e.y = e.pathStep.y;
+				if (e.pathStep == e.pathDest)
 				{
+					e.pathDest = null;
 					e.animation = Animation.REPOS;
 					if (e.type == TypeElement.CENTRE_DE_FORAGE)
 					{
 						(e as ElementCentreDeForage).down();
 					}
 				}
-				
+				else 
+					e.pathStep = null;
 			}
 			else
 			{
-				d = Math.sqrt(d2);
+				e.x += dirX * vitesse;
+				e.y += dirY * vitesse;
+				//d = Math.sqrt(d2);
 				
 				/*r = v2 / d2;
 				e.x += dx * r;
-				e.y += dy * r;*/
+				e.y += dy * r;* /
 				e.x += dx / d * vitesse;
 				e.y += dy / d * vitesse;
+				/**/
 			}
 		}
 		
@@ -433,11 +451,18 @@ package controller
 					(e.x - this.contain.x) * (e.x - this.contain.x) +
 					(e.y - this.contain.y) * (e.y - this.contain.y) > 
 					e.rayon * e.rayon) return false;
+				if (this.cercle != undefined)
+				{
+					var d2:Number = (e.x - this.cercle.x) * (e.x - this.cercle.x) + (e.y - this.cercle.y) * (e.y - this.cercle.y);
+					if (d2<this.cercle.c2 || d2>this.cercle.r2) return false; 
+				}
+				/*
 				if (this.cercle != undefined && 
 					(e.x - this.cercle.x) * (e.x - this.cercle.x) + 
 					(e.y - this.cercle.y) * (e.y - this.cercle.y) -
 					(e.rayon*e.rayon + this.c2) // La formule est biaisé mais doit fonctionner...
 					> this.cercle.r2) return false;
+				*/
 				if (this.player != undefined && ((e.player != this.player) != this.otherPlayer) ) return false;
 				
 				if (this.types == undefined || this.types.length == 0) return true;
@@ -602,7 +627,10 @@ package controller
 		public function moveElement(e:Element, x:uint, y:uint):Boolean
 		{
 			if (!e.canMove) return false;
-			while (e.path.length > 0) e.path.pop();
+			//while (e.path.length > 0) e.path.pop();
+			e.pathDest = null;
+			e.pathStep = null
+			;
 			if (uint(e.x) == x && uint(e.y) == y) return false;
 			if (e.type == TypeElement.CENTRE_DE_FORAGE)
 			{
@@ -612,7 +640,8 @@ package controller
 			else
 				e.animation = Animation.MOUVEMENT;
 				
-			e.path.push( { x:x, y:y } );
+			//e.path.push( { x:x, y:y } );
+			e.pathDest = { x:x, y:y };
 			return true;
 		}
 		
