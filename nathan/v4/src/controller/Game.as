@@ -625,7 +625,8 @@ package controller
 					var fromElement:ElementBatiment = from as ElementBatiment;
 					if (fromElement == null || type != getUniteForBatiment(fromElement)) 
 						throw new Error("Type d'unité incompatible avec le type d'origine"); //return false;
-					if (!fromElement.animation) return false;
+					//if (!fromElement.animation) return false;
+					if (!fromElement.isBuilded || fromElement.player!=player) return false;
 					
 					var unit:Element = new type.className(player);
 					
