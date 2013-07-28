@@ -193,7 +193,12 @@ package controller
 			for (i = 0; i < _elements.length; i++) move(_elements[i]);
 			
 			for (i = 0; i < _players.length; i++) (_players[i] as IPlayer).update();
-			
+
+			for (i = 0; i < _playersInfos.length; i++) 
+			{
+				var mine:Mine = _playersInfos[i].mine;
+				if (mine.nbUpdate > Configuration.MINE_TIMELIFE) mine.reinit();
+			}
 			
 			if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("TODO : niveau haut");
 		}
@@ -622,8 +627,8 @@ package controller
 					var unit:Element = new type.className(player);
 					
 					// TODO : Tmp
-					unit.x = from.x;
-					unit.y = from.y + 2;
+					//unit.x = from.x;
+					//unit.y = from.y + 2;
 					
 					unit.level = niveau;
 					unit.pointDeVie = Configuration.ELEMENTS_PV_INITIAL[type.index][niveau];
@@ -632,7 +637,7 @@ package controller
 					pr.subRessourcesSet(cost);
 					
 					// TODO : Tmp
-					_elements.push(unit);
+					//_elements.push(unit);
 			}
 			
 			return true;
@@ -640,7 +645,6 @@ package controller
 		
 		/**
 		 * Déplace un element
-		 * TODO : fonction non implementé
 		 * @param	e Element à déplacer
 		 * @param	x Coordonne de destination
 		 * @param	y Coordonne de destination

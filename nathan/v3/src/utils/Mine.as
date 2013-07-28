@@ -175,9 +175,9 @@ package utils
 		public function get avancementForage():uint { return _avancementForage; }
 		private var _avancementForage:uint = 0;
 		
+		private var _lastQantite:Number=0;
 		/**
 		* Mise a jour de la mine
-		* TODO : Bug sur l'ajout de ressources (Math.max(1, Configuration.QUALITE_RAFINAGE[upgrade.rafinage] *...)
 		*/
 		public function update():void
 		{
@@ -195,12 +195,14 @@ package utils
 			//	quantite : Quantité maximum de ressources dans une case 
 			var ressourceDetail:Object = Configuration.MINE_RESSOURCES_DETAIL[currentRessource.index];
 			
-			var playerRessources:RessourcesSet = Game.current.getRessources(_player);
-			playerRessources.addRessource(
-				currentRessource, 
-				Math.max(1, Configuration.QUALITE_RAFINAGE[upgrade.rafinage] *
-					ressourceDetail.quantite * nbCycleSup / (ressourceDetail.cycle * 100.0))
-			);
+			_lastQantite += Configuration.QUALITE_RAFINAGE[upgrade.rafinage] *
+					ressourceDetail.quantite * nbCycleSup / (ressourceDetail.cycle * 100.0);
+			if (_lastQantite >= 1)
+			{
+				var playerRessources:RessourcesSet = Game.current.getRessources(_player);
+				playerRessources.addRessource(currentRessource, _lastQantite);
+				_lastQantite = 0;
+			}
 			
 			//trace(_nbCycle, ressourceDetail.cycle);
 			if (_nbCycle > ressourceDetail.cycle)
