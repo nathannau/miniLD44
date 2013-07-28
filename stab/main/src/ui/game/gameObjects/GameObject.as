@@ -13,7 +13,7 @@ package ui.game.gameObjects
 	
 	public class GameObject extends Sprite//CullingSprite 
 	{		
-		private var _element:Element;
+		protected var _element:Element;
 		public function get element():Element { return _element;}
 		
 		public var sizeX:int = 1;
@@ -32,14 +32,12 @@ package ui.game.gameObjects
 			
 			switch(e)
 			{
-				case ElementCaserne: 
-				case ElementCentreDeTir:
-				case ElementElevageWaark:
-				case ElementLaboratoire:
-					return GBuilding;
+				case ElementCaserne:		return GCaserne;					
+				case ElementCentreDeTir:	return GCentreDeTir;
+				case ElementElevageWaark:	return GElevageWaark;
+				case ElementLaboratoire:	return GBuilding;
 					
-				case ElementCentreDeForage:
-					return GMine;
+				case ElementCentreDeForage:	return GMine;
 					
 				case ElementSoldat:
 				case ElementFusilleur:
@@ -125,6 +123,15 @@ package ui.game.gameObjects
 					
 					
 			}*/
+		}
+		
+		public function hasStore():Boolean {
+			return false;
+		}
+		
+		public function getStoreItems():Array
+		{
+			return [];
 		}
 		
 	}

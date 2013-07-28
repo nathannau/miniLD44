@@ -3,7 +3,7 @@ package ui.game.gameObjects
 	import utils.Element;
 	/**
 	 * ...
-	 * @author 
+	 * @author Stab
 	 */
 	public class GUnit extends GameObject 
 	{

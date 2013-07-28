@@ -27,8 +27,8 @@ package utils
 		
 		
 		public function get isChangingState():Boolean { return _endChangingStateIn > 0; }
-		public function get isUp():Boolean { return _endChangingStateIn == 0 && path.length>0; }
-		public function get isDown():Boolean { return _endChangingStateIn == 0 && path.length==0; }
+		public function get isUp():Boolean { return _endChangingStateIn == 0 && pathDest!=null; }
+		public function get isDown():Boolean { return _endChangingStateIn == 0 && pathDest==null; }
 		private var _endChangingStateIn:uint = 0;
 		
 		public function up():void
@@ -51,7 +51,7 @@ package utils
 			{
 				_endChangingStateIn--;
 				if (_endChangingStateIn == 0)
-				if (path.length > 0)
+				if (pathDest != null)
 					animation = Animation.MOUVEMENT;
 				else
 				{
@@ -61,6 +61,8 @@ package utils
 				
 			}
 		}
+		
+		override public function get size():uint { return 3;}
 		
 		
 	}

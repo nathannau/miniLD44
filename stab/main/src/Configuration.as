@@ -33,7 +33,9 @@ package
 		 */
 		public static const RESSOURCES_AT_START:RessourcesSet = new RessourcesSet(
 			Ressource.NOURITURE, 10,
-			Ressource.PIERRE, 5
+			//Ressource.PIERRE, 5
+			Ressource.PIERRE, 20,
+			Ressource.FER, 20
 		);
 
 		/**
