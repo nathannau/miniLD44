@@ -166,6 +166,8 @@ package utils
 			_tasks = new Array();
 			_nbCycle = 0;
 			_nbUpdate = 0;
+			
+			Game.current.dispatchEvent(new GameEvent(GameEvent.MINE_REINIT, this));
 		}
 		
 		private var _nbCycle:uint = 0;
