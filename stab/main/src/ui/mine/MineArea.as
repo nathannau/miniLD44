@@ -37,7 +37,7 @@ package ui.mine
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
-			var img:Quad = new Quad(Main.stageWidth, 200, 0xE0F0FF);
+			var img:Quad = new Quad(Main.stageWidth, 200, 0x99b6ad);
 			addChild(img);
 			
 			_mineContainer = new Sprite();
@@ -88,8 +88,7 @@ package ui.mine
 			
 			trace(tile.tx, tile.ty);
 			
-			if (_mine.addTask(tile.tx, tile.ty))
-				tile.setSelected(true);
+			_mine.addTask(tile.tx, tile.ty)
 		}
 		
 	}

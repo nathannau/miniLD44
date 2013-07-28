@@ -1,6 +1,7 @@
 package ui.feathers.themes 
 {
 	import feathers.controls.Button;
+	import feathers.controls.Label;
 	import feathers.display.Scale9Image;
 	import feathers.textures.Scale9Textures;
 	import flash.geom.Rectangle;
@@ -24,6 +25,8 @@ package ui.feathers.themes
 			setInitializerForClass(Button, smallButtonInitializer, "smallButton");
 			
 			setInitializerForClass(Button, menuButton, "menuButton");
+			
+			setInitializerForClass(Label, mineTimerLabel, "mineTimer");
 			
 		}
 		
@@ -57,6 +60,11 @@ package ui.feathers.themes
 		{
 			button.height = 54;
 			button.width = 54;
+		}
+		
+		private function mineTimerLabel(label:Label):void
+		{
+			label.textRendererProperties.textFormat = new TextFormat("SourceSansProSemibold", 60, 0xFFFFFF, true);
 		}
 		
 		
