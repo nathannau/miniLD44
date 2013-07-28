@@ -189,13 +189,13 @@ package controller
 			
 			for (i = 0; i < _elements.length; i++) (_elements[i] as Element).hasAttacked = attack(_elements[i]);
 			
-			var deads:Array = _elements.filter(function isAlive(e:Element, index:int, array:Array):Boolean { return e.pointDeVie <= 0 } );
-			if (deads.length > 0)
-			{
-				_elements = _elements.filter(function isAlive(e:Element, index:int, array:Array):Boolean { return e.pointDeVie > 0 } );
-				for (i = 0; i < deads.length; i++)
-					dispatchEvent(new GameEvent(GameEvent.REMOVE_ELEMENT, deads[i]));
-			}
+			_elements = _elements.filter(function isAlive(e:Element, index:int, array:Array):Boolean 
+			{ 
+				if (e.pointDeVie <= 0)
+					Game.current.dispatchEvent(new GameEvent(GameEvent.REMOVE_ELEMENT, e));
+					
+				return e.pointDeVie > 0 } 
+			);
 			
 			for (i = 0; i < _elements.length; i++) move(_elements[i]);
 			
@@ -390,7 +390,7 @@ package controller
 				for (i = 0; i < _elements.length; i++) (_elements[i] as Element).clearVisible();
 				var forages:Array = getElements(TypeElement.CENTRE_DE_FORAGE)
 				for (i = 0; i < forages.length; i++) updateVisiblity([forages[i]]);
-				//return;
+				return;
 			}
 			if (lastAvailable.length == 0) return;
 			var player:IPlayer = Element(lastAvailable[0]).player;
@@ -640,11 +640,7 @@ package controller
 					if (fromElement == null || type != getUniteForBatiment(fromElement)) 
 						throw new Error("Type d'unité incompatible avec le type d'origine"); //return false;
 					//if (!fromElement.animation) return false;
-<<<<<<< HEAD
-					if (!fromElement.isBuilded || fromElement.player!=player) return false;
-=======
 					if (!fromElement.isBuilded || fromElement.player!=player || !fromElement.available) return false;
->>>>>>> origin/Nathan
 					
 					var unit:Element = new type.className(player);
 					

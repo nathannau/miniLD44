@@ -189,7 +189,13 @@ package controller
 			
 			for (i = 0; i < _elements.length; i++) (_elements[i] as Element).hasAttacked = attack(_elements[i]);
 			
-			_elements = _elements.filter(function isAlive(e:Element, index:int, array:Array):Boolean { return e.pointDeVie > 1 } );
+			_elements = _elements.filter(function isAlive(e:Element, index:int, array:Array):Boolean 
+			{ 
+				if (e.pointDeVie <= 0)
+					Game.current.dispatchEvent(new GameEvent(GameEvent.REMOVE_ELEMENT, e));
+					
+				return e.pointDeVie > 0 } 
+			);
 			
 			for (i = 0; i < _elements.length; i++) move(_elements[i]);
 			
@@ -381,25 +387,30 @@ package controller
 			var i:uint, j:uint;
 			if (lastAvailable == null)
 			{
-				for (i = 0; i < _elements.length; i++) (_elements[i] as Element).available = false;
-				lastAvailable = getElements(TypeElement.CENTRE_DE_FORAGE)
-				for (i = 0; i < lastAvailable.length; i++) (lastAvailable[i] as Element).available = true;
+				for (i = 0; i < _elements.length; i++) (_elements[i] as Element).clearVisible();
+				var forages:Array = getElements(TypeElement.CENTRE_DE_FORAGE)
+				for (i = 0; i < forages.length; i++) updateVisiblity([forages[i]]);
+				return;
 			}
 			if (lastAvailable.length == 0) return;
+			var player:IPlayer = Element(lastAvailable[0]).player;
 			
 			var nextAvaible:Array = new Array();
 			for (i = 0; i < _elements.length; i++)
 			{
 				var e1:Element = _elements[i];
-				if (!e1.available) for (j = 0; j < lastAvailable.length; j++)
+				if (!e1.isVisibleBy(player)) for (j = 0; j < lastAvailable.length; j++)
 				{
 					var e2:Element = lastAvailable[j];
 					var delta:uint = (e1.x - e2.x) * (e1.x - e2.x) + (e1.y - e2.y) * (e1.y - e2.y);
-					if (e2 is IElementVision && delta <= (e2 as IElementVision).distanceVision)
+					if (delta <= (e2 as IElementVision).distanceVision)
 					{
-						nextAvaible.push(e1);
-						e1.available = true;
-						break;
+						e1.visibleBy(player);
+						if (e1 is IElementVision && e1.player == player)
+						{
+							nextAvaible.push(e1);
+							break;
+						}
 					}
 				}
 			}
@@ -458,7 +469,7 @@ package controller
 				//	e.y<this.rectangle.minY || e.y>this.rectangle.maxY)) return false;
 				if (this.rectangle != undefined && (e.x+e.rayon<this.rectangle.minX || e.x-e.rayon>this.rectangle.maxX || 
 					e.y+e.rayon<this.rectangle.minY || e.y-e.rayon>this.rectangle.maxY)) return false;
-					
+				
 				if (this.contain != undefined &&
 					(e.x - this.contain.x) * (e.x - this.contain.x) +
 					(e.y - this.contain.y) * (e.y - this.contain.y) > 
@@ -629,7 +640,7 @@ package controller
 					if (fromElement == null || type != getUniteForBatiment(fromElement)) 
 						throw new Error("Type d'unité incompatible avec le type d'origine"); //return false;
 					//if (!fromElement.animation) return false;
-					if (!fromElement.isBuilded || fromElement.player!=player) return false;
+					if (!fromElement.isBuilded || fromElement.player!=player || !fromElement.available) return false;
 					
 					var unit:Element = new type.className(player);
 					
@@ -659,7 +670,7 @@ package controller
 		 */
 		public function moveElement(e:Element, x:uint, y:uint):Boolean
 		{
-			if (!e.canMove) return false;
+			if (!e.canMove || !e.available) return false;
 			//while (e.path.length > 0) e.path.pop();
 			e.pathDest = null;
 			e.pathStep = null

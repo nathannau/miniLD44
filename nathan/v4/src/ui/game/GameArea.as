@@ -5,6 +5,7 @@ package ui.game
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
@@ -29,6 +30,8 @@ package ui.game
 		private var _player:Player;
 		
 		private var _map:MapUI;
+		
+		private var _objectContainer: Sprite;
 		private var _objects: Vector.<GameObject>;
 		
 		//public var selection:Vector.<GameObject>;
@@ -57,6 +60,9 @@ package ui.game
 			_map = new MapUI();
 			addChild(_map);
 			
+			_objectContainer = new Sprite();
+			addChild(_objectContainer);
+			
 			_objects = new Vector.<GameObject>();
 			
 
@@ -84,6 +90,7 @@ package ui.game
 			gotoMine();
 			
 			Game.current.addEventListener(GameEvent.ADD_ELEMENT, onAddElement);
+			Game.current.addEventListener(GameEvent.REMOVE_ELEMENT, onRemoveElement);
 			
 		}
 		
@@ -94,11 +101,16 @@ package ui.game
 			addElement(e.data as Element);
 		}
 		
+		private function onRemoveElement(e:GameEvent):void 
+		{
+			removeElement(e.data as Element);
+		}
+		
 		public function addElement(element:Element):void
 		{
 			var cls:Class = GameObject.getGameObjectClass(element.type.className);
 			var obj:GameObject = new cls(element);
-			addChild(obj);
+			_objectContainer.addChild(obj);
 			
 			obj.x = element.x * MapUI.BASE_SIZE;
 			obj.y = element.y * MapUI.BASE_SIZE;
@@ -106,6 +118,16 @@ package ui.game
 			_objects.push(obj);
 			
 			trace(obj, obj.x, obj.y);
+		}
+		
+		public function removeElement(element:Element):void
+		{
+			for (var i:uint = 0; i < _objects.length; i++)
+				if (_objects[i].element == element)
+				{
+					_objectContainer.removeChild(_objects[i]);
+					_objects.splice(i, 1);
+				}
 		}
 		
 		public function getObjectsInRect(r:Rectangle):Vector.<GameObject>
@@ -159,7 +181,10 @@ package ui.game
 			{
 				var obj:GameObject = _objects[i];
 				obj.update(delta);
+				
 			}
+			
+			_objectContainer.sortChildren(function(a:DisplayObject, b:DisplayObject):Number { return a.y - b.y; } );
 			
 			if (_touchActive && !_touchMoved && !_touchMulti) 
 			{
