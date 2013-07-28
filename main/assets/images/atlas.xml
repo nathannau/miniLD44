@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:b6b52a6bf04b0ecd5c15df78d4311839$ -->
+<!-- $TexturePacker:SmartUpdate:afa2ba719e30ddb517c74d0afff1f2cd$ -->
 <TextureAtlas imagePath="atlas.png">
-    <SubTexture name="CHARBON" x="456" y="842" width="48" height="44" frameX="-3" frameY="-4" frameWidth="54" frameHeight="54"/>
-    <SubTexture name="DIAMANT" x="342" y="944" width="44" height="48" frameX="-5" frameY="-3" frameWidth="54" frameHeight="54"/>
-    <SubTexture name="FER" x="350" y="842" width="54" height="48" frameX="0" frameY="-2" frameWidth="54" frameHeight="54"/>
-    <SubTexture name="NOURITURE" x="302" y="894" width="54" height="48" frameX="0" frameY="-4" frameWidth="54" frameHeight="54"/>
-    <SubTexture name="OR" x="286" y="950" width="54" height="48" frameX="0" frameY="-2" frameWidth="54" frameHeight="54"/>
-    <SubTexture name="PETROLE" x="250" y="950" width="34" height="50" frameX="-10" frameY="-1" frameWidth="54" frameHeight="54"/>
-    <SubTexture name="PIERRE" x="358" y="892" width="54" height="46" frameX="0" frameY="-4" frameWidth="54" frameHeight="54"/>
-    <SubTexture name="TERRE" x="406" y="842" width="48" height="44" frameX="-3" frameY="-4" frameWidth="54" frameHeight="54"/>
-    <SubTexture name="URANIUM" x="250" y="898" width="50" height="50" frameX="-1" frameY="-1" frameWidth="54" frameHeight="54"/>
-    <SubTexture name="back" x="2" y="212" width="312" height="215"/>
-    <SubTexture name="bigCog" x="247" y="597" width="238" height="243"/>
-    <SubTexture name="button" x="2" y="557" width="243" height="126"/>
-    <SubTexture name="buttonDown" x="2" y="429" width="243" height="126"/>
-    <SubTexture name="drill" x="170" y="779" width="54" height="54"/>
-    <SubTexture name="gotoMine" x="114" y="741" width="54" height="54"/>
-    <SubTexture name="gunman0000" x="2" y="685" width="100" height="92" frameX="-107" frameY="-69" frameWidth="270" frameHeight="270"/>
-    <SubTexture name="hammer" x="300" y="842" width="48" height="50" frameX="-5" frameY="-2" frameWidth="54" frameHeight="54"/>
-    <SubTexture name="mecano0000" x="170" y="685" width="68" height="92" frameX="-101" frameY="-70" frameWidth="270" frameHeight="270"/>
-    <SubTexture name="melee0000" x="316" y="384" width="190" height="170" frameX="-48" frameY="-52" frameWidth="270" frameHeight="270"/>
-    <SubTexture name="menuBackground" x="114" y="685" width="54" height="54"/>
-    <SubTexture name="menuBackgroundLight" x="58" y="779" width="54" height="54"/>
-    <SubTexture name="pause" x="250" y="842" width="48" height="54" frameX="-3" frameY="0" frameWidth="54" frameHeight="54"/>
-    <SubTexture name="redCross" x="170" y="835" width="54" height="50" frameX="0" frameY="-3" frameWidth="54" frameHeight="54"/>
-    <SubTexture name="rider0000" x="2" y="842" width="166" height="148" frameX="-62" frameY="-13" frameWidth="270" frameHeight="270"/>
-    <SubTexture name="soldier0000" x="170" y="887" width="78" height="96" frameX="-106" frameY="-66" frameWidth="270" frameHeight="270"/>
-    <SubTexture name="tile_black" x="2" y="779" width="54" height="54"/>
-    <SubTexture name="tile_marais" x="247" y="541" width="54" height="54"/>
-    <SubTexture name="tile_montagne" x="247" y="485" width="54" height="54"/>
-    <SubTexture name="tile_plaine" x="247" y="429" width="54" height="54"/>
-    <SubTexture name="title" x="2" y="2" width="478" height="208"/>
-    <SubTexture name="townmine0000" x="316" y="212" width="194" height="170" frameX="-35" frameY="-51" frameWidth="270" frameHeight="270"/>
+    <SubTexture name="CHARBON" x="58" y="978" width="48" height="44" frameX="-3" frameY="-4" frameWidth="54" frameHeight="54"/>
+    <SubTexture name="DIAMANT" x="303" y="918" width="44" height="48" frameX="-5" frameY="-3" frameWidth="54" frameHeight="54"/>
+    <SubTexture name="FER" x="2" y="930" width="54" height="48" frameX="0" frameY="-2" frameWidth="54" frameHeight="54"/>
+    <SubTexture name="NOURITURE" x="429" y="842" width="54" height="48" frameX="0" frameY="-4" frameWidth="54" frameHeight="54"/>
+    <SubTexture name="OR" x="405" y="974" width="54" height="48" frameX="0" frameY="-2" frameWidth="54" frameHeight="54"/>
+    <SubTexture name="PETROLE" x="466" y="152" width="34" height="50" frameX="-10" frameY="-1" frameWidth="54" frameHeight="54"/>
+    <SubTexture name="PIERRE" x="58" y="930" width="54" height="46" frameX="0" frameY="-4" frameWidth="54" frameHeight="54"/>
+    <SubTexture name="TERRE" x="461" y="944" width="48" height="44" frameX="-3" frameY="-4" frameWidth="54" frameHeight="54"/>
+    <SubTexture name="URANIUM" x="114" y="930" width="50" height="50" frameX="-1" frameY="-1" frameWidth="54" frameHeight="54"/>
+    <SubTexture name="back" x="2" y="247" width="312" height="215"/>
+    <SubTexture name="bigCog" x="2" y="2" width="238" height="243"/>
+    <SubTexture name="button" x="2" y="802" width="243" height="126"/>
+    <SubTexture name="buttonBack" x="349" y="922" width="54" height="54"/>
+    <SubTexture name="buttonDown" x="2" y="674" width="243" height="126"/>
+    <SubTexture name="drill" x="415" y="730" width="54" height="54"/>
+    <SubTexture name="gotoMine" x="415" y="674" width="54" height="54"/>
+    <SubTexture name="gunman0000" x="247" y="824" width="100" height="92" frameX="-107" frameY="-69" frameWidth="270" frameHeight="270"/>
+    <SubTexture name="hammer" x="461" y="892" width="48" height="50" frameX="-5" frameY="-2" frameWidth="54" frameHeight="54"/>
+    <SubTexture name="mecano0000" x="438" y="2" width="68" height="92" frameX="-101" frameY="-70" frameWidth="270" frameHeight="270"/>
+    <SubTexture name="melee0000" x="316" y="230" width="190" height="170" frameX="-48" frameY="-52" frameWidth="270" frameHeight="270"/>
+    <SubTexture name="menuBackground" x="247" y="918" width="54" height="54"/>
+    <SubTexture name="menuBackgroundLight" x="428" y="402" width="54" height="54"/>
+    <SubTexture name="mineTile_available" x="372" y="402" width="54" height="54"/>
+    <SubTexture name="mineTile_normal" x="316" y="402" width="54" height="54"/>
+    <SubTexture name="mineTile_selected" x="438" y="96" width="54" height="54"/>
+    <SubTexture name="pause" x="429" y="786" width="48" height="54" frameX="-3" frameY="0" frameWidth="54" frameHeight="54"/>
+    <SubTexture name="redCross" x="405" y="922" width="54" height="50" frameX="0" frameY="-3" frameWidth="54" frameHeight="54"/>
+    <SubTexture name="rider0000" x="247" y="674" width="166" height="148" frameX="-62" frameY="-13" frameWidth="270" frameHeight="270"/>
+    <SubTexture name="soldier0000" x="349" y="824" width="78" height="96" frameX="-106" frameY="-66" frameWidth="270" frameHeight="270"/>
+    <SubTexture name="tile_black" x="410" y="174" width="54" height="54"/>
+    <SubTexture name="tile_marais" x="354" y="174" width="54" height="54"/>
+    <SubTexture name="tile_montagne" x="298" y="174" width="54" height="54"/>
+    <SubTexture name="tile_plaine" x="242" y="174" width="54" height="54"/>
+    <SubTexture name="title" x="2" y="464" width="478" height="208"/>
+    <SubTexture name="townmine0000" x="242" y="2" width="194" height="170" frameX="-35" frameY="-51" frameWidth="270" frameHeight="270"/>
 </TextureAtlas>

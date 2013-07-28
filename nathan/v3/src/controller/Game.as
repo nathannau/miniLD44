@@ -305,6 +305,7 @@ package controller
 			);
 			obstacles.sort(function sortByDistance(a:Element, b:Element):Number
 			{
+				trace(a, b, e);
 				var da:Number = (a.x - e.x) * (a.x - e.x) + (a.y - e.y) * (a.y - e.y);
 				var db:Number = (b.x - e.x) * (b.x - e.x) + (b.y - e.y) * (b.y - e.y);
 				if (da < db) 
