@@ -71,6 +71,9 @@ package ui.game.gameObjects
 			//trace(sizeX, sizeY);
 			
 			_container = new Sprite();
+			_container.x =  -MapUI.BASE_SIZE * 0.5 * (sizeX - 1);
+			_container.y =  -MapUI.BASE_SIZE * 0.5 * (sizeY - 1);
+			
 			addChild(_container);
 	
 			_quad = new Quad(sizeX * MapUI.BASE_SIZE, sizeY * MapUI.BASE_SIZE, 0xFF8020);
@@ -84,6 +87,9 @@ package ui.game.gameObjects
 			addChild(_selectImg);
 			_selectImg.width = sizeX * MapUI.BASE_SIZE;
 			_selectImg.height = sizeY * MapUI.BASE_SIZE;
+			_selectImg.x =  -MapUI.BASE_SIZE * 0.5 * (sizeX - 1);
+			_selectImg.y =  -MapUI.BASE_SIZE * 0.5 * (sizeY - 1);
+			
 			_selectImg.visible = false;
 			
 		}
@@ -119,6 +125,8 @@ package ui.game.gameObjects
 			
 			x = _element.x * MapUI.BASE_SIZE;
 			y = _element.y * MapUI.BASE_SIZE;
+			
+			alpha = _element.available ? 1: 0.5;
 			
 			/*
 			switch(_state)
