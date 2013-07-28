@@ -64,25 +64,35 @@ package ui.mine
 			if (_mine.isAccessible(_tx,_ty))
 			{
 				if (_selected)
-					tileBack = new Image(Assets.atlas.getTexture("tile_montagne"));
+					tileBack = new Image(Assets.atlas.getTexture("mineTile_selected"));
 				else
-					tileBack = new Image(Assets.atlas.getTexture("tile_marais"));
+					tileBack = new Image(Assets.atlas.getTexture("mineTile_available"));
 				_container.addChild(tileBack);
 				tileBack.touchable = false;
 				
+				/*
 				var res:Ressource = _mine.getCaseAt(_tx, _ty);
 				if (res != null) {
 					var imgRes:Image = new Image(Assets.atlas.getTexture(res.nom));
 					_container.addChild(imgRes);
 					imgRes.touchable = false;
-				}
+				}*/
 				
-
 			}
 			else {
-				tileBack = new Image(Assets.atlas.getTexture("tile_black"));
+				tileBack = new Image(Assets.atlas.getTexture("mineTile_normal"));
 				_container.addChild(tileBack);
 				tileBack.touchable = false;
+			}
+			
+			var res:Ressource = _mine.getCaseAt(_tx, _ty);
+			if (res != null) {
+				var imgRes:Image = new Image(Assets.atlas.getTexture(res.nom));
+				_container.addChild(imgRes);
+				imgRes.touchable = false;
+				
+				//if (res == Ressource.TERRE)
+				//	imgRes.alpha = 0.3;
 			}
 			
 			

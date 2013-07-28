@@ -12,6 +12,7 @@ package ui.screens
 	import ui.game.MapUI;
 	import ui.mine.MineTile;
 	import ui.mine.MineArea;
+	import ui.SmallButton;
 	import ui.TouchZone;
 	import utils.Mine;
 	import utils.Ressource;
@@ -35,17 +36,17 @@ package ui.screens
 		{	
 			super.onInitialize(event);
 			
+			var background:Quad = new Quad(Main.stageWidth, Main.stageHeight, 0x15120b);
+			addChild(background);
+			
 			_mineAera = new MineArea();
 			addChild(_mineAera);
 
 			//BEGIN
-			var backButton:Button = new Button();
-			backButton.width = 54;
-			backButton.height = 54;
-			backButton.label = "->";
+			var backButton:SmallButton = new SmallButton("buttonBack", backTriggered);
 			addChild(backButton);
 			
-			backButton.x = stage.stageWidth - backButton.width - 5;
+			backButton.x = stage.stageWidth - 60;
 			backButton.y = 5;//stage.stageHeight - beginButton.height - 5;
 			
 			backButton.addEventListener(Event.TRIGGERED, backTriggered);

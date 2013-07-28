@@ -18,6 +18,8 @@ package ui
 		public var scrollHorizontal:Boolean = true;
 		public var scrollVertical:Boolean = true;
 		
+		public var scrollMaxY:Number = -1;
+		
 		private var _touchesQuad:Object;
 		
 		private var _touchPos: Point;
@@ -107,7 +109,13 @@ package ui
 					p = touch.getLocation(this.parent);
 					
 					if(scrollHorizontal) x = Math.min(0, Math.max(-this.width, p.x - _touchPos.x));
-					if(scrollVertical) y = Math.min(0, Math.max(-this.height, p.y - _touchPos.y));
+					if (scrollVertical)
+					{
+						var scrollMax:Number = -this.height;
+						if (scrollMaxY != -1) scrollMax = -scrollMaxY;
+						
+						y = Math.min(0, Math.max(scrollMax, p.y - _touchPos.y));
+					}
 					
 					_touchMoved = true;
 					break;
