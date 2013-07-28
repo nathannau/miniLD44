@@ -1,5 +1,6 @@
 package ui.mine 
 {
+	import controller.GameEvent;
 	import flash.geom.Point;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -35,12 +36,12 @@ package ui.mine
 			_tiles = new Array();
 			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		private function onAddedToStage(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			//addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			
 			var img:Quad = new Quad(Main.stageWidth, 200, 0x99b6ad);
 			addChild(img);
@@ -73,9 +74,16 @@ package ui.mine
 			_mineContainer.addChild(_currentTaskImg);
 			_currentTaskImg.visible = false;
 			
+			Game.current.addEventListener(GameEvent.MINE_TASK_COMPLETE, onMineTaskComplete);
 		}
 		
-		private function onEnterFrame(e:Event):void 
+		private function onMineTaskComplete(e:GameEvent):void 
+		{
+			updateAll();
+		}
+		
+		//private function onEnterFrame(e:Event):void 
+		private function updateAll():void
 		{
 			update();
 			
@@ -108,6 +116,7 @@ package ui.mine
 			trace(tile.tx, tile.ty);
 			
 			_mine.addTask(tile.tx, tile.ty)
+			updateAll();
 		}
 		
 	}

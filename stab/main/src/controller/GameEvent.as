@@ -11,6 +11,8 @@ package controller
 		public static const ADD_ELEMENT:String = "ADD_ELEMENT";
 		public static const REMOVE_ELEMENT:String = "REMOVE_ELEMENT";
 		
+		public static const MINE_TASK_COMPLETE:String = "MINE_TASK_COMPLETE";
+		
 		private var _data:Object;
 		public function get data():Object { return _data; }
 		

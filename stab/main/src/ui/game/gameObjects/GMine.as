@@ -31,6 +31,7 @@ package ui.game.gameObjects
 			//mc.height = 54 * 3
 			//mc.pivotX = 
 			_container.addChild(mc);
+			mc.touchable = false;
 		}
 		
 		override public function hasStore():Boolean {
