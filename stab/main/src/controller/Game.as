@@ -189,7 +189,13 @@ package controller
 			
 			for (i = 0; i < _elements.length; i++) (_elements[i] as Element).hasAttacked = attack(_elements[i]);
 			
-			_elements = _elements.filter(function isAlive(e:Element, index:int, array:Array):Boolean { return e.pointDeVie > 1 } );
+			_elements = _elements.filter(function isAlive(e:Element, index:int, array:Array):Boolean 
+			{ 
+				if (e.pointDeVie <= 0)
+					Game.current.dispatchEvent(new GameEvent(GameEvent.REMOVE_ELEMENT, e));
+					
+				return e.pointDeVie > 1 } 
+			);
 			
 			for (i = 0; i < _elements.length; i++) move(_elements[i]);
 			
