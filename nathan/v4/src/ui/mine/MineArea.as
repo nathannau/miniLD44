@@ -1,11 +1,15 @@
 package ui.mine 
 {
+	import controller.GameEvent;
 	import flash.geom.Point;
 	import starling.display.DisplayObject;
+	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
+	import ui.Assets;
+	import ui.game.MapUI;
 	import ui.TouchZone;
 	import utils.Mine;
 	import controller.Game;
@@ -21,6 +25,8 @@ package ui.mine
 		
 		private var _tiles:Array;
 		
+		private var _currentTaskImg:Image;
+		
 		public function MineArea() 
 		{	
 			super();
@@ -30,12 +36,12 @@ package ui.mine
 			_tiles = new Array();
 			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		private function onAddedToStage(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			//addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			
 			var img:Quad = new Quad(Main.stageWidth, 200, 0x99b6ad);
 			addChild(img);
@@ -61,13 +67,40 @@ package ui.mine
 			
 			_mineContainer.x = (Main.stageWidth - _mineContainer.width) * 0.5;
 			
+			_currentTaskImg = new Image(Assets.atlas.getTexture("drill"));
+			_currentTaskImg.pivotX = _currentTaskImg.pivotY = 27;
+			_currentTaskImg.scaleX = _currentTaskImg.scaleY = 0.6;
 			
+			_mineContainer.addChild(_currentTaskImg);
+			_currentTaskImg.visible = false;
 			
+			Game.current.addEventListener(GameEvent.MINE_TASK_COMPLETE, onMineTaskComplete);
+			Game.current.addEventListener(GameEvent.MINE_REINIT, onMineReinit);
 		}
 		
-		private function onEnterFrame(e:Event):void 
+		private function onMineReinit(e:GameEvent):void 
+		{
+			updateAll();
+		}
+		
+		private function onMineTaskComplete(e:GameEvent):void 
+		{
+			updateAll();
+		}
+		
+		//private function onEnterFrame(e:Event):void 
+		public function updateAll():void
 		{
 			update();
+			
+			if (_mine.tasks.length > 0) {
+				_currentTaskImg.visible = true;
+				_currentTaskImg.x = MapUI.BASE_SIZE * (_mine.tasks[0].x + 0.5);
+				_currentTaskImg.y = MapUI.BASE_SIZE * (_mine.tasks[0].d + 0.5);
+			}
+			else {
+				_currentTaskImg.visible = false;
+			}
 		}
 		
 		public function update():void
@@ -89,6 +122,7 @@ package ui.mine
 			trace(tile.tx, tile.ty);
 			
 			_mine.addTask(tile.tx, tile.ty)
+			updateAll();
 		}
 		
 	}

@@ -25,7 +25,7 @@ package controller
 	 * Noyau du jeu
 	 * @author Nathan
 	 */
-	public class Game //extends EventDispatcher
+	public class Game extends EventDispatcher
 	{
 		public static var current:Game = null;
 		/**
@@ -134,6 +134,7 @@ package controller
 				centreForage.pointDeVie = Configuration.ELEMENTS_PV_INITIAL[TypeElement.CENTRE_DE_FORAGE.index];
 				
 				_elements.push(centreForage);
+				dispatchEvent(new GameEvent(GameEvent.ADD_ELEMENT, centreForage));
 			}
 			
 			_isStarted = true;
@@ -305,7 +306,9 @@ package controller
 			);
 			obstacles.sort(function sortByDistance(a:Element, b:Element):Number
 			{
-				trace(a, b, e);
+				trace(this);
+				trace(a, b);
+				trace(e);
 				var da:Number = (a.x - e.x) * (a.x - e.x) + (a.y - e.y) * (a.y - e.y);
 				var db:Number = (b.x - e.x) * (b.x - e.x) + (b.y - e.y) * (b.y - e.y);
 				if (da < db) 
@@ -614,6 +617,8 @@ package controller
 					pr.subRessourcesSet(cost);
 					
 					_elements.push(bat);
+					dispatchEvent(new GameEvent(GameEvent.ADD_ELEMENT, bat));
+					
 					break;
 				case TypeElement.MECANO:
 					if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("Unité non implémentée : priorité basse"); 
@@ -623,7 +628,8 @@ package controller
 					var fromElement:ElementBatiment = from as ElementBatiment;
 					if (fromElement == null || type != getUniteForBatiment(fromElement)) 
 						throw new Error("Type d'unité incompatible avec le type d'origine"); //return false;
-					if (!fromElement.animation) return false;
+					//if (!fromElement.animation) return false;
+					if (!fromElement.isBuilded || fromElement.player!=player) return false;
 					
 					var unit:Element = new type.className(player);
 					
@@ -662,7 +668,10 @@ package controller
 			if (e.type == TypeElement.CENTRE_DE_FORAGE)
 			{
 				if (ElementCentreDeForage(e).isDown) 
+				{
 					ElementCentreDeForage(e).up();
+					getMine(e.player).currentTerrain = null;
+				}
 			}
 			else
 				e.animation = Animation.MOUVEMENT;

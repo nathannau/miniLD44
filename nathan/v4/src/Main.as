@@ -1,6 +1,7 @@
 package  
 {
 	import controller.Game;
+	import flash.display.DisplayObject;
 	import fr.kouma.starling.utils.Stats;
 	import starling.display.Sprite;
 	import starling.events.Event;
