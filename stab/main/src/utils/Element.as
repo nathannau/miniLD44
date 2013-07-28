@@ -40,6 +40,7 @@ package utils
 		public function get canAttack():Boolean { throw new Error("Fonction abstraite"); /*return _type;*/ }
 		
 		public function get rayon():Number { throw new Error("Fonction abstraite"); /*return _type;*/ }
+		public function get size():Number { return rayon*2;}
 		
 		public function get pathDest():Object { return _pathDest; }
 		public function set pathDest(value:Object):void { _pathDest = value; _pathStep = null; }
@@ -114,8 +115,6 @@ package utils
 		{
 			if (canAttack) _lastAttack++;
 		}
-		
-		public function get size():uint { return 1;}
 		
 	}
 

@@ -23,7 +23,7 @@ package utils
 		override public function get canMove():Boolean { return true; }
 		override public function get canAttack():Boolean { return false; }
 		
-		override public function get rayon():Number { return 1; }
+		override public function get rayon():Number { return 1.5; }
 		
 		
 		public function get isChangingState():Boolean { return _endChangingStateIn > 0; }
@@ -61,8 +61,6 @@ package utils
 				
 			}
 		}
-		
-		override public function get size():uint { return 3;}
 		
 		
 	}

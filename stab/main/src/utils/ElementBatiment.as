@@ -1,5 +1,6 @@
 package utils 
 {
+	import controller.Game;
 	import flash.utils.getQualifiedClassName;
 	/**
 	 * Class abstraite pour l'ensemble des batiments
@@ -16,9 +17,34 @@ package utils
 		
 		public function get tasks():Array { return _tasks; }
 		private var _tasks:Array = new Array();
+		private var _taskBuildTime:uint = 0;
 		
-		override public function get size():uint { return 2;}
-		
+		override public function update():void 
+		{
+			super.update();
+			if (pointDeVie <= 0) return ;
+			if (_tasks.length == 0) return;
+			
+			if (_tasks[0] is Element)
+			{
+				var e: Element = _tasks[0];
+				if (_taskBuildTime > Configuration.ELEMENTS_BUILD_TIME[e.type.index][e.level])
+				{
+					_taskBuildTime = 0;
+					//Game.current.getElementsV2({rectangle:{minX:x-rayon-3, maxX:x+rayon+3,minY:y-rayon-3, maxY:y+rayon+3}});
+					e.x = x;
+					e.y = y - 2;
+					Game.current.getElements().push(e);
+					trace("add", e);
+					//e.animation = Animation.REPOS;
+					_tasks.shift();
+				}
+				else
+					_taskBuildTime ++;
+			}
+			else
+				_tasks.shift();
+		}
 	}
 
 }

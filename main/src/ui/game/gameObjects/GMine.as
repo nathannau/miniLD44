@@ -4,6 +4,8 @@ package ui.game.gameObjects
 	import starling.events.Event;
 	import ui.Assets;
 	import utils.Element;
+	import utils.ElementCentreDeForage;
+	import utils.TypeElement;
 	/**
 	 * ...
 	 * @author 
@@ -29,6 +31,15 @@ package ui.game.gameObjects
 			//mc.height = 54 * 3
 			//mc.pivotX = 
 			addChild(mc);
+		}
+		
+		override public function hasStore():Boolean {
+			return (_element as ElementCentreDeForage).isDown;
+		}
+		
+		override public function getStoreItems():Array
+		{
+			return [TypeElement.CASERNE, TypeElement.CENTRE_DE_TIR, TypeElement.ELEVAGE_WAARK];
 		}
 		
 	}

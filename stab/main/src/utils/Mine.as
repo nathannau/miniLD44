@@ -43,7 +43,6 @@ package utils
 		
 		/**
 		 * Ajoute une case dans la liste des cases à creuser
-		 * TODO : vérifier que les recherches fonctionne bien.
 		 * @param	x Coordonnée horizontale
 		 * @param	d Coordonnée de profondeur
 		 * @return false si la cases n'est pas accéssible ou déjà dans la liste de tache, sinon true.
@@ -54,7 +53,6 @@ package utils
 			var i:int;
 			
 			var p:Object = { x:x, d:d };
-			//if (_casesAccessibles.indexOf(p)<0) return false;
 			if (!isAccessible(x, d) || isInTask(x, d)) return false;
 			
 			//still have ressource ?
@@ -62,7 +60,7 @@ package utils
 			
 			
 			_tasks.push(p);
-			//_casesAccessibles.splice(_casesAccessibles.indexOf(p), 1);
+			removeFromAccessible(x, d);
 			
 			if (x > 0 && 		isNowAccessible(x - 1, d)) _casesAccessibles.push( { x:x - 1, d:d } );
 			if (x < _width-1 && isNowAccessible(x + 1, d)) _casesAccessibles.push( { x:x + 1, d:d } );
@@ -72,10 +70,10 @@ package utils
 			return true;
 		}
 		
-		public function isInTask(x:uint, y:uint):Boolean
+		public function isInTask(x:uint, d:uint):Boolean
 		{
 			for (var i:uint = 0; i < _tasks.length; i++)
-				if (_tasks[i].x == x && _tasks[i].d == y) return true;
+				if (_tasks[i].x == x && _tasks[i].d == d) return true;
 			return false;
 		}
 		
@@ -102,11 +100,17 @@ package utils
 		 * Liste des cases accéssible
 		 */
 		public function get casesAccessibles():Array { return _casesAccessibles; }
-		public function isAccessible(x:uint, y:uint):Boolean
+		public function isAccessible(x:uint, d:uint):Boolean
 		{
 			for (var i:uint = 0; i < _casesAccessibles.length; i++)
-				if (_casesAccessibles[i].x == x && _casesAccessibles[i].d == y) return true;
+				if (_casesAccessibles[i].x == x && _casesAccessibles[i].d == d) return true;
 			return false;
+		}
+		public function removeFromAccessible(x:uint, d:uint):void
+		{
+			for (var i:int = 0; i < _casesAccessibles.length; i++)
+				if (_casesAccessibles[i].x == x && _casesAccessibles[i].d == d) 
+					_casesAccessibles.splice(i--, 1);
 		}
 		private var _casesAccessibles:Array = new Array();
 				
@@ -171,7 +175,10 @@ package utils
 		public function get avancementForage():uint { return _avancementForage; }
 		private var _avancementForage:uint = 0;
 		
-		
+		private var _lastQantite:Number=0;
+		/**
+		* Mise a jour de la mine
+		*/
 		public function update():void
 		{
 			if (!isActif) return;
@@ -188,28 +195,22 @@ package utils
 			//	quantite : Quantité maximum de ressources dans une case 
 			var ressourceDetail:Object = Configuration.MINE_RESSOURCES_DETAIL[currentRessource.index];
 			
+			_lastQantite += Configuration.QUALITE_RAFINAGE[upgrade.rafinage] *
+					ressourceDetail.quantite * nbCycleSup / (ressourceDetail.cycle * 100.0);
+			if (_lastQantite >= 1)
+			{
+				var playerRessources:RessourcesSet = Game.current.getRessources(_player);
+				playerRessources.addRessource(currentRessource, _lastQantite);
+				_lastQantite = 0;
+			}
 			
-			var playerRessources:RessourcesSet = Game.current.getRessources(_player);
-			playerRessources.addRessource(
-				currentRessource, 
-				Math.max(1, Configuration.QUALITE_RAFINAGE[upgrade.rafinage] *
-				ressourceDetail.quantite * nbCycleSup / (ressourceDetail.cycle * 100.0))
-			);
-			trace(_nbCycle, ressourceDetail.cycle);
+			//trace(_nbCycle, ressourceDetail.cycle);
 			if (_nbCycle > ressourceDetail.cycle)
 			{
 				_cases[_tasks[0].d * _width + _tasks[0].x] = null;
 				_tasks.shift();
 				_nbCycle = 0;
 				_avancementForage = 0;
-				
-				/*
-				var playerRessources:RessourcesSet = Game.current.getRessources(_player);
-				playerRessources.addRessource(
-					currentRessource, 
-					Configuration.QUALITE_RAFINAGE[upgrade.rafinage] *
-					ressourceDetail.quantite / 
-				);*/
 			}
 			else
 			{
