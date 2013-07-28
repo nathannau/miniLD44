@@ -2,10 +2,12 @@ package ui.screens
 {
 	import controller.Game;
 	import feathers.controls.Button;
+	import feathers.controls.Label;
 	import feathers.controls.ScrollContainer;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
+	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
 	import ui.Assets;
@@ -25,6 +27,8 @@ package ui.screens
 	public class MineScreen extends BaseScreen 
 	{
 		private var _mineAera:MineArea;
+		
+		private var _timerLbl:Label;
 		
 		public function MineScreen() 
 		{
@@ -51,6 +55,15 @@ package ui.screens
 			
 			backButton.addEventListener(Event.TRIGGERED, backTriggered);
 			
+			//TIMER
+			_timerLbl = new Label();
+			_timerLbl.nameList.add("mineTimer");
+			
+			addChild(_timerLbl);
+			_timerLbl.x = 10;
+			_timerLbl.y = 10;
+			
+			
 		}
 
 		private function backTriggered(event:Event):void
@@ -61,6 +74,14 @@ package ui.screens
 		override public function onEnter():void
 		{
 			_mineAera.update();
+		}
+		
+		override protected function onEnterFrame(e:EnterFrameEvent):void
+		{
+			var nbUpdate:Number = Game.current.getMine(Game.current.getHumainPlayer()).nbUpdate;
+			var nb:Number = Math.floor((Configuration.MINE_TIMELIFE - nbUpdate) / Configuration.FRAMERATE);
+			
+			_timerLbl.text = nb.toString();
 		}
 		
 	}
