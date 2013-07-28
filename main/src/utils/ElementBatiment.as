@@ -1,6 +1,7 @@
 package utils 
 {
 	import controller.Game;
+	import controller.GameEvent;
 	import flash.utils.getQualifiedClassName;
 	/**
 	 * Class abstraite pour l'ensemble des batiments
@@ -19,10 +20,19 @@ package utils
 		private var _tasks:Array = new Array();
 		private var _taskBuildTime:uint = 0;
 		
+		public function get isBuilded():Boolean { return _buildingTime > Configuration.ELEMENTS_BUILD_TIME[this.type.index][0]; }
+		private var _buildingTime:uint = 0;
+		
 		override public function update():void 
 		{
 			super.update();
 			if (pointDeVie <= 0) return ;
+			
+			if (!isBuilded)
+				_buildingTime++;
+			else if (animation == Animation.CONSTRUCTION)
+				animation = Animation.REPOS;
+			
 			if (_tasks.length == 0) return;
 			
 			if (_tasks[0] is Element)
@@ -35,8 +45,12 @@ package utils
 					e.x = x;
 					e.y = y - 2;
 					Game.current.getElements().push(e);
-					trace("add", e);
+					trace("add", e, e.x, e.y, x, y);
 					//e.animation = Animation.REPOS;
+					
+					Game.current.dispatchEvent(new GameEvent(GameEvent.ADD_ELEMENT, e));
+					
+					
 					_tasks.shift();
 				}
 				else

@@ -29,9 +29,6 @@ package
 		public function Main() {
 			var g:Game = new Game();
 			
-			
-			
-			
 			var m:Map = Map.load();// new Map();
 			g.map = m;
 			

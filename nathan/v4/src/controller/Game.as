@@ -25,7 +25,7 @@ package controller
 	 * Noyau du jeu
 	 * @author Nathan
 	 */
-	public class Game //extends EventDispatcher
+	public class Game extends EventDispatcher
 	{
 		public static var current:Game = null;
 		/**
@@ -134,6 +134,7 @@ package controller
 				centreForage.pointDeVie = Configuration.ELEMENTS_PV_INITIAL[TypeElement.CENTRE_DE_FORAGE.index];
 				
 				_elements.push(centreForage);
+				dispatchEvent(new GameEvent(GameEvent.ADD_ELEMENT, centreForage));
 			}
 			
 			_isStarted = true;
@@ -616,6 +617,8 @@ package controller
 					pr.subRessourcesSet(cost);
 					
 					_elements.push(bat);
+					dispatchEvent(new GameEvent(GameEvent.ADD_ELEMENT, bat));
+					
 					break;
 				case TypeElement.MECANO:
 					if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("Unité non implémentée : priorité basse"); 
