@@ -25,6 +25,7 @@ package ui.mine
 		{	
 			super();
 			scrollHorizontal = false;
+			scrollMaxY = 900;
 			
 			_tiles = new Array();
 			
@@ -59,6 +60,8 @@ package ui.mine
 			}
 			
 			_mineContainer.x = (Main.stageWidth - _mineContainer.width) * 0.5;
+			
+			
 			
 		}
 		
