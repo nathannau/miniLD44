@@ -111,7 +111,11 @@ package ui
 					if(scrollHorizontal) x = Math.min(0, Math.max(-this.width, p.x - _touchPos.x));
 					if (scrollVertical)
 					{
+<<<<<<< HEAD
 						var scrollMax:Number = -this.height;
+=======
+						var scrollMax = -this.height;
+>>>>>>> origin/Nathan
 						if (scrollMaxY != -1) scrollMax = -scrollMaxY;
 						
 						y = Math.min(0, Math.max(scrollMax, p.y - _touchPos.y));

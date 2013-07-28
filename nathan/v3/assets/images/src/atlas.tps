@@ -982,6 +982,15 @@
             <filename>redCross.png</filename>
             <filename>hammer.png</filename>
             <filename>menuBackgroundLight.png</filename>
+            <filename>mineTile_available.png</filename>
+            <filename>mineTile_normal.png</filename>
+            <filename>mineTile_selected.png</filename>
+            <filename>mineTile_available.png</filename>
+            <filename>mineTile_normal.png</filename>
+            <filename>mineTile_selected.png</filename>
+            <filename>mineTile_available.png</filename>
+            <filename>mineTile_normal.png</filename>
+            <filename>mineTile_selected.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -218,6 +218,12 @@ package
 		 */
 		public static const DISTANCE_BETWEEN_BATIMENTS:uint = 9;
 		
+		/**
+		 * Intervale entre chaque consomation de nourritue par les unités
+		 */
+		public static const UNITE_EAT_EVERY:uint = 1*FRAMERATE;
+		
+		
 		///// RAFINAGE
 		/**
 		 * Qualité du rafinage en %
