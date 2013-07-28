@@ -29,7 +29,7 @@ package utils
 		override public function update():void 
 		{
 			super.update();
-			
+			if (!available) return ;
 			if (_lastEat > Configuration.UNITE_EAT_EVERY)
 			{
 				var rs:RessourcesSet = Game.current.getRessources(this._player);
