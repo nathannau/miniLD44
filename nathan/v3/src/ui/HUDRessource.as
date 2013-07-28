@@ -17,12 +17,12 @@ package ui
 	{
 		private var resList:Array = new Array(
 			Ressource.NOURITURE, 
-			Ressource.TERRE, 
+			//Ressource.TERRE, 
 			Ressource.PIERRE, 
+			Ressource.CHARBON,
 			Ressource.FER, 
 			Ressource.OR, 
 			Ressource.PETROLE, 
-			Ressource.CHARBON,
 			Ressource.DIAMANT,
 			Ressource.URANIUM
 		);
@@ -57,7 +57,10 @@ package ui
 				var value:uint = resSet.getRessource(res);
 				var lbl:Label = new Label();
 				lbl.text = value.toString();
-				lbl.width = 55;
+				//lbl.width = 55;
+				//lbl.width = lbl.
+				lbl.validate();
+				
 				
 				addChild(lbl);
 				lbl.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
@@ -66,7 +69,7 @@ package ui
 				lbl.x = i * 55 - 10;
 				lbl.y = 30;
 				
-				resLbl[res] = lbl;
+				resLbl[res.index] = lbl;
 				
 			}
 			
@@ -84,7 +87,9 @@ package ui
 			{
 				var res:Ressource = resList[i];
 				var value:uint = resSet.getRessource(res);
-				resLbl[res].text = value.toString();
+				//resLbl[res].text = 
+				(resLbl[res.index] as Label).text = value.toString();
+				
 			}
 		}
 		

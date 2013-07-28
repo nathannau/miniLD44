@@ -43,20 +43,24 @@ package utils
 		
 		/**
 		 * Ajoute une case dans la liste des cases à creuser
-		 * TODO : vérifier que les recherches fonctionne bien.
 		 * @param	x Coordonnée horizontale
 		 * @param	d Coordonnée de profondeur
 		 * @return false si la cases n'est pas accéssible ou déjà dans la liste de tache, sinon true.
 		 */
 		public function addTask(x:uint, d:uint):Boolean
 		{
-			if (x >= _width || d >= _width) throw new Error("Case en dehors de la mine");
+			if (x >= _width || d >= _deep) throw new Error("Case en dehors de la mine");
 			var i:int;
 			
 			var p:Object = { x:x, d:d };
-			if (_casesAccessibles.indexOf(p)<0) return false;
+			if (!isAccessible(x, d) || isInTask(x, d)) return false;
+			
+			//still have ressource ?
+			if (getCaseAt(x, d) == null) return false;
+			
+			
 			_tasks.push(p);
-			_casesAccessibles.splice(_casesAccessibles.indexOf(p), 1);
+			removeFromAccessible(x, d);
 			
 			if (x > 0 && 		isNowAccessible(x - 1, d)) _casesAccessibles.push( { x:x - 1, d:d } );
 			if (x < _width-1 && isNowAccessible(x + 1, d)) _casesAccessibles.push( { x:x + 1, d:d } );
@@ -65,6 +69,14 @@ package utils
 			
 			return true;
 		}
+		
+		public function isInTask(x:uint, d:uint):Boolean
+		{
+			for (var i:uint = 0; i < _tasks.length; i++)
+				if (_tasks[i].x == x && _tasks[i].d == d) return true;
+			return false;
+		}
+		
 		/**
 		 * Permet de savoir si un case est a ajouter dans la liste des cases accéssible
 		 * @param	x Coordonnée horizontale
@@ -88,11 +100,17 @@ package utils
 		 * Liste des cases accéssible
 		 */
 		public function get casesAccessibles():Array { return _casesAccessibles; }
-		public function isAccessible(x:uint, y:uint):Boolean
+		public function isAccessible(x:uint, d:uint):Boolean
 		{
 			for (var i:uint = 0; i < _casesAccessibles.length; i++)
-				if (_casesAccessibles[i].x == x && _casesAccessibles[i].y == y) return true;
+				if (_casesAccessibles[i].x == x && _casesAccessibles[i].d == d) return true;
 			return false;
+		}
+		public function removeFromAccessible(x:uint, d:uint):void
+		{
+			for (var i:int = 0; i < _casesAccessibles.length; i++)
+				if (_casesAccessibles[i].x == x && _casesAccessibles[i].d == d) 
+					_casesAccessibles.splice(i--, 1);
 		}
 		private var _casesAccessibles:Array = new Array();
 				
@@ -157,7 +175,10 @@ package utils
 		public function get avancementForage():uint { return _avancementForage; }
 		private var _avancementForage:uint = 0;
 		
-		
+		/**
+		* Mise a jour de la mine
+		* TODO : Bug sur l'ajout de ressources (Math.max(1, Configuration.QUALITE_RAFINAGE[upgrade.rafinage] *...)
+		*/
 		public function update():void
 		{
 			if (!isActif) return;
@@ -177,9 +198,11 @@ package utils
 			var playerRessources:RessourcesSet = Game.current.getRessources(_player);
 			playerRessources.addRessource(
 				currentRessource, 
-				Configuration.QUALITE_RAFINAGE[upgrade.rafinage] *
-				ressourceDetail.quantite * nbCycleSup / (ressourceDetail.cycle * 100)
+				Math.max(1, Configuration.QUALITE_RAFINAGE[upgrade.rafinage] *
+					ressourceDetail.quantite * nbCycleSup / (ressourceDetail.cycle * 100.0))
 			);
+			
+			//trace(_nbCycle, ressourceDetail.cycle);
 			if (_nbCycle > ressourceDetail.cycle)
 			{
 				_cases[_tasks[0].d * _width + _tasks[0].x] = null;
