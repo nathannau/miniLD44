@@ -80,9 +80,9 @@ package ui.mine
 		
 		override protected function onTouchTap(p:Point, obj:DisplayObject):void
 		{
-			if (!obj.parent is MineTile) return;
-			
 			var tile:MineTile = obj.parent as MineTile;
+			if (tile==null) return;
+			
 			
 			//trace(tile.tx, tile.ty);
 			

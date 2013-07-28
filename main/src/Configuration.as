@@ -33,7 +33,9 @@ package
 		 */
 		public static const RESSOURCES_AT_START:RessourcesSet = new RessourcesSet(
 			Ressource.NOURITURE, 10,
-			Ressource.PIERRE, 5
+			//Ressource.PIERRE, 5
+			Ressource.PIERRE, 20,
+			Ressource.FER, 20
 		);
 
 		/**
@@ -131,7 +133,7 @@ package
 		}
 		/**
 		 * Prix d'achat des unités
-		 * RessourcesSet[TypeElement][uint Niveau]
+		 * uint[TypeElement][uint Niveau]
 		 */
 		public static const ELEMENTS_PV_INITIAL:Array = initElementsPvInitial();
 		private static function initElementsPvInitial():Array
@@ -147,6 +149,28 @@ package
 			ret[TypeElement.CHEVAUCHEUR.index] = [10,20,40];
 			ret[TypeElement.FUSILLEUR.index] = [10,20,40];
 			ret[TypeElement.SOLDAT.index] = [10,20,40];
+			
+			return ret;
+		}
+		
+		/**
+		 * Temps de création d'un element (en nb cycle)
+		 * uint[TypeElement][uint Niveau]
+		 */
+		public static const ELEMENTS_BUILD_TIME:Array = initElementsBuildTime();
+		private static function initElementsBuildTime():Array
+		{
+			var ret:Array = new Array();
+			ret[TypeElement.CENTRE_DE_FORAGE.index] = [500];
+			ret[TypeElement.CASERNE.index] = [100];
+			ret[TypeElement.CENTRE_DE_TIR.index] = [100];
+			ret[TypeElement.ELEVAGE_WAARK.index] = [100];
+			ret[TypeElement.LABORATOIRE.index] = [100];
+			ret[TypeElement.RELAIS.index] = [100];
+
+			ret[TypeElement.CHEVAUCHEUR.index] = [120,100,180];
+			ret[TypeElement.FUSILLEUR.index] = [120,100,180];
+			ret[TypeElement.SOLDAT.index] = [120,100,180];
 			
 			return ret;
 		}
@@ -245,7 +269,7 @@ package
 			var ret:Array = new Array();
 			ret[Terrain.PLAINE.index] = new Array(
 				{ start:0, stop:19, prob:100, type:Ressource.TERRE },
-				{ start:0, stop:0, prob:5, type:Ressource.NOURITURE },
+				{ start:0, stop:0, prob:90, type:Ressource.NOURITURE },
 				{ start:2, stop:19, prob:10, type:Ressource.PIERRE },
 				{ start:4, stop:7, prob:10, type:Ressource.FER },
 				{ start:5, stop:6, prob:5, type:Ressource.OR },
@@ -294,7 +318,7 @@ package
 		private static function initMineRessourcesDetail():Array
 		{
 			var ret:Array = new Array();
-			ret[Ressource.NOURITURE.index] = { cycle:60, quantite:100 };
+			ret[Ressource.NOURITURE.index] = { cycle:120, quantite:100 };
 			ret[Ressource.TERRE.index] = { cycle:40, quantite:0 };
 			ret[Ressource.PIERRE.index] = { cycle:100, quantite:40 };
 			ret[Ressource.FER.index] = { cycle:80, quantite:40 };
@@ -330,8 +354,19 @@ package
 		 */
 		public static const MINE_NB_CYCLE_BY_FORAGE_LEVEL:Array = [1, 2, 4, 8];
 		
+		/**
+		 * Temps pour se lever
+		 */
 		public static const MINE_UP_TIME:uint = 90;
+		/**
+		 * Temps pour se besser
+		 */
 		public static const MINE_DOWN_TIME:uint = 90;
+		/**
+		 * Duree de vie de la mine
+		 */
+		public static const MINE_TIMELIFE:uint = 60 * Configuration.FRAMERATE;
+
 		
 		///// Relais
 		

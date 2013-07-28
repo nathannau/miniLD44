@@ -193,7 +193,12 @@ package controller
 			for (i = 0; i < _elements.length; i++) move(_elements[i]);
 			
 			for (i = 0; i < _players.length; i++) (_players[i] as IPlayer).update();
-			
+
+			for (i = 0; i < _playersInfos.length; i++) 
+			{
+				var mine:Mine = _playersInfos[i].mine;
+				if (mine.nbUpdate > Configuration.MINE_TIMELIFE) mine.reinit();
+			}
 			
 			if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("TODO : niveau haut");
 		}
@@ -447,8 +452,8 @@ package controller
 			{
 				//if (this.rectangle != undefined && (e.x<this.rectangle.minX || e.x>this.rectangle.maxX || 
 				//	e.y<this.rectangle.minY || e.y>this.rectangle.maxY)) return false;
-				if (this.rectangle != undefined && (e.x+e.size-1<this.rectangle.minX || e.x>this.rectangle.maxX || 
-					e.y+e.size-1<this.rectangle.minY || e.y>this.rectangle.maxY)) return false;
+				if (this.rectangle != undefined && (e.x+e.rayon<this.rectangle.minX || e.x-e.rayon>this.rectangle.maxX || 
+					e.y+e.rayon<this.rectangle.minY || e.y-e.rayon>this.rectangle.maxY)) return false;
 					
 				if (this.contain != undefined &&
 					(e.x - this.contain.x) * (e.x - this.contain.x) +
@@ -565,9 +570,10 @@ package controller
 			var cost:RessourcesSet = Configuration.ELEMENTS_COST[type.index][niveau];
 			//var upgrade:Upgrades = getUpgrades(player);
 			var pr:RessourcesSet = getRessources(player);
-			if (!pr.estPlusGrandOuEgalQue(cost)) return false;
-			
-			return true;
+
+			return pr.estPlusGrandOuEgalQue(cost);
+			//if (!pr.estPlusGrandOuEgalQue(cost)) return false;
+			//return true;
 		}
 		
 		/**
@@ -620,9 +626,9 @@ package controller
 					
 					var unit:Element = new type.className(player);
 					
-					
-					unit.x = from.x;
-					unit.y = from.y + 2;
+					// TODO : Tmp
+					//unit.x = from.x;
+					//unit.y = from.y + 2;
 					
 					unit.level = niveau;
 					unit.pointDeVie = Configuration.ELEMENTS_PV_INITIAL[type.index][niveau];
@@ -630,17 +636,15 @@ package controller
 					fromElement.tasks.push(unit);
 					pr.subRessourcesSet(cost);
 					
-					_elements.push(unit);
+					// TODO : Tmp
+					//_elements.push(unit);
 			}
 			
-			//if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("fonction non implémentée : priorité basse"); 
-			//return false;
 			return true;
 		}
 		
 		/**
 		 * Déplace un element
-		 * TODO : fonction non implementé
 		 * @param	e Element à déplacer
 		 * @param	x Coordonne de destination
 		 * @param	y Coordonne de destination

@@ -25,7 +25,6 @@ package vues.humain
 	
 	/**
 	 * Affichage pour un joueur humain
-	 * TODO : vues.ia.Player classe non implémentée
 	 * @author Stab
 	 */
 	public class Player extends Sprite implements IPlayer 
