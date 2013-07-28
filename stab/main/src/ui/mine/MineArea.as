@@ -2,10 +2,13 @@ package ui.mine
 {
 	import flash.geom.Point;
 	import starling.display.DisplayObject;
+	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
+	import ui.Assets;
+	import ui.game.MapUI;
 	import ui.TouchZone;
 	import utils.Mine;
 	import controller.Game;
@@ -20,6 +23,8 @@ package ui.mine
 		private var _mine:Mine;
 		
 		private var _tiles:Array;
+		
+		private var _currentTaskImg:Image;
 		
 		public function MineArea() 
 		{	
@@ -61,13 +66,27 @@ package ui.mine
 			
 			_mineContainer.x = (Main.stageWidth - _mineContainer.width) * 0.5;
 			
+			_currentTaskImg = new Image(Assets.atlas.getTexture("drill"));
+			_currentTaskImg.pivotX = _currentTaskImg.pivotY = 27;
+			_currentTaskImg.scaleX = _currentTaskImg.scaleY = 0.6;
 			
+			_mineContainer.addChild(_currentTaskImg);
+			_currentTaskImg.visible = false;
 			
 		}
 		
 		private function onEnterFrame(e:Event):void 
 		{
 			update();
+			
+			if (_mine.tasks.length > 0) {
+				_currentTaskImg.visible = true;
+				_currentTaskImg.x = MapUI.BASE_SIZE * (_mine.tasks[0].x + 0.5);
+				_currentTaskImg.y = MapUI.BASE_SIZE * (_mine.tasks[0].d + 0.5);
+			}
+			else {
+				_currentTaskImg.visible = false;
+			}
 		}
 		
 		public function update():void

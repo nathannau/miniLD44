@@ -1,6 +1,7 @@
 package utils 
 {
 	import controller.Game;
+	import controller.GameEvent;
 	import flash.utils.getQualifiedClassName;
 	/**
 	 * Class abstraite pour l'ensemble des batiments
@@ -35,8 +36,12 @@ package utils
 					e.x = x;
 					e.y = y - 2;
 					Game.current.getElements().push(e);
-					trace("add", e);
+					trace("add", e, e.x, e.y, x, y);
 					//e.animation = Animation.REPOS;
+					
+					Game.current.dispatchEvent(new GameEvent(GameEvent.ADD_ELEMENT, e));
+					
+					
 					_tasks.shift();
 				}
 				else

@@ -1,6 +1,7 @@
 package  
 {
 	import controller.Game;
+	import flash.display.DisplayObject;
 	import fr.kouma.starling.utils.Stats;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -27,6 +28,9 @@ package
 		
 		public function Main() {
 			var g:Game = new Game();
+			
+			
+			
 			
 			var m:Map = Map.load();// new Map();
 			g.map = m;
