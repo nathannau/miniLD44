@@ -75,6 +75,12 @@ package ui.mine
 			_currentTaskImg.visible = false;
 			
 			Game.current.addEventListener(GameEvent.MINE_TASK_COMPLETE, onMineTaskComplete);
+			Game.current.addEventListener(GameEvent.MINE_REINIT, onMineReinit);
+		}
+		
+		private function onMineReinit(e:GameEvent):void 
+		{
+			updateAll();
 		}
 		
 		private function onMineTaskComplete(e:GameEvent):void 
@@ -83,7 +89,7 @@ package ui.mine
 		}
 		
 		//private function onEnterFrame(e:Event):void 
-		private function updateAll():void
+		public function updateAll():void
 		{
 			update();
 			
