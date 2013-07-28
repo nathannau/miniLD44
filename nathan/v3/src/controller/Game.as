@@ -386,7 +386,7 @@ package controller
 				{
 					var e2:Element = lastAvailable[j];
 					var delta:uint = (e1.x - e2.x) * (e1.x - e2.x) + (e1.y - e2.y) * (e1.y - e2.y);
-					if (delta <= (e2 as IElementVision).distanceVision)
+					if (e2 is IElementVision && delta <= (e2 as IElementVision).distanceVision)
 					{
 						nextAvaible.push(e1);
 						e1.available = true;
@@ -445,8 +445,11 @@ package controller
 			if (filters.otherPlayer == undefined) filters.otherPlayer = false;
 			var callback:Function = function getElementsCallback(e:Element, index:int, array:Array):Boolean
 			{
-				if (this.rectangle != undefined && (e.x<this.rectangle.minX || e.x>this.rectangle.maxX || 
-					e.y<this.rectangle.minY || e.y>this.rectangle.maxY)) return false;
+				//if (this.rectangle != undefined && (e.x<this.rectangle.minX || e.x>this.rectangle.maxX || 
+				//	e.y<this.rectangle.minY || e.y>this.rectangle.maxY)) return false;
+				if (this.rectangle != undefined && (e.x+e.rayon<this.rectangle.minX || e.x-e.rayon>this.rectangle.maxX || 
+					e.y+e.rayon<this.rectangle.minY || e.y-e.rayon>this.rectangle.maxY)) return false;
+					
 				if (this.contain != undefined &&
 					(e.x - this.contain.x) * (e.x - this.contain.x) +
 					(e.y - this.contain.y) * (e.y - this.contain.y) > 
@@ -555,6 +558,19 @@ package controller
 			var niveau:uint = getNiveauForUnite(player, type);
 			return Configuration.ELEMENTS_COST[type.index][niveau];
 		}
+		
+		public function canBuy(player:IPlayer, type:TypeElement):Boolean
+		{
+			var niveau:uint = getNiveauForUnite(player, type);
+			var cost:RessourcesSet = Configuration.ELEMENTS_COST[type.index][niveau];
+			//var upgrade:Upgrades = getUpgrades(player);
+			var pr:RessourcesSet = getRessources(player);
+
+			return pr.estPlusGrandOuEgalQue(cost);
+			//if (!pr.estPlusGrandOuEgalQue(cost)) return false;
+			//return true;
+		}
+		
 		/**
 		 * Achete un element.
 		 * @param	player	propriétaire du futur l'élément
@@ -582,7 +598,7 @@ package controller
 				case TypeElement.RELAIS:
 					if (getQualifiedClassName(from) != "Object" || from.x == undefined || from == undefined)
 						throw new Error("Destination incoherente"); // return false;
-					if (!canBuildBatimentAt(from.x, from.y)) return false;
+					//if (!canBuildBatimentAt(from.x, from.y)) return false;
 					var bat:Element = new type.className(player);
 					bat.x = from.x;
 					bat.y = from.y;
@@ -604,16 +620,22 @@ package controller
 					if (!fromElement.animation) return false;
 					
 					var unit:Element = new type.className(player);
-					//bat.x = from.x;
-					//bat.y = from.y;
+					
+					// TODO : Tmp
+					unit.x = from.x;
+					unit.y = from.y + 2;
+					
 					unit.level = niveau;
 					unit.pointDeVie = Configuration.ELEMENTS_PV_INITIAL[type.index][niveau];
 					//bat.animation = Animation.CONSTRUCTION;
 					fromElement.tasks.push(unit);
 					pr.subRessourcesSet(cost);
+					
+					// TODO : Tmp
+					_elements.push(unit);
 			}
-			if (Configuration.THROW_NOT_IMPLEMENTED) throw new Error("fonction non implémentée : priorité basse"); 
-			return false;
+			
+			return true;
 		}
 		
 		/**
