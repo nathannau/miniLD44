@@ -77,7 +77,7 @@ package vues.humain
 			gotoMineButton.x = 5;
 			gotoMineButton.y = 5;
 			
-			_mineButton = addChild(new SmallButton("drill", onMineTriggered)) as Button;
+			_mineButton = addChild(new SmallButton("buttonDrill", onMineTriggered)) as Button;
 			_mineButton.x = 5;
 			_mineButton.y = 60;
 			
@@ -223,10 +223,12 @@ package vues.humain
 		
 		public function validateBuild(tx:uint, ty:uint):void
 		{
+			
+			
 			if (Game.current.buyElement(this, _placeBuilding, { x:tx, y:ty } ))
 			{
-				var elements:Array = Game.current.getElements();
-				_gameAera.addElement(elements[elements.length - 1]);
+				//var elements:Array = Game.current.getElements();
+				//_gameAera.addElement(elements[elements.length - 1]);
 			
 				closePlaceBuildingMode();
 			}
@@ -234,12 +236,13 @@ package vues.humain
 			
 		}
 		
+		
 		public function placeUnite(t:TypeElement, from:Element):void
 		{
 			if (Game.current.buyElement(this, t, from))
 			{
-				var elements:Array = Game.current.getElements();
-				_gameAera.addElement(elements[elements.length - 1]);
+				//var elements:Array = Game.current.getElements();
+				//_gameAera.addElement(elements[elements.length - 1]);
 				
 			}
 			else trace("can't build o_O");

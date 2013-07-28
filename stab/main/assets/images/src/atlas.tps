@@ -991,6 +991,8 @@
             <filename>mineTile_available.png</filename>
             <filename>mineTile_normal.png</filename>
             <filename>mineTile_selected.png</filename>
+            <filename>buttonBack.png</filename>
+            <filename>buttonDrill.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
