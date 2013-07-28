@@ -70,17 +70,6 @@ package ui.mine
 				_container.addChild(tileBack);
 				tileBack.touchable = false;
 				
-<<<<<<< HEAD
-=======
-				/*
-				var res:Ressource = _mine.getCaseAt(_tx, _ty);
-				if (res != null) {
-					var imgRes:Image = new Image(Assets.atlas.getTexture(res.nom));
-					_container.addChild(imgRes);
-					imgRes.touchable = false;
-				}*/
-				
->>>>>>> origin/Nathan
 			}
 			else {
 				tileBack = new Image(Assets.atlas.getTexture("mineTile_normal"));
