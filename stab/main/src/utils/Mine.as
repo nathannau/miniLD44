@@ -1,6 +1,7 @@
 package utils 
 {
 	import controller.Game;
+	import controller.GameEvent;
 	import vues.IPlayer;
 	/**
 	 * Mine d'un joueur
@@ -208,9 +209,12 @@ package utils
 			if (_nbCycle > ressourceDetail.cycle)
 			{
 				_cases[_tasks[0].d * _width + _tasks[0].x] = null;
+				
 				_tasks.shift();
 				_nbCycle = 0;
 				_avancementForage = 0;
+				
+				Game.current.dispatchEvent(new GameEvent(GameEvent.MINE_TASK_COMPLETE));
 			}
 			else
 			{

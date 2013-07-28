@@ -1,6 +1,10 @@
 package ui.game.gameObjects 
 {
+	import feathers.display.Scale9Image;
+	import feathers.textures.Scale3Textures;
+	import feathers.textures.Scale9Textures;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Quad;
@@ -19,9 +23,12 @@ package ui.game.gameObjects
 		public var sizeX:int = 1;
 		public var sizeY:int = 1;
 
-		private var _quad:Quad;
+		protected var _quad:Quad;
+		
+		protected var _container:Sprite;
 		
 		private var _selected:Boolean = false;
+		protected var _selectImg:Scale9Image;
 		
 		/*
 		private var _state:String = State.IDLE;
@@ -62,17 +69,29 @@ package ui.game.gameObjects
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 			//trace(sizeX, sizeY);
+			
+			_container = new Sprite();
+			addChild(_container);
 	
-			_quad = new Quad(sizeX * MapUI.BASE_SIZE, sizeY * MapUI.BASE_SIZE, 0xFF8020);			
+			_quad = new Quad(sizeX * MapUI.BASE_SIZE, sizeY * MapUI.BASE_SIZE, 0xFF8020);
+			_quad.alpha = 0;
 			addChild(_quad);
 			
 			//var mc:MovieClip = new MovieClip(Assets.atlas.getTextures(gfxName));
 			//addChild(mc);
+			
+			_selectImg = new Scale9Image(new Scale9Textures(Assets.atlas.getTexture("selection"), new Rectangle(18, 18, 18, 18)));
+			addChild(_selectImg);
+			_selectImg.width = sizeX * MapUI.BASE_SIZE;
+			_selectImg.height = sizeY * MapUI.BASE_SIZE;
+			_selectImg.visible = false;
+			
 		}
 		
 		public function setSelected(sel:Boolean):void
 		{
 			_selected = sel;
+			/*
 			if (_selected)
 			{
 				_quad.color = 0xFFA050;
@@ -80,7 +99,8 @@ package ui.game.gameObjects
 			else
 			{
 				_quad.color = 0xFF8020;
-			}
+			}*/
+			_selectImg.visible = _selected;
 		}
 		
 		/*

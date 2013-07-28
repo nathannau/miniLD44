@@ -30,7 +30,8 @@ package ui.game.gameObjects
 			//mc.width = 54 * 3;
 			//mc.height = 54 * 3
 			//mc.pivotX = 
-			addChild(mc);
+			_container.addChild(mc);
+			mc.touchable = false;
 		}
 		
 		override public function hasStore():Boolean {
