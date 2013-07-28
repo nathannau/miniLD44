@@ -79,9 +79,13 @@ package utils
 		/** 
 		 * Disponibilité d'un élément (Est dans le rayon de vision du centre de forage ou d'un relais disponible)
 		 */
-		public function get available():Boolean { return _available; }
-		public function set available(value:Boolean):void { _available = value; }
-		private var _available:Boolean;
+		public function get available():Boolean { return _visibleBy.indexOf(_player) >= 0; }
+		//public function set available(value:Boolean):void { _available = value; }
+		//private var _available:Boolean;
+		public function clearVisible():void { _visibleBy = []; }
+		public function isVisibleBy(player:IPlayer):Boolean { return _visibleBy.indexOf(player) >= 0; }
+		public function visibleBy(player:IPlayer):void { _visibleBy.push(player); }
+		private var _visibleBy:Array = [];
 
 		/** 
 		 * A attaqué
