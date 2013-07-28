@@ -43,6 +43,13 @@ package utils
 		
 		public function get path():Array { return _path; }
 		protected var _path:Array = new Array();
+		public function get pathDest():Object { return _pathDest; }
+		public function set pathDest(value:Object):void { _pathDest = value; _pathStep = null; }
+		protected var _pathDest:Object = null;
+		public function get pathStep():Object { return (_pathStep != null)?_pathStep:_pathDest; }
+		public function set pathStep(value:Object):void { _pathStep=value; }
+		protected var _pathStep:Object = null;
+
 		
 		//private var _type:TypeElement;
 		/**
@@ -110,6 +117,8 @@ package utils
 		{
 			if (canAttack) _lastAttack++;
 		}
+		
+		public function get size():uint { return 1;}
 		
 	}
 
