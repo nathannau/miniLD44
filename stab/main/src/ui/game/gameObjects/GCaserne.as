@@ -25,6 +25,7 @@ package ui.game.gameObjects
 			mc.pivotX = 54 * 2;
 			mc.pivotY = 54 * 2;
 			_container.addChild(mc);
+			mc.touchable = false;
 		}
 		
 		override public function getStoreItems():Array
