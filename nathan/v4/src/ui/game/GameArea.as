@@ -1,6 +1,7 @@
 package ui.game 
 {
 	import controller.Game;
+	import controller.GameEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import starling.core.Starling;
@@ -81,6 +82,16 @@ package ui.game
 			}
 			
 			gotoMine();
+			
+			Game.current.addEventListener(GameEvent.ADD_ELEMENT, onAddElement);
+			
+		}
+		
+		private function onAddElement(e:GameEvent):void 
+		{
+			trace("addElement", e.data);
+			
+			addElement(e.data as Element);
 		}
 		
 		public function addElement(element:Element):void
@@ -93,6 +104,8 @@ package ui.game
 			obj.y = element.y * MapUI.BASE_SIZE;
 			
 			_objects.push(obj);
+			
+			trace(obj, obj.x, obj.y);
 		}
 		
 		public function getObjectsInRect(r:Rectangle):Vector.<GameObject>

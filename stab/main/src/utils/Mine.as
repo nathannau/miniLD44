@@ -29,7 +29,11 @@ package utils
 		 * Terrain actuel où est la mine
 		 */
 		public function get currentTerrain():Terrain{ return _currentTerrain; }
-		public function set currentTerrain(value:Terrain):void { _currentTerrain = value; reinit(); }
+		public function set currentTerrain(value:Terrain):void 
+		{ 
+			_currentTerrain = value; 
+			if (value != null) reinit(); 
+		}
 		private var _currentTerrain:Terrain;
 		/**
 		 * La mine est disponible
