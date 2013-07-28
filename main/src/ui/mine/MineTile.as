@@ -21,8 +21,6 @@ package ui.mine
 		
 		private var _container:Sprite;
 		
-		private var _selected:Boolean;
-		
 		private var _tx:uint;
 		public function get tx():uint { return _tx; }
 		
@@ -60,30 +58,21 @@ package ui.mine
 		public function update():void
 		{
 			_container.removeChildren();
-			var tileBack:Image;
-			if (_mine.isAccessible(_tx,_ty))
+			
+			var phase:String = "normal";
+			
+			if (_mine.isInTask(_tx, _ty) || _mine.getCaseAt(_tx, _ty) == null)
 			{
-				if (_selected)
-					tileBack = new Image(Assets.atlas.getTexture("mineTile_selected"));
-				else
-					tileBack = new Image(Assets.atlas.getTexture("mineTile_available"));
-				_container.addChild(tileBack);
-				tileBack.touchable = false;
-				
-				/*
-				var res:Ressource = _mine.getCaseAt(_tx, _ty);
-				if (res != null) {
-					var imgRes:Image = new Image(Assets.atlas.getTexture(res.nom));
-					_container.addChild(imgRes);
-					imgRes.touchable = false;
-				}*/
-				
+				phase = "selected";
 			}
-			else {
-				tileBack = new Image(Assets.atlas.getTexture("mineTile_normal"));
-				_container.addChild(tileBack);
-				tileBack.touchable = false;
+			else if (_mine.isAccessible(_tx, _ty))
+			{
+				phase = "available";
 			}
+			
+			var tileBack:Image = new Image(Assets.atlas.getTexture("mineTile_"+phase));
+			_container.addChild(tileBack);
+			tileBack.touchable = false;
 			
 			var res:Ressource = _mine.getCaseAt(_tx, _ty);
 			if (res != null) {
@@ -95,15 +84,6 @@ package ui.mine
 				//	imgRes.alpha = 0.3;
 			}
 			
-			
-		}
-		
-		public function setSelected(value:Boolean):void
-		{
-			/*var tileBack:Image = new Image(Assets.atlas.getTexture("tile_montagne"));
-			_container.addChild(tileBack);
-			tileBack.touchable = false;*/
-			_selected = value;
 		}
 		
 	}
