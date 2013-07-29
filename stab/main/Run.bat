@@ -1,6 +1,11 @@
 @echo off
 set PAUSE_ERRORS=1
+
+if "%USERNAME%" == "stab" (
 call bat\SetupSDK.Stab.bat
+) else (
+call bat\SetupSDK.Nathan.bat
+)
 call bat\SetupApplication.bat
 
 :target

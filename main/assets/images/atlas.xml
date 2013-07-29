@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:4965b3fe5c8b10989d04e0ba2dfc00d3$ -->
+<!-- $TexturePacker:SmartUpdate:fee38712282b04b09621df4a498ef9be$ -->
 <TextureAtlas imagePath="atlas.png">
     <SubTexture name="CHARBON" x="328" y="978" width="48" height="44" frameX="-3" frameY="-4" frameWidth="54" frameHeight="54"/>
     <SubTexture name="DIAMANT" x="303" y="918" width="44" height="48" frameX="-5" frameY="-3" frameWidth="54" frameHeight="54"/>

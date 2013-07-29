@@ -2,7 +2,10 @@ package vues.humain
 {
 	import controller.Game;
 	import feathers.controls.Button;
+	import feathers.controls.Label;
 	import flash.geom.Point;
+	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -42,6 +45,7 @@ package vues.humain
 		
 		private var _mineButton:Button;
 		private var _eMine:ElementCentreDeForage;
+		private var _mineCounter:Label;
 		
 		private var _store:StoreUI;
 		
@@ -77,9 +81,17 @@ package vues.humain
 			gotoMineButton.x = 5;
 			gotoMineButton.y = 5;
 			
+			_mineCounter = new Label();
+			_mineCounter.x = 5;
+			_mineCounter.y = 70;
+			_mineCounter.width = 54;
+			_mineCounter.text = "99";
+			addChild(_mineCounter);
+			_mineCounter.textRendererProperties.textFormat.align = TextFormatAlign.CENTER;
+			
 			_mineButton = addChild(new SmallButton("buttonDrill", onMineTriggered)) as Button;
 			_mineButton.x = 5;
-			_mineButton.y = 60;
+			_mineButton.y = 100;
 			
 			_hudRessource = new HUDRessource(Game.current.getRessources(Game.current.getHumainPlayer()));
 			_hudRessource.showOwnedOnly = false;
@@ -131,7 +143,12 @@ package vues.humain
 				onInit();
 			}
 			
-			_mineButton.visible = _eMine.isDown;
+			_mineButton.visible = _mineCounter.visible = _eMine.isDown;
+			
+			var nbUpdate:Number = Game.current.getMine(Game.current.getHumainPlayer()).nbUpdate;
+			var nb:Number = Math.floor((Configuration.MINE_TIMELIFE - nbUpdate) / Configuration.FRAMERATE);
+			
+			_mineCounter.text = nb.toString();
 		}
 		
 		
