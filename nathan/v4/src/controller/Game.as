@@ -640,15 +640,7 @@ package controller
 					if (fromElement == null || type != getUniteForBatiment(fromElement)) 
 						throw new Error("Type d'unité incompatible avec le type d'origine"); //return false;
 					//if (!fromElement.animation) return false;
-<<<<<<< HEAD
-<<<<<<< HEAD
 					if (!fromElement.isBuilded || fromElement.player!=player || !fromElement.available) return false;
-=======
-					if (!fromElement.isBuilded || fromElement.player!=player) return false;
->>>>>>> Verif propriétaire + Temps fabrication bat.
-=======
-					if (!fromElement.isBuilded || fromElement.player!=player || !fromElement.available) return false;
->>>>>>> Merge Main + Fix
 					
 					var unit:Element = new type.className(player);
 					
