@@ -43,6 +43,7 @@ package ui.game.gameObjects
 				case ElementCentreDeTir:	return GCentreDeTir;
 				case ElementElevageWaark:	return GElevageWaark;
 				case ElementLaboratoire:	return GBuilding;
+				case ElementRelais:			return GBuilding;
 					
 				case ElementCentreDeForage:	return GMine;
 					
@@ -77,7 +78,9 @@ package ui.game.gameObjects
 			addChild(_container);
 	
 			_quad = new Quad(sizeX * MapUI.BASE_SIZE, sizeY * MapUI.BASE_SIZE, 0xFF8020);
-			_quad.alpha = 0;
+			//_quad.alpha = 0;
+			_quad.x =  -MapUI.BASE_SIZE * 0.5 * (sizeX - 1);
+			_quad.y =  -MapUI.BASE_SIZE * 0.5 * (sizeY - 1);
 			addChild(_quad);
 			
 			//var mc:MovieClip = new MovieClip(Assets.atlas.getTextures(gfxName));

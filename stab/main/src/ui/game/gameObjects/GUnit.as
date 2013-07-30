@@ -20,7 +20,7 @@ package ui.game.gameObjects
 		{
 			super.onAddedToStage(e);
 			
-			//_quad.alpha = 1;
+			_quad.alpha = 0;
 			
 			var name:String;
 			

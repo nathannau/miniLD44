@@ -24,6 +24,8 @@ package ui.game.gameObjects
 		override public function onAddedToStage(e:Event):void {
 			super.onAddedToStage(e);
 			
+			_quad.alpha = 0;
+			
 			var mc:MovieClip =  new MovieClip(Assets.atlas.getTextures("townmine"));
 			mc.pivotX = 54;
 			mc.pivotY = 54;
@@ -40,7 +42,7 @@ package ui.game.gameObjects
 		
 		override public function getStoreItems():Array
 		{
-			return [TypeElement.CASERNE, TypeElement.CENTRE_DE_TIR, TypeElement.ELEVAGE_WAARK];
+			return [TypeElement.CASERNE, TypeElement.CENTRE_DE_TIR, TypeElement.ELEVAGE_WAARK, TypeElement.LABORATOIRE, TypeElement.RELAIS];
 		}
 		
 	}
