@@ -453,6 +453,8 @@ package ui.game
 					
 					_buildingGhost = new Quad(MapUI.BASE_SIZE * size, MapUI.BASE_SIZE * size, 0xA0FFFF);
 					_buildingGhost.alpha = 0.5;
+					_buildingGhost.pivotX = (size * 0.5 - 0.5) * MapUI.BASE_SIZE;
+					_buildingGhost.pivotY = (size * 0.5 - 0.5) * MapUI.BASE_SIZE;
 					addChild(_buildingGhost);
 					
 					

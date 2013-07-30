@@ -19,8 +19,6 @@ package ui.game.gameObjects
 		{
 			super.onAddedToStage(e);
 			
-			_quad.alpha = 1;
-			
 			/*var mc:MovieClip =  new MovieClip(Assets.atlas.getTextures("melee"));
 			mc.pivotX = 54 * 2;
 			mc.pivotY = 54 * 2;

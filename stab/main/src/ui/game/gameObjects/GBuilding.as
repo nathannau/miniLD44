@@ -13,6 +13,7 @@ package ui.game.gameObjects
 			super(e);
 			
 			sizeX = sizeY = 2;
+			
 		}
 		
 		override public function hasStore():Boolean {
