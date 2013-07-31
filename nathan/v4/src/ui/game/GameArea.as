@@ -96,7 +96,7 @@ package ui.game
 		
 		private function onAddElement(e:GameEvent):void 
 		{
-			trace("addElement", e.data);
+			//trace("addElement", e.data);
 			
 			addElement(e.data as Element);
 		}
@@ -117,7 +117,7 @@ package ui.game
 			
 			_objects.push(obj);
 			
-			trace(obj, obj.x, obj.y);
+			//trace(obj, obj.x, obj.y);
 		}
 		
 		public function removeElement(element:Element):void
@@ -145,7 +145,7 @@ package ui.game
 		
 		public function centerXY(cx:Number, cy:Number):void 
 		{
-			trace(cx, cy);
+			//trace(cx, cy);
 			
 			cx -= Main.stageWidth * 0.5;
 			cy -= Main.stageHeight * 0.5;
@@ -153,7 +153,7 @@ package ui.game
 			x = Math.min(0, Math.max(-MapUI.BASE_SIZE * Game.current.map.width + stage.stageWidth, -cx));
 			y = Math.min(0, Math.max( -MapUI.BASE_SIZE * Game.current.map.height + stage.stageHeight, -cy));
 			
-			trace(x, y);
+			//trace(x, y);
 		}
 		
 		
@@ -163,13 +163,13 @@ package ui.game
 			centerXY(mine.x * MapUI.BASE_SIZE, mine.y * MapUI.BASE_SIZE);
 			
 			/*
-			trace(Game.current.getElements(_player, [TypeElement.CENTRE_DE_FORAGE]));
-			trace(Game.current.getElements(TypeElement.CENTRE_DE_FORAGE));
+			//trace(Game.current.getElements(_player, [TypeElement.CENTRE_DE_FORAGE]));
+			//trace(Game.current.getElements(TypeElement.CENTRE_DE_FORAGE));
 			
 			var a:Array = Game.current.getElements(TypeElement.CENTRE_DE_FORAGE);
-			trace(a);
+			//trace(a);
 			
-			trace(Game.current.getElements());*/
+			//trace(Game.current.getElements());*/
 		}
 		
 		//==================================================================================================
@@ -298,7 +298,7 @@ package ui.game
 		//-----------------------------------------------------------------------------
 		private function onTouchTap(p:Point, obj:GameObject):void
 		{
-			trace("TAP", p, obj);
+			//trace("TAP", p, obj);
 			
 			if (_player.placeBuildingMode)
 			{
@@ -355,7 +355,7 @@ package ui.game
 		
 		private function onTouchZone(r:Rectangle):void
 		{
-			trace("ZONE", r);
+			//trace("ZONE", r);
 			
 			if (_player.placeBuildingMode)
 			{
@@ -426,7 +426,7 @@ package ui.game
 			var tx:uint = Math.floor(p.x / MapUI.BASE_SIZE);
 			var ty:uint = Math.floor(p.y / MapUI.BASE_SIZE);
 			
-			trace(tx, ty);
+			//trace(tx, ty);
 			
 			var size:uint = 2;
 			

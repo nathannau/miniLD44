@@ -168,7 +168,7 @@ package ui
 		//-----------------------------------------------------------------------------
 		protected function onTouchTap(p:Point, obj:DisplayObject):void
 		{
-			trace("TAP", p, obj);
+			//trace("TAP", p, obj);
 			
 			/*
 			if (obj != null)
@@ -200,7 +200,7 @@ package ui
 			if (_touchHolded) return;
 			_touchHolded = true;
 			
-			trace("HOLD", p, obj);
+			//trace("HOLD", p, obj);
 			
 			/*
 			for (var i:uint = 0; i < selection.length; i++ )
@@ -212,7 +212,7 @@ package ui
 		
 		protected function onTouchZone(r:Rectangle):void
 		{
-			trace("ZONE", r);
+			//trace("ZONE", r);
 			
 			
 			/*

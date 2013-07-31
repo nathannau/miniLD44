@@ -38,7 +38,7 @@ package ui.screens
 		
 		override protected function onInitialize(event:Event):void
 		{			
-			trace("onInitialize", this);
+			//trace("onInitialize", this);
 			super.onInitialize(event);
 			
 			_back = new Image(Assets.atlas.getTexture("back"));

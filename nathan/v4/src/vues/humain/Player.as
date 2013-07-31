@@ -218,7 +218,7 @@ package vues.humain
 		
 		public function placeBuilding(t:TypeElement):void
 		{
-			trace("place building", t);
+			//trace("place building", t);
 			
 			_store.close();
 			
@@ -249,7 +249,7 @@ package vues.humain
 			
 				closePlaceBuildingMode();
 			}
-			else trace("can't build o_O");
+			//else trace("can't build o_O");
 			
 		}
 		

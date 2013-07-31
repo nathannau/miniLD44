@@ -302,6 +302,7 @@ package controller
 			if (!e.canMove || e.hasAttacked || e.pathDest == null) return;
 			if (e.type == TypeElement.CENTRE_DE_FORAGE && !ElementCentreDeForage(e).isUp) return;
 			
+			trace(e.pathDest.x, e.pathDest.y, e.pathStep.x, e.pathStep.y);
 			var dx:Number = e.pathStep.x - e.x, dy:Number = e.pathStep.y - e.y;
 			var dLen2:Number = dx * dx + dy * dy;
 			var dLen:Number = Math.sqrt(dLen2);
@@ -312,9 +313,9 @@ package controller
 			);
 			obstacles.sort(function sortByDistance(a:Element, b:Element):Number
 			{
-				trace(this);
-				trace(a, b);
-				trace(e);
+				//trace(this);
+				//trace(a, b);
+				//trace(e);
 				var da:Number = (a.x - e.x) * (a.x - e.x) + (a.y - e.y) * (a.y - e.y);
 				var db:Number = (b.x - e.x) * (b.x - e.x) + (b.y - e.y) * (b.y - e.y);
 				if (da < db) 
@@ -328,16 +329,38 @@ package controller
 			for (var i:uint = 0; i < obstacles.length; i++)
 			{
 				var o:Element = obstacles[i];
-				var ox:Number = o.x - e.x, oy:Number = o.y - e.y;
-				var oLen: Number = Math.sqrt(ox * ox + oy * oy);
-				var cx:Number = dirX * oLen + e.x, cy:Number = dirY * oLen + e.y;
-				var ocx:Number = cx - o.x, ocy:Number = cy - o.y;
-				var ocLen2:Number = ocx * ocx + ocy * ocy;
-				if (ocLen2 <= o.rayon)
+				var ox:Number = o.x - e.x, oy:Number = o.y - e.y; 
+				var oLen: Number = Math.sqrt(ox * ox + oy * oy); // Distance entre l'element et l'obstacle
+				var cx:Number = dirX * oLen + e.x, cy:Number = dirY * oLen + e.y; // Point dans la direction de la marche
+				var ocx:Number = cx - o.x, ocy:Number = cy - o.y; 
+				var ocLen2:Number = ocx * ocx + ocy * ocy; // Distance entre le point et l'obstacle
+
+				//var oLen:Number = Math.sqrt(oLen2);
+				var psl:Number = Math.sqrt(o.rayon);
+				//if (ocLen2 == 0 && e.pathDest.x==o.x && e.pathDest.y==o.y)
+				//if (ocLen2 <= psl && e.pathDest.x<o.x && e.pathDest.y==o.y)
+				if (o.x - psl <= e.pathDest.x && e.pathDest.x < o.x + psl && 
+					o.y - psl <= e.pathDest.y && e.pathDest.y < o.y + psl)
 				{
-					var olLen:Number = Math.sqrt(ocLen2);
-					var psl:Number = Math.sqrt(o.rayon)+1;
-					e.pathStep = { x: ocx * psl / olLen + o.x, y:ocy * psl / olLen + o.y };
+					psl = oLen - 1 - psl;
+//					psl += 1;
+					e.pathDest = { x: e.x + ox * psl / oLen, y: e.y + oy * psl / oLen };
+//					e.pathDest = { x: o.x - ox * psl / oLen, y: o.y - oy * psl / oLen };
+					move(e);
+					return;
+				}
+				else if (ocLen2 == 0) // && e.pathStep!=e.pathDest)
+				{
+					psl += 1;
+					e.pathStep = { x: o.x + oy * psl / oLen, y: o.y - ox * psl / oLen  };
+					move(e);
+					return;
+				}
+				else if (ocLen2 <= o.rayon)
+				{
+					psl += 1;
+					var ocLen:Number = Math.sqrt(ocLen2);
+					e.pathStep = { x: ocx * psl / ocLen + o.x, y:ocy * psl / ocLen + o.y };
 					move(e);
 					return;
 				}
@@ -379,6 +402,7 @@ package controller
 				e.y += dy / d * vitesse;
 				/**/
 			}
+			trace (e.x, e.y);
 		}
 		
 		

@@ -119,7 +119,7 @@ package ui.mine
 			if (tile==null) return;
 			
 			
-			trace(tile.tx, tile.ty);
+			//trace(tile.tx, tile.ty);
 			
 			_mine.addTask(tile.tx, tile.ty)
 			updateAll();

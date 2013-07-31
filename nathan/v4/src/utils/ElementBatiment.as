@@ -45,7 +45,7 @@ package utils
 					e.x = x;
 					e.y = y - 2;
 					Game.current.getElements().push(e);
-					trace("add", e, e.x, e.y, x, y);
+					//trace("add", e, e.x, e.y, x, y);
 					//e.animation = Animation.REPOS;
 					
 					Game.current.dispatchEvent(new GameEvent(GameEvent.ADD_ELEMENT, e));

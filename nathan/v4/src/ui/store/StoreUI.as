@@ -159,7 +159,7 @@ package ui.store
 			}
 			//_storeContainer.y = -storeTypes.length * 35;
 			
-			trace(maxResSize);
+			//trace(maxResSize);
 			
 			setStoreSize(160 + maxResSize * 0.6 + 30, Math.max(32, _storeContainer.height + 10));
 			
